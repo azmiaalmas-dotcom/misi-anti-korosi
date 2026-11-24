@@ -2024,7 +2024,7 @@
       font-size: .92rem
     }
 
-    .sdg b {
+    .sdg > b {
       flex: none;
       min-width: 62px;
       text-align: center;
@@ -2037,16 +2037,29 @@
       margin-top: 1px
     }
 
-    .sdg.s9 b {
+    .sdg.s9 > b {
       background: #c95a14
     }
 
-    .sdg.s12 b {
+    .sdg.s12 > b {
       background: #9a6a14
     }
 
-    .sdg.esd b {
+    .sdg.esd > b {
       background: var(--navy-soft)
+    }
+
+    .sdg span {
+      flex: 1;
+      min-width: 0;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+
+    .esd-title {
+      color: var(--navy);
+      font-weight: 900;
+      display: inline;
     }
 
     @media (max-width:720px) {
@@ -2619,7 +2632,7 @@
         align-items: flex-start;
       }
 
-      .sdg b {
+      .sdg > b {
         min-width: 54px;
         font-size: 0.88rem;
         padding: 4px 6px;
@@ -4210,7 +4223,7 @@
         var esdList = Array.isArray(b.esd) ? b.esd : (b.esd ? [b.esd] : []);
         var esdHtml = esdList.map(function (item) {
           if (typeof item === 'object' && item.comp) {
-            return '<div class="sdg esd"><b>ESD 2</b><span><b>' + esc(item.comp) + ':</b> ' + esc(item.desc) + '</span></div>';
+            return '<div class="sdg esd"><b>ESD 2</b><span><strong class="esd-title">' + esc(item.comp) + ':</strong> ' + esc(item.desc) + '</span></div>';
           }
           return '<div class="sdg esd"><b>ESD 2</b><span>' + esc(item) + '</span></div>';
         }).join('');
