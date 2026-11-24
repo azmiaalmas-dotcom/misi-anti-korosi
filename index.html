@@ -2017,10 +2017,10 @@
 
     .sdg {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       font-weight: 800;
-      line-height: 1.25;
+      line-height: 1.35;
       font-size: .92rem
     }
 
@@ -2033,7 +2033,8 @@
       padding: 6px 8px;
       font-family: var(--font-display);
       font-size: 1rem;
-      font-weight: 400
+      font-weight: 400;
+      margin-top: 1px
     }
 
     .sdg.s9 b {
@@ -2614,12 +2615,15 @@
 
       .sdg {
         font-size: 0.86rem;
+        line-height: 1.35;
+        align-items: flex-start;
       }
 
       .sdg b {
         min-width: 54px;
         font-size: 0.88rem;
         padding: 4px 6px;
+        margin-top: 1px;
       }
 
       #brGo {
@@ -3410,7 +3414,15 @@
       var LEVELS = [
         {
           name: 'Kenali Korosi', short: 'Kenali Korosi', icon: 'lens', mode: 'exam',
-          brief: { fact: 'Kerugian akibat korosi di seluruh dunia diperkirakan mencapai US$2,5 triliun, sekitar 3,4% dari ekonomi dunia pada 2013. Dengan pencegahan yang tepat, biaya ini dapat dikurangi sekitar 15–35%.', src: 'Sumber: NACE International (2016).', sdg: ['s9'], esd: 'Menganalisis bukti dari gambar dan proses sebelum menyimpulkan.', mission: 'Pahami korosi dan proses redoksnya: kenali oksidasi dan reduksi. Jawab keempat soal, lalu kirim. Pembahasan dan skor tampil setelah semua soal terjawab.' },
+          brief: {
+            fact: 'Korosi merupakan proses kerusakan logam yang sering ditemukan dalam kehidupan sehari-hari, seperti pada pagar, jembatan, dan kendaraan. Proses ini melibatkan reaksi oksidasi dan reduksi yang dapat menyebabkan penurunan kualitas serta fungsi logam.',
+            src: '',
+            sdg: ['s9'],
+            esd: [
+              { comp: 'Critical Thinking (Berpikir Kritis)', desc: 'Menganalisis fenomena korosi berdasarkan gambar dan proses reaksi redoks sebelum menarik kesimpulan.' }
+            ],
+            mission: 'Pahami fenomena korosi dan proses redoksnya. Kenali oksidasi dan reduksi melalui empat tantangan yang tersedia. Selesaikan seluruh soal untuk memperoleh skor dan pembahasan.'
+          },
           qs: [
             {
               topic: 'Mengenali korosi', type: 'imgpick', q: 'Manakah benda yang menunjukkan fenomena korosi pada besi?',
@@ -3437,7 +3449,16 @@
         },
         {
           name: 'Detektif Korosi', short: 'Detektif Korosi', icon: 'flask', mode: 'exam',
-          brief: { fact: 'Laporan kondisi jalan nasional semester I 2021 dari Kementerian Pekerjaan Umum mencatat 18.874 jembatan nasional dengan kondisi yang berbeda-beda. Tidak semua kerusakan disebabkan korosi, tetapi fasilitas umum perlu dirawat agar tetap aman dan awet.', src: 'Sumber: Kementerian Pekerjaan Umum (2021).', sdg: ['s9'], esd: 'Menganalisis bukti, memprediksi akibat, dan mengenali cara pencegahan.', mission: 'Selidiki faktor penyebab korosi, analisis kondisi, prediksikan akibatnya, dan kenali metode pencegahan. Jawab keempat soal, lalu kirim. Pembahasan dan skor tampil setelah semua soal terjawab.' },
+          brief: {
+            fact: 'Benda logam dapat mengalami korosi dengan kecepatan berbeda bergantung pada kondisi lingkungannya. Kelembapan, air, dan kandungan garam merupakan beberapa faktor yang dapat memengaruhi proses korosi. Oleh karena itu, diperlukan pemahaman mengenai penyebab korosi dan cara pencegahannya.',
+            src: '',
+            sdg: ['s9'],
+            esd: [
+              { comp: 'Systems Thinking (Berpikir Sistem)', desc: 'Memahami hubungan antara kondisi lingkungan, proses korosi, dan kerusakan logam.' },
+              { comp: 'Anticipatory (Berpikir Antisipatif)', desc: 'Memprediksi dampak kondisi lingkungan terhadap korosi dan pentingnya tindakan pencegahan.' }
+            ],
+            mission: 'Selidiki faktor penyebab korosi, analisis kondisi yang mempercepatnya, prediksi akibatnya, dan kenali metode pencegahan. Selesaikan empat tantangan untuk memperoleh skor dan pembahasan.'
+          },
           qs: [
             {
               topic: 'Bukti kondisi', type: 'mc', q: 'Dua paku besi diletakkan pada kondisi berbeda. Paku A berada di tempat kering, sedangkan paku B berada di lingkungan lembap. Paku manakah yang lebih berpotensi mengalami korosi lebih cepat?',
@@ -3465,7 +3486,16 @@
         },
         {
           name: 'Misi Penyelamatan', short: 'Misi Penyelamatan', icon: 'shield', mode: 'exam',
-          brief: { fact: 'Pencegahan korosi memperpanjang masa pakai benda logam, sehingga kebutuhan penggantian barang, pemakaian bahan baku baru, dan timbulan limbah logam ikut berkurang.', src: 'Dasar pemikiran: pencegahan lebih hemat daripada mengganti.', sdg: ['s12', 's9'], esd: 'Membandingkan alternatif dan memutuskan berdasarkan bukti: biaya, daya tahan, kemudahan, dan dampak lingkungan.', mission: 'Pilih metode pencegahan yang efektif, hemat, mudah diterapkan, dan ramah lingkungan. Jawab kelima soal, lalu kirim. Pembahasan dan skor tampil setelah semua soal terjawab.' },
+          brief: {
+            fact: 'Pencegahan korosi dapat memperpanjang masa pakai benda logam sehingga mengurangi kebutuhan penggantian barang, penggunaan bahan baku baru, dan timbulan limbah. Namun, pemilihan metode pencegahan perlu mempertimbangkan efektivitas, biaya, dan dampak lingkungan.',
+            src: '',
+            sdg: ['s12', 's9'],
+            esd: [
+              { comp: 'Strategic (Kompetensi Strategis)', desc: 'Menentukan strategi pencegahan korosi berdasarkan efektivitas, biaya, dan dampak lingkungan.' },
+              { comp: 'Integrated Problem-Solving (Pemecahan Masalah Terpadu)', desc: 'Mengintegrasikan pertimbangan ilmiah, ekonomi, dan lingkungan dalam menentukan solusi.' }
+            ],
+            mission: 'Pilih metode pencegahan korosi yang efektif, hemat, mudah diterapkan, dan ramah lingkungan. Selesaikan lima tantangan dan berikan alasan atas keputusanmu. Pembahasan dan skor akan ditampilkan setelah semua soal terjawab.'
+          },
           qs: [
             {
               topic: 'Pencocokan metode', type: 'picmatch', tags: ['SDG 9'], q: 'Jodohkan gambar permasalahan dengan metode pencegahan korosi yang paling sesuai.',
@@ -4168,8 +4198,23 @@
       function openBrief(i) {
         var L = LEVELS[i], b = L.brief;
         $('#brTitle').textContent = 'Briefing Misi · Level ' + (i + 1);
-        $('#brFact').textContent = b.fact; $('#brSrc').textContent = b.src;
-        $('#brSdg').innerHTML = b.sdg.map(function (k) { return '<div class="sdg ' + k + '"><b>' + SDGNAME[k][0] + '</b><span>' + SDGNAME[k][1] + '</span></div>' }).join('') + '<div class="sdg esd"><b>ESD 2</b><span>' + esc(b.esd) + '</span></div>';
+        $('#brFact').textContent = b.fact;
+        var srcEl = $('#brSrc');
+        if (srcEl) {
+          srcEl.textContent = b.src || '';
+          srcEl.hidden = !b.src;
+        }
+        var sdgHtml = (b.sdg || []).map(function (k) {
+          return '<div class="sdg ' + k + '"><b>' + SDGNAME[k][0] + '</b><span>' + SDGNAME[k][1] + '</span></div>';
+        }).join('');
+        var esdList = Array.isArray(b.esd) ? b.esd : (b.esd ? [b.esd] : []);
+        var esdHtml = esdList.map(function (item) {
+          if (typeof item === 'object' && item.comp) {
+            return '<div class="sdg esd"><b>ESD 2</b><span><b>' + esc(item.comp) + ':</b> ' + esc(item.desc) + '</span></div>';
+          }
+          return '<div class="sdg esd"><b>ESD 2</b><span>' + esc(item) + '</span></div>';
+        }).join('');
+        $('#brSdg').innerHTML = sdgHtml + esdHtml;
         $('#brMission').textContent = b.mission;
         $('#brGo').onclick = function () { startLevel(i) };
         show('brief')
