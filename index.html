@@ -1702,6 +1702,12 @@
       color: #fff
     }
 
+    .bbtn.c2.on {
+      background: #2c973a;
+      border-color: #1f702b;
+      color: #fff
+    }
+
     .bbtn[disabled] {
       cursor: default
     }
@@ -2807,6 +2813,7 @@
         display: flex;
         justify-content: flex-end;
         gap: 6px;
+        flex-wrap: wrap;
       }
 
       .bbtn {
@@ -3511,31 +3518,85 @@
           },
           qs: [
             {
-              topic: 'Pencocokan metode', type: 'picmatch', tags: ['SDG 9'], q: 'Jodohkan gambar permasalahan dengan metode pencegahan korosi yang paling sesuai.',
-              pairs: [['fence_raw', 'Pagar besi di halaman sekolah', 'Pengecatan'], ['pipe_buried', 'Pipa baja yang tertanam di tanah', 'Anoda korban (blok Mg)'], ['bike_chain', 'Rantai dan gir sepeda', 'Pelumas atau oli'], ['kitchen_steel', 'Wajan dan alat dapur dari baja', 'Paduan stainless steel (Fe, Cr, Ni)']],
-              why: 'Cat memisahkan besi dari air dan udara. Blok Mg lebih mudah teroksidasi sehingga melindungi pipa. Oli menutup bagian yang bergerak. Krom pada stainless membentuk lapisan oksida pelindung.', hint: 'Pikirkan mana yang bergerak, mana yang terkubur, dan mana yang tampak dari luar.'
+              topic: 'Studi kasus solusi pagar sekolah', type: 'decide', tags: ['SDG 9', 'SDG 12', 'ESD 2'],
+              q: 'Pagar besi di lingkungan sekolah mulai mengalami korosi karena sering terpapar hujan dan panas. Pihak sekolah memiliki anggaran terbatas dan menginginkan solusi yang tahan lama (>10 tahun), minim perawatan rutin, serta tidak menghasilkan limbah kimia berkala. Berdasarkan data perbandingan berikut, alternatif manakah yang paling tepat dan berkelanjutan?',
+              table: {
+                cols: ['Biaya Awal', 'Ketahanan Cuaca', 'Kemudahan Perawatan', 'Dampak Lingkungan'],
+                rows: [
+                  ['Pengecatan anti-karat berkala', [3, 2, 3, 1]],
+                  ['Galvanisasi (pelapisan seng)', [2, 3, 2, 3]],
+                  ['Penggantian total baja stainless', [1, 3, 3, 1]]
+                ],
+                note: 'Skor 1 sampai 3 (●●● = paling menguntungkan). Pengecatan murah di awal tapi harus diulang tiap 2 tahun; galvanisasi tahan lama dengan anoda korban; stainless steel sangat mahal melebihi anggaran.'
+              },
+              opts: [
+                'Pengecatan anti-karat berkala',
+                'Galvanisasi (pelapisan seng)',
+                'Penggantian total dengan baja stainless'
+              ],
+              ans: 1,
+              why: 'Galvanisasi adalah solusi paling seimbang dan berkelanjutan (skor total tertinggi 10/12). Meskipun biaya awalnya sedikit lebih tinggi dari cat biasa, seng melindungi besi secara anoda korban (bahkan jika tergores) dan tahan 15–20 tahun di luar ruangan. Ini menghemat biaya perawatan jangka panjang dan mengurangi limbah kaleng serta pelarut kimia cat (SDG 9 & SDG 12).',
+              hint: 'Perhatikan kebutuhan sekolah: awet lebih dari 10 tahun, minim perawatan rutin, dan hemat biaya jangka panjang. Mana pilihan dengan skor total tertinggi?'
             },
             {
-              topic: 'Memilih solusi', type: 'decide', tags: ['ESD 2'], q: 'Sekolahmu akan memperbaiki pagar besi di luar ruangan yang sering kehujanan. Anggaran sedang, pagar harus awet lebih dari 10 tahun, dan sekolah ingin mengurangi pengecatan ulang serta limbah. Berdasarkan data berikut, pilihan mana yang paling tepat?',
-              table: { cols: ['Biaya', 'Daya tahan', 'Kemudahan', 'Dampak lingkungan'], rows: [['Cat anti-karat berkala', [3, 2, 3, 1]], ['Galvanisasi (pelapisan seng)', [2, 3, 2, 3]], ['Ganti dengan stainless steel', [1, 3, 3, 1]]], note: 'Skor 1 sampai 3 (3 = paling menguntungkan). Data contoh untuk latihan.' },
-              opts: ['Cat anti-karat berkala', 'Galvanisasi (pelapisan seng)', 'Ganti dengan stainless steel'], ans: 1,
-              why: 'Jumlah skor: cat anti-karat 9, galvanisasi 10, stainless 8. Karena pagar harus awet lebih dari 10 tahun dan sekolah ingin mengurangi pengecatan ulang serta limbah, daya tahan dan dampak lingkungan paling penting. Galvanisasi unggul di keduanya dengan biaya sedang. Cat murah tetapi harus diulang, sedangkan stainless mahal dan produksinya boros energi.', hint: 'Jumlahkan skor tiap pilihan, lalu cocokkan dengan hal yang paling penting bagi sekolah.'
+              topic: 'Urutan prioritas pertimbangan', type: 'order', tags: ['ESD 2', 'SDG 12'],
+              q: 'Dalam musyawarah perbaikan fasilitas sekolah, susunlah urutan 5 prioritas pertimbangan berikut dalam memilih metode pencegahan korosi pagar, mulai dari prasyarat keselamatan hingga evaluasi keberlanjutan:',
+              steps: [
+                'Keamanan penerapan bagi siswa dan warga sekolah (tidak beracun/tajam)',
+                'Efektivitas dan ketahanan proteksi kimiawi terhadap cuaca luar ruangan',
+                'Kemudahan teknis pelaksanaan dan perawatan oleh pihak sekolah',
+                'Efisiensi total biaya (biaya awal dan biaya perawatan jangka panjang)',
+                'Pengurangan dampak lingkungan dan minimisasi timbulan limbah (SDG 12)'
+              ],
+              why: 'Urutan prioritas pengambilan keputusan strategis: (1) Keamanan warga sekolah adalah prasyarat mutlak yang tidak dapat dikompromikan; (2) Efektivitas kimiawi memastikan pagar tidak cepat berkarat kembali; (3) Kemudahan teknis memastikan metode dapat dirawat mandiri; (4) Total biaya siklus hidup menjamin efisiensi dana sekolah; (5) Evaluasi dampak lingkungan memastikan solusi ramah lingkungan dan minim limbah (SDG 12).',
+              hint: 'Mulai dari keselamatan warga sekolah, lalu keandalan fungsi kimiawi, kemudahan perawatan, kelayakan biaya, hingga dampak kelestarian lingkungan.'
             },
             {
-              topic: 'Solusi paling tepat', type: 'sort', q: 'Lapisan pelindung pada besi bisa tergores. Kelompokkan pelapis berikut menurut efeknya pada besi yang terbuka. (E° Mg = −2,37 V; Zn = −0,76 V; Fe = −0,44 V; Sn = −0,14 V; Cu = +0,34 V)', cats: ['Tetap melindungi besi', 'Mempercepat karat'],
-              rows: [['Seng', 0], ['Magnesium', 0], ['Timah', 1], ['Tembaga', 1]],
-              why: 'Zn dan Mg memiliki E° lebih negatif dari Fe, sehingga lebih mudah teroksidasi dan berkorban demi besi. Sn dan Cu lebih mulia dari Fe, sehingga besi yang terbuka menjadi anoda dan berkarat lebih cepat.', hint: 'Pelindung yang baik lebih mudah teroksidasi daripada besi (E° lebih negatif).'
+              topic: 'Evaluasi kritis biaya & lingkungan', type: 'mc', tags: ['SDG 9', 'SDG 12', 'ESD 2'],
+              q: 'Evaluasi pernyataan berikut: "Metode pencegahan korosi dengan biaya awal paling murah selalu merupakan pilihan yang paling hemat dan ramah lingkungan untuk pagar sekolah." Apakah pernyataan tersebut Benar atau Salah beserta alasannya?',
+              opts: [
+                'Salah: metode berbiaya awal murah yang cepat rusak membutuhkan perbaikan berulang kali, sehingga melipatgandakan total biaya perawatan dan menghasilkan limbah kimia cat berkala (SDG 12).',
+                'Benar: menghemat anggaran sekolah pada tahap awal adalah indikator utama efisiensi keuangan tanpa memengaruhi ketahanan pagar.',
+                'Benar: semua metode pelapisan logam memiliki ketahanan dan dampak lingkungan yang sama persis di lingkungan luar ruangan.',
+                'Salah: biaya awal tidak memiliki kaitan sama sekali dengan masa pakai maupun biaya pemeliharaan pagar besi.'
+              ],
+              ans: 0,
+              why: 'Pernyataan tersebut SALAH. Dalam analisis siklus hidup (life-cycle analysis), metode berbiaya awal murah yang cepat rusak (misal cat murah tanpa primer) akan menuntut pengecatan ulang setiap 1–2 tahun. Total biaya kumulatif, tenaga kerja, serta limbah kaleng cat dan pelarut kimia (VOC) justru jauh lebih besar daripada metode yang lebih tahan lama seperti galvanisasi. Keputusan berkelanjutan harus memperhitungkan jangka panjang (SDG 9 & SDG 12).',
+              hint: 'Pikirkan dampak jangka panjang: apakah sesuatu yang murah di awal tetapi harus terus-menerus diperbaiki dan menghasilkan limbah kaleng cat benar-benar lebih hemat dan ramah lingkungan?'
             },
             {
-              topic: 'Konsumsi bertanggung jawab', type: 'fill', tags: ['SDG 12'], q: 'Lengkapi pernyataan tentang manfaat pencegahan korosi bagi lingkungan.',
-              parts: ['Pencegahan korosi memperpanjang ', 0, ' benda logam, sehingga ', 1, ' barang baru dan timbulan limbah logam ikut berkurang.'], bank: ['masa pakai', 'laju korosi', 'kebutuhan', 'harga'],
-              ok: [['masa pakai'], ['kebutuhan']], fix: 'masa pakai dan kebutuhan',
-              why: 'Benda logam yang awet jarang perlu diganti. Kebutuhan barang baru, bahan baku, dan limbah logam pun berkurang. Inilah kaitannya dengan konsumsi dan produksi yang bertanggung jawab (SDG 12).', hint: 'Benda yang awet dipakai lebih lama dan jarang diganti.'
+              topic: 'Klasifikasi metode pencegahan', type: 'sort', tags: ['SDG 9'],
+              q: 'Kelompokkan setiap pernyataan keuntungan atau keterbatasan berikut ke dalam metode pencegahan korosi yang sesuai:',
+              cats: ['Pengecatan', 'Galvanisasi', 'Pelumasan'],
+              rows: [
+                ['Biaya awal murah dan mudah diaplikasikan sendiri di sekolah, namun perlu diulang jika lapisan terkelupas', 0],
+                ['Seng bertindak sebagai anoda korban yang tetap melindungi besi meskipun lapisan tergores', 1],
+                ['Melindungi komponen bergerak tanpa merusak mekanik, tetapi mudah terbilas air hujan', 2],
+                ['Memberikan perlindungan jangka panjang hingga 15–20 tahun tanpa perlu perawatan rutin', 1],
+                ['Dapat memperindah tampilan dengan aneka warna, namun tidak melindungi secara elektrokimia saat tergores', 0],
+                ['Hanya cocok untuk engsel dan roda gerbang, tidak tepat untuk jeruji pagar karena mengotori pakaian', 2]
+              ],
+              why: 'Setiap metode memiliki profil keuntungan dan keterbatasan: Pengecatan murah dan estetik tetapi hanya perlindungan fisik pasif (jika terkelupas, besi langsung berkarat). Galvanisasi memberikan perlindungan fisik sekaligus elektrokimia (anoda korban seng dengan E° = −0,76 V vs Fe = −0,44 V) yang sangat tahan lama. Pelumasan hanya tepat untuk bagian engsel/mekanik yang bergerak, bukan untuk struktur jeruji pagar.',
+              hint: 'Pengecatan = pelindung fisik berwarna; Galvanisasi = lapisan seng tahan lama sebagai anoda korban; Pelumasan = oli/gemuk untuk bagian bergerak.'
             },
             {
-              topic: 'Solusi paling tepat', type: 'multi', tags: ['SDG 9', 'SDG 12'], q: 'Tantangan akhir: tim pemeliharaan jembatan baja di tepi laut ingin jembatan tetap awet dan tidak boros bahan. Pilih SEMUA langkah yang tepat.',
-              opts: ['Mengecat dengan cat anti-karat dan memperbaruinya berkala', 'Memasang blok seng sebagai anoda korban', 'Membersihkan endapan garam secara rutin', 'Mengganti seluruh rangka baja dengan yang baru setiap muncul karat tipis', 'Membiarkan karat sampai rusak parah baru diperbaiki'], ans: [0, 1, 2],
-              why: 'Cat, anoda korban seng, dan pembersihan garam mencegah korosi sehingga jembatan awet dan aman (SDG 9). Mengganti rangka setiap muncul karat tipis memboroskan bahan baku dan menambah limbah logam (SDG 12). Menunggu rusak parah membahayakan pengguna jembatan.', hint: 'Tiga jawaban benar: mencegah dan merawat, bukan membuang atau menunggu.'
+              topic: 'Rekomendasi solusi berkelanjutan', type: 'short', tags: ['SDG 9', 'SDG 12', 'ESD 2'],
+              q: 'Sebagai konsultan sains sekolah, berikan rekomendasi metode pencegahan korosi terbaik untuk pagar besi sekolah. Jelaskan alasanmu secara terpadu dengan mempertimbangkan: (1) prinsip kimia cara kerjanya, (2) efektivitas dan pertimbangan biaya, serta (3) dampak terhadap kelestarian lingkungan.',
+              max: 500,
+              ph: 'Tuliskan rekomendasi metodemu beserta 3 pertimbangan: prinsip kimia, efektivitas biaya, dan dampak lingkungan…',
+              groups: [
+                ['oksigen', 'air', 'udara', 'kontak', 'lapisan', 'pelindung', 'barrier', 'halang', 'tutup', 'anoda', 'katod', 'seng', 'oksidasi', 'teroksidasi', 'reaksi', 'lembap', 'elektrolit', 'korban', 'korosi'],
+                ['biaya', 'anggar', 'dana', 'hemat', 'awet', 'tahan', 'efektif', 'ekonom', 'murah', 'terjangkau', 'pakai', 'rawat', 'berkala', 'panjang', 'investasi', 'efisien', 'tahun'],
+                ['lingkungan', 'limbah', 'sampah', 'ramah', 'kelestarian', 'berkelanjutan', 'sdg', 'kurang', 'ganti', 'polusi', 'toksik', 'cemar', 'bahan', 'sumber daya', 'aman', 'alam', 'lestari']
+              ],
+              labels: [
+                'prinsip kimia cara kerjanya (lapisan pelindung pemisah air/oksigen atau anoda korban)',
+                'efektivitas dan kelayakan biaya (hemat, awet, anggaran sekolah, atau biaya perawatan berkala)',
+                'dampak terhadap kelestarian lingkungan (minimisasi limbah dan prinsip keberlanjutan SDG 12)'
+              ],
+              fix: 'Rekomendasi: Galvanisasi (atau pengecatan berkualitas tinggi dengan cat dasar tahan cuaca). (1) Prinsip kimia: membentuk lapisan pelindung fisik yang menghalangi kontak besi dengan air dan oksigen, atau memanfaatkan seng sebagai anoda korban yang lebih mudah teroksidasi sehingga melindungi besi dari karat. (2) Pertimbangan ekonomi: sangat hemat biaya siklus hidup karena tahan belasan tahun sehingga menghemat anggaran pemeliharaan sekolah. (3) Dampak lingkungan: memperpanjang masa pakai pagar logam secara signifikan sehingga mengurangi limbah kaleng cat kimia dan mencegah pemborosan bahan baku logam baru (SDG 9 & SDG 12).',
+              why: 'Keputusan berkelanjutan yang bermutu memadukan ketiga aspek: (1) Memahami prinsip kimia perlindungan (mencegah reaksi reduksi-oksidasi dengan air dan oksigen atau proteksi anoda korban); (2) Menilai kelayakan biaya jangka panjang (analisis siklus hidup investasi vs perawatan); (3) Menjaga kelestarian lingkungan dengan mengurangi timbulan limbah dan emisi (SDG 9 & SDG 12).',
+              hint: 'Tuliskan metode pilihanmu, jelaskan bagaimana metode itu mencegah karat secara kimiawi, bagaimana biayanya menguntungkan sekolah, dan apa manfaatnya bagi lingkungan (misal mengurangi limbah).'
             }
           ]
         }
@@ -4343,9 +4404,10 @@
           var tx = shortNorm(st.txt);
           box.innerHTML = '<div class="short-box ro"><p class="short-you">' + esc(st.txt) + '</p></div><ul class="short-chk">' + q.groups.map(function (g, j) { var ok = hit(g, tx); return '<li class="' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓ ' : '✗ ') + 'Menyebut ' + esc(q.labels[j]) + '</li>' }).join('') + '</ul><p class="fixl">Contoh jawaban yang diharapkan: ' + esc(q.fix) + '</p>'; return
         }
-        box.innerHTML = '<div class="short-box"><textarea id="shortIn" class="short-in" rows="4" maxlength="300" placeholder="Tulis jawabanmu di sini (minimal satu kalimat)…" aria-label="Jawaban singkat">' + esc(st.txt) + '</textarea><div class="short-n" id="shortN">' + st.txt.length + '/300</div></div>';
+        var maxLen = q.max || 300;
+        box.innerHTML = '<div class="short-box"><textarea id="shortIn" class="short-in" rows="4" maxlength="' + maxLen + '" placeholder="' + esc(q.ph || 'Tulis jawabanmu di sini (minimal satu kalimat)…') + '" aria-label="Jawaban singkat">' + esc(st.txt) + '</textarea><div class="short-n" id="shortN">' + st.txt.length + '/' + maxLen + '</div></div>';
         var ta = $('#shortIn');
-        ta.oninput = function () { st.txt = ta.value; $('#shortN').textContent = ta.value.length + '/300'; exNavUpdate() }
+        ta.oninput = function () { st.txt = ta.value; $('#shortN').textContent = ta.value.length + '/' + maxLen; exNavUpdate() }
       }
       function exMatch(q, i) {
         var pic = q.type === 'picmatch';
