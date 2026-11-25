@@ -845,6 +845,40 @@
       transform: scale(1.04);
     }
 
+
+    .adv-map-viewport {
+      touch-action: none; /* Allows direct touch dragging on HP screen without page scrolling */
+      user-select: none;
+      -webkit-user-select: none;
+      cursor: crosshair;
+    }
+    .adv-target-beacon {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 3px solid #ffc72c;
+      background: rgba(255, 199, 44, 0.3);
+      pointer-events: none;
+      z-index: 12;
+      animation: advBeaconPulse 0.8s infinite alternate ease-in-out;
+    }
+    @keyframes advBeaconPulse {
+      0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.4; }
+    }
+    .adv-lens-popup {
+      max-width: 280px;
+      z-index: 50 !important;
+    }
+    .adv-pin-btn {
+      z-index: 18 !important;
+    }
+    .adv-map-player {
+      transition: none !important; /* Managed by 60fps game loop for zero input lag */
+    }
+
   </style>
 </head>
 
@@ -4243,7 +4277,9 @@
         <div class="adv-map-hint">
           <span>💡</span> <b>Panduan Explorer:</b> Klik area di peta atau gunakan tombol panah untuk berkeliling. Dekati objek berkarat untuk mengamatinya dengan kaca pembesar!
         </div>
-        <div class="adv-map-viewport" id="advMapViewport">
+        <div class="adv-map-viewport" id="advMapViewport" tabindex="0" role="application" aria-label="Area Peta Sekolah Interaktif">
+          <!-- Target Beacon for Touch / Click -->
+          <div class="adv-target-beacon" id="advTargetBeacon" style="display:none"></div>
           <div id="advMapSvgHost" style="width:100%;height:100%"></div>
 
           <!-- Moving Explorer Character -->
@@ -6223,33 +6259,29 @@
       
       /* ---------- Explorer Avatar Walk & Magnifying Glass System ---------- */
       var curPlayerPos = { x: 48, y: 58 };
-      var moveTimer = null;
+      var targetPos = null;
+      var keysDown = {};
+      var animLoopId = null;
       var curActiveAreaHotspot = null;
+      var MOVE_SPEED = 0.85; // Speed in percentage per frame
 
       function advMiniExplorerSVG() {
         return '<svg viewBox="0 0 60 80" aria-hidden="true">' +
-          '<!-- Backpack / Tools -->' +
           '<rect x="10" y="24" width="40" height="34" rx="8" fill="#a07238" stroke="#5a3d1c" stroke-width="2"/>' +
-          '<!-- Body -->' +
           '<rect x="15" y="28" width="30" height="28" rx="6" fill="#f4f6fc" stroke="#3b82f6" stroke-width="2.5"/>' +
-          '<!-- Vest -->' +
           '<path d="M15 30L23 28L25 56H15Z" fill="#d4a366"/>' +
           '<path d="M45 30L37 28L35 56H45Z" fill="#d4a366"/>' +
-          '<!-- Head -->' +
           '<ellipse cx="30" cy="18" rx="14" ry="14" fill="#f8d0a8"/>' +
           '<ellipse cx="25" cy="17" rx="2" ry="3" fill="#2c1a10"/>' +
           '<ellipse cx="35" cy="17" rx="2" ry="3" fill="#2c1a10"/>' +
           '<path d="M27 24q3 3 6 0" fill="none" stroke="#2c1a10" stroke-width="1.5" stroke-linecap="round"/>' +
-          '<!-- Explorer Hat -->' +
           '<ellipse cx="30" cy="10" rx="20" ry="5" fill="#e8bf7d" stroke="#785020" stroke-width="1.5"/>' +
           '<path d="M17 10Q16 -2 30 -2Q44 -2 43 10Z" fill="#d4a366" stroke="#785020" stroke-width="1.5"/>' +
           '<rect x="18" y="7" width="24" height="3" fill="#1d3a6b"/>' +
-          '<!-- Legs -->' +
           '<rect x="18" y="56" width="9" height="18" rx="3" fill="#1e3a8a"/>' +
           '<rect x="33" y="56" width="9" height="18" rx="3" fill="#1e3a8a"/>' +
           '<rect x="16" y="70" width="12" height="6" rx="2" fill="#451a03"/>' +
           '<rect x="32" y="70" width="12" height="6" rx="2" fill="#451a03"/>' +
-          '<!-- Small Magnifier in Hand -->' +
           '<circle cx="46" cy="38" r="7" fill="#bae6fd" stroke="#d97706" stroke-width="2"/>' +
           '<line x1="51" y1="43" x2="57" y2="49" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>' +
           '</svg>';
@@ -6261,14 +6293,11 @@
             return '<svg viewBox="0 0 120 120">' +
               '<defs><radialGradient id="rustG"><stop offset="0%" stop-color="#ea580c"/><stop offset="100%" stop-color="#7c2d12"/></radialGradient></defs>' +
               '<rect width="120" height="120" fill="#334155"/>' +
-              '<!-- Metal Base Fe -->' +
               '<rect x="15" y="20" width="90" height="80" fill="#64748b" stroke="#475569" stroke-width="3"/>' +
-              '<!-- Porous Rust Pits Fe2O3.nH2O -->' +
               '<path d="M25 40 Q45 25 70 45 T100 50 L95 85 Q65 95 30 80 Z" fill="url(#rustG)"/>' +
               '<circle cx="45" cy="55" r="9" fill="#9a3412"/>' +
               '<circle cx="75" cy="65" r="11" fill="#78350f"/>' +
               '<circle cx="55" cy="72" r="7" fill="#c2410c"/>' +
-              '<!-- Attacking Water Drops & Oxygen -->' +
               '<circle cx="35" cy="32" r="6" fill="#38bdf8" opacity=".9"/><text x="35" y="35" font-size="7" fill="#fff" text-anchor="middle" font-weight="900">H₂O</text>' +
               '<circle cx="85" cy="32" r="6" fill="#60a5fa" opacity=".9"/><text x="85" y="35" font-size="7" fill="#fff" text-anchor="middle" font-weight="900">O₂</text>' +
               '<text x="60" y="112" font-size="7.5" fill="#fef08a" font-weight="900" text-anchor="middle">Fe²⁺ + O₂ + H₂O → Karat</text>' +
@@ -6277,10 +6306,8 @@
             return '<svg viewBox="0 0 120 120">' +
               '<rect width="120" height="120" fill="#1e293b"/>' +
               '<rect x="15" y="45" width="90" height="55" fill="#475569"/>' +
-              '<!-- Thick Glossy Protective Green Paint Barrier -->' +
               '<rect x="15" y="25" width="90" height="25" fill="#22c55e" stroke="#15803d" stroke-width="2"/>' +
               '<line x1="20" y1="30" x2="100" y2="30" stroke="#86efac" stroke-width="3" stroke-linecap="round"/>' +
-              '<!-- Water & Oxygen Bouncing Off -->' +
               '<path d="M35 12 L45 22 L35 24" fill="none" stroke="#38bdf8" stroke-width="2"/>' +
               '<circle cx="32" cy="12" r="5" fill="#38bdf8"/><text x="32" y="14" font-size="6" fill="#fff" text-anchor="middle" font-weight="900">H₂O</text>' +
               '<path d="M85 12 L75 22 L85 24" fill="none" stroke="#60a5fa" stroke-width="2"/>' +
@@ -6292,10 +6319,8 @@
           if (!isDone) {
             return '<svg viewBox="0 0 120 120">' +
               '<rect width="120" height="120" fill="#1e293b"/>' +
-              '<!-- Steel pipe cross section with deep pits -->' +
               '<circle cx="60" cy="60" r="44" fill="#64748b" stroke="#334155" stroke-width="4"/>' +
               '<circle cx="60" cy="60" r="28" fill="#0f172a"/>' +
-              '<!-- Pitting Corrosion Craters -->' +
               '<path d="M60 16 Q72 32 82 22 Q95 40 102 52" fill="none" stroke="#c2410c" stroke-width="8" stroke-linecap="round"/>' +
               '<circle cx="70" cy="24" r="5" fill="#9a3412"/>' +
               '<circle cx="92" cy="38" r="6" fill="#78350f"/>' +
@@ -6308,9 +6333,7 @@
               '<rect width="120" height="120" fill="#0f172a"/>' +
               '<circle cx="60" cy="60" r="44" fill="#64748b"/>' +
               '<circle cx="60" cy="60" r="28" fill="#1e293b"/>' +
-              '<!-- Zinc Galvanized Layer -->' +
               '<circle cx="60" cy="60" r="48" fill="none" stroke="#e2e8f0" stroke-width="7"/>' +
-              '<!-- Crystal spangle pattern -->' +
               '<polygon points="40,16 48,12 45,22" fill="#94a3b8"/>' +
               '<polygon points="76,14 84,18 78,24" fill="#cbd5e1"/>' +
               '<polygon points="100,50 106,60 98,64" fill="#94a3b8"/>' +
@@ -6324,15 +6347,12 @@
           if (!isDone) {
             return '<svg viewBox="0 0 120 120">' +
               '<rect width="120" height="120" fill="#1e293b"/>' +
-              '<!-- Wheel & Rail contact point -->' +
               '<circle cx="60" cy="40" r="32" fill="#475569" stroke="#334155" stroke-width="4"/>' +
               '<rect x="15" y="70" width="90" height="24" fill="#334155"/>' +
-              '<!-- Rust friction debris between wheel & rail -->' +
               '<path d="M40 70 Q60 62 80 70 Z" fill="#ea580c"/>' +
               '<circle cx="50" cy="68" r="3" fill="#f97316"/>' +
               '<circle cx="62" cy="66" r="4" fill="#c2410c"/>' +
               '<circle cx="72" cy="68" r="3" fill="#f97316"/>' +
-              '<!-- Friction Sparks & Screech line -->' +
               '<path d="M32 60L24 54M88 60L96 54" stroke="#facc15" stroke-width="2.5"/>' +
               '<text x="60" y="44" font-size="8" fill="#fca5a5" font-weight="900" text-anchor="middle">DECIT!</text>' +
               '<text x="60" y="112" font-size="7.5" fill="#fca5a5" font-weight="900" text-anchor="middle">Karat Gesekan: Macet & Aus</text>' +
@@ -6342,10 +6362,8 @@
               '<rect width="120" height="120" fill="#0f172a"/>' +
               '<circle cx="60" cy="40" r="32" fill="#64748b"/>' +
               '<rect x="15" y="70" width="90" height="24" fill="#334155"/>' +
-              '<!-- Lubricating Grease Film -->' +
               '<path d="M30 68 Q60 60 90 68 L90 74 Q60 66 30 74 Z" fill="#f59e0b" stroke="#fbbf24" stroke-width="1.5"/>' +
               '<circle cx="60" cy="40" r="10" fill="#fef08a" opacity=".6"/>' +
-              '<!-- Smooth glide motion arrows -->' +
               '<path d="M25 40 Q60 20 95 40" fill="none" stroke="#60a5fa" stroke-width="3" stroke-linecap="round"/>' +
               '<polygon points="95,40 88,34 90,44" fill="#60a5fa"/>' +
               '<text x="60" y="112" font-size="7.5" fill="#fde047" font-weight="900" text-anchor="middle">Pelumas: Licin, Mulus & Kedap O₂!</text>' +
@@ -6354,49 +6372,102 @@
         }
       }
 
-      function moveExplorerTo(xPct, yPct, onArrival) {
-        xPct = Math.max(16, Math.min(84, xPct));
-        yPct = Math.max(26, Math.min(82, yPct));
-
-        var player = $('#advMapPlayer');
-        var sprite = $('#advMapSprite');
-        var lens = $('#advLensPopup');
-        if (!player || !sprite) return;
-
-        // Hide lens popup while walking
-        if (lens) lens.hidden = true;
-        curActiveAreaHotspot = null;
-
-        // Face direction
-        if (xPct < curPlayerPos.x - 1) sprite.style.transform = 'scaleX(-1)';
-        else if (xPct > curPlayerPos.x + 1) sprite.style.transform = 'scaleX(1)';
-
-        player.classList.add('walking');
-        curPlayerPos = { x: xPct, y: yPct };
-        player.style.left = xPct + '%';
-        player.style.top = yPct + '%';
-
-        var dist = Math.hypot(xPct - curPlayerPos.x, yPct - curPlayerPos.y);
-        var dur = Math.max(0.45, Math.min(1.1, dist * 0.02 + 0.5));
-        player.style.transition = 'left ' + dur + 's ease-in-out, top ' + dur + 's ease-in-out';
-
-        tone([380, 420]);
-
-        if (moveTimer) clearTimeout(moveTimer);
-        moveTimer = setTimeout(function () {
-          player.classList.remove('walking');
-          checkProximityHotspots();
-          if (onArrival) onArrival();
-        }, dur * 1000);
-      }
-
       var HOTSPOTS = {
         garden: { key: 'garden', name: 'Pagar Besi Taman', x: 26, y: 64, desc: 'Karat terkelupas akibat cipratan air & tanah basah' },
         field: { key: 'field', name: 'Tiang Gawang Logam', x: 52, y: 36, desc: 'Pitting corrosion akibat hujan terbuka & terik matahari' },
         gate: { key: 'gate', name: 'Engsel & Rel Gerbang', x: 76, y: 72, desc: 'Karat gesekan mekanis menyebabkan macet & berdecit' }
       };
 
-      function checkProximityHotspots() {
+      function updatePlayerVisual(x, y, isWalking, flipLeft) {
+        var player = $('#advMapPlayer');
+        var sprite = $('#advPlayerSprite');
+        if (!player || !sprite) return;
+
+        player.style.left = x + '%';
+        player.style.top = y + '%';
+
+        if (isWalking) player.classList.add('walking');
+        else player.classList.remove('walking');
+
+        if (flipLeft === true) sprite.style.transform = 'scaleX(-1)';
+        else if (flipLeft === false) sprite.style.transform = 'scaleX(1)';
+      }
+
+      function showTargetBeacon(x, y) {
+        var b = $('#advTargetBeacon');
+        if (!b) return;
+        b.style.left = x + '%';
+        b.style.top = y + '%';
+        b.style.display = 'block';
+      }
+
+      function hideTargetBeacon() {
+        var b = $('#advTargetBeacon');
+        if (b) b.style.display = 'none';
+      }
+
+      function startAdvGameLoop() {
+        if (animLoopId) cancelAnimationFrame(animLoopId);
+
+        function loop() {
+          if ($('#advMap').hidden) {
+            animLoopId = null;
+            return;
+          }
+
+          var dx = 0, dy = 0;
+
+          // Keyboard input
+          if (keysDown['w'] || keysDown['W'] || keysDown['ArrowUp']) dy -= 1;
+          if (keysDown['s'] || keysDown['S'] || keysDown['ArrowDown']) dy += 1;
+          if (keysDown['a'] || keysDown['A'] || keysDown['ArrowLeft']) dx -= 1;
+          if (keysDown['d'] || keysDown['D'] || keysDown['ArrowRight']) dx += 1;
+
+          // Target input from Touch Screen / Mouse Click / Drag
+          if (targetPos) {
+            var tdx = targetPos.x - curPlayerPos.x;
+            var tdy = targetPos.y - curPlayerPos.y;
+            var dist = Math.hypot(tdx, tdy);
+            if (dist > 1.2) {
+              dx = tdx / dist;
+              dy = tdy / dist;
+            } else {
+              targetPos = null;
+              hideTargetBeacon();
+              checkProximityHotspots();
+            }
+          }
+
+          var moving = (dx !== 0 || dy !== 0);
+
+          if (moving) {
+            var len = Math.hypot(dx, dy);
+            if (len > 0) { dx /= len; dy /= len; }
+
+            var nextX = Math.max(14, Math.min(86, curPlayerPos.x + dx * MOVE_SPEED));
+            var nextY = Math.max(24, Math.min(84, curPlayerPos.y + dy * MOVE_SPEED));
+
+            var flip = (dx < -0.1) ? true : ((dx > 0.1) ? false : null);
+            curPlayerPos = { x: nextX, y: nextY };
+            updatePlayerVisual(nextX, nextY, true, flip);
+
+            // Hide popup while actively walking
+            var lens = $('#advLensPopup');
+            if (lens && !lens.hidden) lens.hidden = true;
+
+            // Proximity check on the go
+            checkProximityHotspots(true);
+          } else {
+            updatePlayerVisual(curPlayerPos.x, curPlayerPos.y, false, null);
+          }
+
+          animLoopId = requestAnimationFrame(loop);
+        }
+
+        animLoopId = requestAnimationFrame(loop);
+      }
+
+      function checkProximityHotspots(whileMoving) {
         var closest = null, minDist = 999;
         Object.keys(HOTSPOTS).forEach(function (k) {
           var hs = HOTSPOTS[k];
@@ -6404,9 +6475,13 @@
           if (d < minDist) { minDist = d; closest = hs; }
         });
 
-        // Trigger zoom if within 16% distance
-        if (minDist <= 16 && closest) {
-          showMagnifierFor(closest);
+        // Trigger zoom if within 15% distance
+        if (minDist <= 15 && closest) {
+          if (!whileMoving || curActiveAreaHotspot !== closest.key) {
+            showMagnifierFor(closest);
+          }
+        } else {
+          curActiveAreaHotspot = null;
         }
       }
 
@@ -6417,8 +6492,11 @@
         var lens = $('#advLensPopup');
         if (!lens) return;
 
+        // Position adaptively so it never clips off-viewport
+        var topPos = hs.y < 50 ? (hs.y + 16) : (hs.y - 18);
         lens.style.left = hs.x + '%';
-        lens.style.top = (hs.y - 6) + '%';
+        lens.style.top = topPos + '%';
+
         $('#advLensGlass').innerHTML = advLensDetailSVG(hs.key, isDone);
         $('#advLensTitle').textContent = '🔍 ' + hs.name;
         $('#advLensDesc').textContent = isDone ? '✓ Fasilitas ini sudah berhasil dilindungi dan bebas korosi!' : hs.desc;
@@ -6434,27 +6512,42 @@
         tone([587, 784, 988]);
       }
 
+      function setTargetCoord(clientX, clientY) {
+        var mapVp = $('#advMapViewport');
+        if (!mapVp) return;
+        var rect = mapVp.getBoundingClientRect();
+        var xPct = Math.max(14, Math.min(86, ((clientX - rect.left) / rect.width) * 100));
+        var yPct = Math.max(24, Math.min(84, ((clientY - rect.top) / rect.height) * 100));
+        targetPos = { x: xPct, y: yPct };
+        showTargetBeacon(xPct, yPct);
+        tone([380, 420]);
+      }
+
+      function walkToAreaHotspot(areaKey) {
+        var hs = HOTSPOTS[areaKey];
+        if (!hs) return;
+        targetPos = { x: hs.x, y: hs.y };
+        showTargetBeacon(hs.x, hs.y);
+        tone([440, 554]);
+      }
+
       function openAdvMap() {
         var pr = getAdvProgress();
-        // Setup Explorer Sprite
         if ($('#advPlayerSprite') && !$('#advPlayerSprite').innerHTML) {
           $('#advPlayerSprite').innerHTML = advMiniExplorerSVG();
         }
-        var player = $('#advMapPlayer');
-        if (player) {
-          player.style.left = curPlayerPos.x + '%';
-          player.style.top = curPlayerPos.y + '%';
-        }
+        updatePlayerVisual(curPlayerPos.x, curPlayerPos.y, false, false);
         if ($('#advLensPopup')) $('#advLensPopup').hidden = true;
+        hideTargetBeacon();
+        targetPos = null;
+
         var doneCount = (pr.garden ? 1 : 0) + (pr.field ? 1 : 0) + (pr.gate ? 1 : 0);
         var pct = Math.round((doneCount / 3) * 100);
 
         $('#advMapProgFill').style.width = pct + '%';
         $('#advMapProgLabel').textContent = 'Progres: ' + doneCount + '/3 Fasilitas Diselamatkan (' + pct + '%)';
-
         $('#advMapSvgHost').innerHTML = advSchoolMapSVG(pr);
 
-        // Update Pins
         function updatePin(elId, stId, isDone) {
           var b = $('#' + elId), s = $('#' + stId);
           if (isDone) {
@@ -6470,9 +6563,13 @@
         updatePin('pinGate', 'pinGateStatus', pr.gate);
 
         show('advMap');
+        startAdvGameLoop();
+
+        // Focus map viewport so keyboard WASD works immediately
+        var vp = $('#advMapViewport');
+        if (vp) vp.focus();
 
         if (doneCount === 3) {
-          // If all done, show celebratory option
           tone([523, 659, 784, 1046]);
         }
       }
@@ -6490,7 +6587,6 @@
 
         renderAdvScene(isDone);
 
-        // Render Options List
         var html = area.opts.map(function (opt, idx) {
           return '<div class="adv-opt-item" data-idx="' + idx + '">' +
             '<div class="adv-opt-head">' +
@@ -6508,7 +6604,6 @@
 
         $('#advOptionsList').innerHTML = html;
 
-        // Reset feedback & buttons
         var fb = $('#advFeedbackBox');
         fb.className = 'adv-feedback-box';
         fb.innerHTML = '';
@@ -6524,7 +6619,6 @@
           $('#advHotspotBtn').hidden = false;
         }
 
-        // Attach clicks to options
         var items = document.querySelectorAll('.adv-opt-item');
         Array.prototype.forEach.call(items, function (item) {
           item.onclick = function () {
@@ -6556,7 +6650,6 @@
         var fb = $('#advFeedbackBox');
 
         if (opt.ok) {
-          // Success!
           tone([523, 659, 784, 1046]);
           var pr = getAdvProgress();
           pr[curAdvArea] = true;
@@ -6580,7 +6673,6 @@
             $('#advNextAreaBtn').onclick = openAdvMap;
           }
         } else {
-          // Incorrect choice
           tone([330, 262]);
           fb.className = 'adv-feedback-box warning show';
           fb.innerHTML = '<b>⚠️ Pertimbangan Belum Tepat:</b><p style="margin:4px 0">' + esc(opt.why) + '</p><small>Coba evaluasi kembali opsi lain berdasarkan efektivitas, biaya, ketahanan, dan dampak lingkungannya!</small>';
@@ -6619,51 +6711,110 @@
       $('#advMapBack').onclick = openAdvIntro;
       $('#advMapMenu').onclick = function () { show('menu'); };
 
-      // Interactive Movement on Map
+      // Touch Screen & Mouse Drag on Map Viewport (Mobile & Laptop)
       var mapVp = $('#advMapViewport');
+      var isPointerTouching = false;
+
       if (mapVp) {
-        mapVp.onclick = function (e) {
+        // Pointer down: works for both mouse click and finger touch!
+        mapVp.addEventListener('pointerdown', function (e) {
           if (e.target.closest('button')) return;
-          var rect = mapVp.getBoundingClientRect();
-          var xPct = ((e.clientX - rect.left) / rect.width) * 100;
-          var yPct = ((e.clientY - rect.top) / rect.height) * 100;
-          moveExplorerTo(xPct, yPct);
-        };
+          isPointerTouching = true;
+          mapVp.setPointerCapture(e.pointerId);
+          setTargetCoord(e.clientX, e.clientY);
+          e.preventDefault();
+        });
+
+        // Pointer move: moving mouse or dragging finger across screen!
+        mapVp.addEventListener('pointermove', function (e) {
+          if (!isPointerTouching) return;
+          setTargetCoord(e.clientX, e.clientY);
+          e.preventDefault();
+        });
+
+        // Pointer up / cancel
+        mapVp.addEventListener('pointerup', function (e) {
+          isPointerTouching = false;
+          try { mapVp.releasePointerCapture(e.pointerId); } catch (err) { }
+        });
+        mapVp.addEventListener('pointercancel', function (e) {
+          isPointerTouching = false;
+        });
+
+        // Fallback for touch devices
+        mapVp.addEventListener('touchstart', function (e) {
+          if (e.target.closest('button')) return;
+          var t = e.touches[0];
+          if (t) setTargetCoord(t.clientX, t.clientY);
+          e.preventDefault();
+        }, { passive: false });
+
+        mapVp.addEventListener('touchmove', function (e) {
+          var t = e.touches[0];
+          if (t) setTargetCoord(t.clientX, t.clientY);
+          e.preventDefault();
+        }, { passive: false });
       }
 
-      // Walking to pins
-      $('#pinGarden').onclick = function () {
-        moveExplorerTo(26, 64, function () { showMagnifierFor(HOTSPOTS.garden); });
+      // Pin Click Handlers: Walk there directly and inspect
+      $('#pinGarden').onclick = function (e) {
+        e.stopPropagation();
+        walkToAreaHotspot('garden');
       };
-      $('#pinField').onclick = function () {
-        moveExplorerTo(52, 36, function () { showMagnifierFor(HOTSPOTS.field); });
+      $('#pinField').onclick = function (e) {
+        e.stopPropagation();
+        walkToAreaHotspot('field');
       };
-      $('#pinGate').onclick = function () {
-        moveExplorerTo(76, 72, function () { showMagnifierFor(HOTSPOTS.gate); });
+      $('#pinGate').onclick = function (e) {
+        e.stopPropagation();
+        walkToAreaHotspot('gate');
       };
 
       // Tour Buttons
-      if ($('#tourGardenBtn')) $('#tourGardenBtn').onclick = function () { moveExplorerTo(26, 64, function () { showMagnifierFor(HOTSPOTS.garden); }); };
-      if ($('#tourFieldBtn')) $('#tourFieldBtn').onclick = function () { moveExplorerTo(52, 36, function () { showMagnifierFor(HOTSPOTS.field); }); };
-      if ($('#tourGateBtn')) $('#tourGateBtn').onclick = function () { moveExplorerTo(76, 72, function () { showMagnifierFor(HOTSPOTS.gate); }); };
+      if ($('#tourGardenBtn')) $('#tourGardenBtn').onclick = function () { walkToAreaHotspot('garden'); };
+      if ($('#tourFieldBtn')) $('#tourFieldBtn').onclick = function () { walkToAreaHotspot('field'); };
+      if ($('#tourGateBtn')) $('#tourGateBtn').onclick = function () { walkToAreaHotspot('gate'); };
 
-      // D-Pad Controls
-      var dStep = 7;
-      if ($('#dpadUp')) $('#dpadUp').onclick = function () { moveExplorerTo(curPlayerPos.x, curPlayerPos.y - dStep); };
-      if ($('#dpadDown')) $('#dpadDown').onclick = function () { moveExplorerTo(curPlayerPos.x, curPlayerPos.y + dStep); };
-      if ($('#dpadLeft')) $('#dpadLeft').onclick = function () { moveExplorerTo(curPlayerPos.x - dStep, curPlayerPos.y); };
-      if ($('#dpadRight')) $('#dpadRight').onclick = function () { moveExplorerTo(curPlayerPos.x + dStep, curPlayerPos.y); };
+      // D-Pad Controls (Supports both click and touch/hold)
+      function bindDpad(id, keyName) {
+        var btn = $('#' + id);
+        if (!btn) return;
+        btn.addEventListener('pointerdown', function (e) {
+          keysDown[keyName] = true;
+          targetPos = null;
+          hideTargetBeacon();
+          e.preventDefault();
+        });
+        btn.addEventListener('pointerup', function () { keysDown[keyName] = false; });
+        btn.addEventListener('pointerleave', function () { keysDown[keyName] = false; });
+      }
+      bindDpad('dpadUp', 'w');
+      bindDpad('dpadDown', 's');
+      bindDpad('dpadLeft', 'a');
+      bindDpad('dpadRight', 'd');
 
-      // Keyboard Controls (WASD / Arrows) when on advMap screen
+      // Laptop Keyboard Controls (WASD & Arrow Keys)
       window.addEventListener('keydown', function (e) {
         if ($('#advMap').hidden) return;
-        if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') { moveExplorerTo(curPlayerPos.x, curPlayerPos.y - dStep); e.preventDefault(); }
-        else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') { moveExplorerTo(curPlayerPos.x, curPlayerPos.y + dStep); e.preventDefault(); }
-        else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') { moveExplorerTo(curPlayerPos.x - dStep, curPlayerPos.y); e.preventDefault(); }
-        else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') { moveExplorerTo(curPlayerPos.x + dStep, curPlayerPos.y); e.preventDefault(); }
+        var k = e.key;
+        if (k === 'w' || k === 'W' || k === 'ArrowUp' ||
+            k === 's' || k === 'S' || k === 'ArrowDown' ||
+            k === 'a' || k === 'A' || k === 'ArrowLeft' ||
+            k === 'd' || k === 'D' || k === 'ArrowRight') {
+          keysDown[k] = true;
+          targetPos = null;
+          hideTargetBeacon();
+          e.preventDefault();
+        }
       });
 
-      // Area Scene Zoom Lens Button
+      window.addEventListener('keyup', function (e) {
+        var k = e.key;
+        if (keysDown[k]) {
+          delete keysDown[k];
+        }
+      });
+// Area Scene Zoom Lens Button
       if ($('#advSceneLensBtn')) {
         $('#advSceneLensBtn').onclick = function () {
           var pr = getAdvProgress();
