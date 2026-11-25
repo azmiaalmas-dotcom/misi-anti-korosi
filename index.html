@@ -6288,6 +6288,42 @@
       /* ==========================================================================
          FINAL GAME: KOROSI ADVENTURE - LOGIKA PERMAINAN
          ========================================================================== */
+
+      /* ---- NAVIGATION FUNCTIONS ---- */
+      function openAdvIntro() {
+        show('advIntro');
+      }
+
+      function openAdvMap() {
+        var pr = getAdvProgress();
+        // Update pins
+        ['garden', 'field', 'gate'].forEach(function(key) {
+          var cap = key.charAt(0).toUpperCase() + key.slice(1);
+          var pinEl = document.getElementById('pin' + cap);
+          var pinSt = document.getElementById('pin' + cap + 'Status');
+          if (pr[key]) {
+            if (pinEl) pinEl.className = 'adv-pin-btn done';
+            if (pinSt) pinSt.textContent = '✓ Aman';
+          }
+        });
+        // Update progress bar
+        var done = (pr.garden ? 1 : 0) + (pr.field ? 1 : 0) + (pr.gate ? 1 : 0);
+        var fillEl = document.getElementById('advProgFill');
+        var labelEl = document.getElementById('advProgLabel');
+        if (fillEl) fillEl.style.width = (done / 3 * 100) + '%';
+        if (labelEl) labelEl.textContent = 'Progres: ' + done + '/3 Fasilitas Diselamatkan (' + Math.round(done/3*100) + '%)';
+        show('advMap');
+      }
+
+      /* ---- STUBS FOR LEGACY EVENT BINDINGS ---- */
+      function advApplyAction() {
+        // No-op stub — handled by individual area decide step
+      }
+      function walkToAreaHotspot(key) {
+        openAdvArea(key);
+      }
+
+
       var ADV_AREAS = {
         garden: {
           id: 'garden', title: 'Area 1: Taman Sekolah', obj: 'Pagar Besi Hias Taman',
