@@ -7264,6 +7264,21 @@
       }
 
       /* ---------- Event Bindings Final Game ---------- */
+      function areAllLevelsDone() {
+        try {
+          var saved = localStorage.getItem('mak_scores');
+          if (!saved) return false;
+          var scores = JSON.parse(saved);
+          // Check if all 3 levels (0, 1, 2) have been passed
+          if (!Array.isArray(scores)) return false;
+          var passed = [false, false, false];
+          scores.forEach(function(s) {
+            if (s && s.i >= 0 && s.i <= 2 && s.pass) passed[s.i] = true;
+          });
+          return passed[0] && passed[1] && passed[2];
+        } catch(e) { return false; }
+      }
+
       function checkFinalGameAccess() {
         if (areAllLevelsDone()) {
           openAdvIntro();
@@ -7395,7 +7410,7 @@
       });
 // Area Scene Zoom Lens Button
       if ($('#advSceneLensBtn')) {
-        $('#advSceneLensBtn').onclick = function () {
+        if ($('#advSceneLensBtn')) $('#advSceneLensBtn').onclick = function () {
           var pr = getAdvProgress();
           var isDone = !!pr[curAdvArea];
           var area = ADV_AREAS[curAdvArea];
@@ -7416,13 +7431,13 @@
       }
 
       $('#advPlayBack').onclick = openAdvMap;
-      $('#advHotspotBtn').onclick = function () {
+      if ($('#advHotspotBtn')) $('#advHotspotBtn').onclick = function () {
         if ($('#advSceneLensBtn')) {
           $('#advSceneLensBtn').click();
         }
       };
 
-      $('#advApplyBtn').onclick = advApplyAction;
+      if ($('#advApplyBtn')) $('#advApplyBtn').onclick = advApplyAction;
 
       $('#advVicMapBtn').onclick = openAdvMap;
       $('#advVicMenuBtn').onclick = function () { show('menu'); };
