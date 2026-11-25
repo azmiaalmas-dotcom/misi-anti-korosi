@@ -4289,6 +4289,191 @@
         transition: none !important
       }
     }
+  
+    /* =====================================================
+       KOROSI ADVENTURE v2 – 3D VIEWER + MAGNIFIER + MULTI-STEP
+       ===================================================== */
+
+    /* Step tracker pills */
+    .adv-steps-bar {
+      display: flex; align-items: center; gap: 4px;
+      justify-content: center; flex-wrap: wrap; margin-bottom: 6px;
+    }
+    .adv-step-pill {
+      padding: 3px 10px; border-radius: 999px; font-size: 0.72rem;
+      font-weight: 800; border: 2px solid #c9a06a;
+      background: #fff8ee; color: #7c4a1a; transition: background 0.2s, color 0.2s;
+    }
+    .adv-step-pill.active { background: #f29400; color: #fff; border-color: #a85f00; }
+    .adv-step-pill.done { background: #22c55e; color: #fff; border-color: #15803d; }
+    .adv-step-arrow { color: #c9a06a; font-size: 0.75rem; }
+
+    /* Full-width play layout */
+    .adv-play-full {
+      display: flex; flex-direction: column; width: 100%;
+      max-width: 900px; gap: 10px; flex: 1;
+    }
+
+    /* 3D Viewer */
+    .adv-3d-viewer-wrap {
+      position: relative; width: 100%;
+      background: linear-gradient(160deg, #1e3a5f 0%, #0f1f36 60%, #122240 100%);
+      border-radius: 18px; border: 3px solid #5a3a1a;
+      box-shadow: 0 8px 0 #3e2710, 0 12px 24px rgba(0,0,0,0.3);
+      overflow: hidden; cursor: grab; touch-action: none; user-select: none;
+    }
+    .adv-3d-viewer-wrap:active { cursor: grabbing; }
+    .adv-3d-canvas { display: block; width: 100%; }
+    .adv-rotate-hint {
+      position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.6); color: #fde047; font-size: 0.7rem;
+      font-weight: 800; padding: 3px 10px; border-radius: 999px;
+      pointer-events: none; animation: hintFade 3.5s ease-in-out forwards; white-space: nowrap;
+    }
+    @keyframes hintFade { 0%,60%{opacity:1} 100%{opacity:0} }
+
+    /* Magnifier */
+    .adv-magnifier {
+      position: absolute; width: 110px; height: 110px; border-radius: 50%;
+      border: 5px solid #d4a366;
+      box-shadow: 0 0 0 2px #7c4a1a, 0 6px 18px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.6);
+      background: radial-gradient(circle at 35% 35%, #1e3a5f, #0a1428);
+      overflow: hidden; pointer-events: none;
+      transform: translate(-50%, -50%); display: none;
+    }
+    .adv-magnifier.visible { display: block; }
+    .adv-magnifier-glass { width: 100%; height: 100%; position: relative; }
+    .adv-magnifier-glare {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .adv-magnifier-handle {
+      position: absolute; bottom: -18px; right: -14px;
+      width: 14px; height: 42px;
+      background: linear-gradient(180deg, #d97706, #92400e);
+      border-radius: 6px; transform: rotate(-40deg);
+      border: 2px solid #451a03; box-shadow: 2px 3px 5px rgba(0,0,0,0.4);
+    }
+
+    /* Hotspot clickable areas */
+    .adv-hotspot-area {
+      position: absolute; border-radius: 50%;
+      border: 2.5px dashed rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.08); cursor: pointer;
+      pointer-events: all; transition: background 0.2s, border-color 0.2s;
+      animation: advHotspotPulseGlow 2.2s infinite ease-in-out;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .adv-hotspot-area.rust { border-color: rgba(249,115,22,0.6); background: rgba(249,115,22,0.12); }
+    .adv-hotspot-area.rust:hover { background: rgba(249,115,22,0.3); }
+    .adv-hotspot-area.clean { border-color: rgba(74,222,128,0.5); background: rgba(74,222,128,0.1); }
+    .adv-hotspot-area.clean:hover { background: rgba(74,222,128,0.25); }
+    .adv-hotspot-area.tagged.rust { border-style: solid; border-color: #f97316; background: rgba(249,115,22,0.35); }
+    .adv-hotspot-area.tagged.clean { border-style: solid; border-color: #22c55e; background: rgba(34,197,94,0.25); }
+    @keyframes advHotspotPulseGlow {
+      0%,100%{box-shadow: 0 0 0 0 rgba(249,115,22,0.4);}
+      50%{box-shadow: 0 0 0 7px rgba(249,115,22,0);}
+    }
+    .adv-hotspot-icon { font-size: 1.1rem; pointer-events: none; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)); }
+
+    /* Viewer toolbar */
+    .adv-viewer-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+    .adv-mag-toggle {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #fff8ee; border: 2px solid #d97706; border-radius: 999px;
+      padding: 4px 12px; font-size: 0.78rem; font-weight: 800; color: #92400e;
+      cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 0 #b45309;
+    }
+    .adv-mag-toggle:active { transform: translateY(1px); box-shadow: none; }
+    .adv-mag-toggle.on { background: #fef3c7; border-color: #f59e0b; }
+    .adv-view-hint-text { font-size: 0.75rem; color: #78350f; font-weight: 700; }
+
+    /* Activity panel */
+    .adv-activity-panel {
+      background: #fffdf5; border: 3px solid #5a3a1a; border-radius: 18px;
+      box-shadow: 0 6px 0 #3e2710; padding: 14px 16px; flex: 1;
+    }
+    .adv-activity-title { font-family: var(--font-display); font-size: 1.0rem; color: #3f1e00; margin: 0 0 10px 0; }
+    .adv-activity-instruction {
+      font-size: 0.84rem; color: #5a2e04; line-height: 1.5; margin-bottom: 10px;
+      background: #fef9ee; border-left: 4px solid #f59e0b; padding: 7px 10px; border-radius: 0 8px 8px 0;
+    }
+
+    /* Matching pairs */
+    .adv-id-pairs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .adv-id-left, .adv-id-right { display: flex; flex-direction: column; gap: 6px; }
+    .adv-id-item {
+      border: 2px solid #d0c2ad; border-radius: 10px; padding: 7px 10px;
+      font-size: 0.8rem; font-weight: 700; background: #fff; text-align: center;
+      min-height: 36px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .adv-id-item.selected { background: #fef3c7; border-color: #f59e0b; }
+    .adv-id-item.matched { background: #f0fdf4; border-color: #22c55e; color: #15803d; cursor: default; }
+    .adv-id-item.error { background: #fef2f2; border-color: #ef4444; }
+
+    /* Decision visual cards */
+    .adv-decision-visual-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px; margin-bottom: 12px;
+    }
+    .adv-dec-card {
+      border: 3px solid #d0c2ad; border-radius: 14px; padding: 10px 8px;
+      background: #fff; text-align: center; cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 0 #c9a06a;
+    }
+    .adv-dec-card:hover { transform: translateY(-3px); border-color: #f59e0b; }
+    .adv-dec-card.selected { border-color: #2563eb; background: #eff6ff; box-shadow: 0 4px 0 #1d4ed8; }
+    .adv-dec-card.correct { border-color: #22c55e; background: #f0fdf4; box-shadow: 0 4px 0 #15803d; }
+    .adv-dec-card.wrong { border-color: #ef4444; background: #fef2f2; box-shadow: 0 4px 0 #b91c1c; }
+    .adv-dec-visual { font-size: 2.4rem; display: block; margin-bottom: 6px; }
+    .adv-dec-name { font-size: 0.78rem; font-weight: 800; color: #3b1900; line-height: 1.3; }
+    .adv-dec-tag {
+      display: inline-block; margin-top: 5px; font-size: 0.65rem;
+      padding: 1px 7px; border-radius: 999px; font-weight: 800;
+    }
+    .adv-dec-tag.eff { background: #e0f2fe; color: #0369a1; }
+    .adv-dec-tag.cost { background: #fef3c7; color: #b45309; }
+    .adv-dec-tag.env { background: #dcfce7; color: #15803d; }
+
+    /* Checkbox factor select */
+    .adv-drag-area { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+
+    /* Result animation */
+    .adv-result-animation {
+      text-align: center; padding: 16px;
+      animation: advResultPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes advResultPop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .adv-result-icon { font-size: 3rem; display: block; margin-bottom: 8px; }
+    .adv-result-title { font-family: var(--font-display); font-size: 1.2rem; color: #2b1c0a; margin-bottom: 6px; }
+    .adv-result-change {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; margin: 14px 0; flex-wrap: wrap;
+    }
+    .adv-result-before, .adv-result-after { text-align: center; font-size: 0.75rem; font-weight: 800; }
+    .adv-result-arrow { font-size: 1.5rem; color: #22c55e; }
+
+    /* Nav row */
+    .adv-nav-row {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      justify-content: space-between; align-items: center; margin-top: 10px;
+    }
+
+    /* Score */
+    #advScoreDisplay { font-size: 0.8rem; font-weight: 800; color: #78350f; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .adv-id-pairs { grid-template-columns: 1fr; }
+      .adv-decision-visual-grid { grid-template-columns: repeat(2, 1fr); }
+      .adv-magnifier { width: 90px; height: 90px; }
+      .adv-activity-panel { padding: 10px 12px; }
+      .adv-3d-viewer-wrap { border-radius: 14px; }
+    }
+
   </style>
 
   <main class="stage s-menu" id="stage">
@@ -4610,51 +4795,44 @@
         <h2 class="adv-title-ribbon" id="advPlayTitle">Area 1: Taman Sekolah</h2>
         <span class="spacer"></span>
       </div>
-      <div class="adv-play-grid">
-        <div class="adv-card adv-scene-card">
-          <div class="adv-interactive-stage">
-            <div id="advSceneHost" style="width:100%;height:100%"></div>
-            <button class="adv-scene-lens-btn" id="advSceneLensBtn">
-              <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7" fill="none" stroke="#3b1900" stroke-width="2.5"/><path d="M16 16l4.5 4.5" stroke="#3b1900" stroke-width="2.5" stroke-linecap="round"/></svg>
-              <span>Zoom Kaca Pembesar</span>
-            </button>
-            <button class="adv-hotspot-pulse" id="advHotspotBtn" style="left:50%;top:68%">
-              <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7" fill="none" stroke="#3b1900" stroke-width="2.5"/><path d="M16 16l4.5 4.5" stroke="#3b1900" stroke-width="2.5" stroke-linecap="round"/></svg>
-              <span id="advHotspotLabel">Selidiki Karat!</span>
-            </button>
-          </div>
-          <div class="adv-inspect-box" id="advInspectBox">
-            <b id="advInspectObj">Objek: Pagar Besi Hias Taman</b><br>
-            <span id="advInspectDesc">Klik tombol selidiki di atas atau pilih tindakan penanganan di samping kanan!</span>
+      <div class="adv-steps-bar" id="advStepsBar"></div>
+      <div class="adv-play-full">
+        <div class="adv-viewer-toolbar">
+          <button class="adv-mag-toggle" id="advMagToggle">🔍 Kaca Pembesar: <span id="advMagToggleLabel">OFF</span></button>
+          <span class="adv-view-hint-text" id="advViewHint">↔ Seret untuk memutar objek</span>
+        </div>
+        <div class="adv-3d-viewer-wrap" id="adv3dViewerWrap">
+          <canvas class="adv-3d-canvas" id="adv3dCanvas"></canvas>
+          <div class="adv-rotate-hint" id="advRotateHint">↔ Seret / geser untuk memutar dan amati objek dari berbagai sudut!</div>
+          <div id="advHotspotOverlay" style="position:absolute;inset:0;pointer-events:none;"></div>
+          <div style="position:absolute;inset:0;pointer-events:none;z-index:20;" id="advMagWrap">
+            <div class="adv-magnifier" id="advMagnifier">
+              <div class="adv-magnifier-glass" id="advMagnifierGlass"></div>
+              <div class="adv-magnifier-glare"></div>
+              <div class="adv-magnifier-handle"></div>
+            </div>
           </div>
         </div>
-
-        <div class="adv-card adv-decision-card">
-          <h3 class="adv-decision-title">
-            <span>⚖️</span> Tentukan Tindakan Penyelamatan
-          </h3>
-          <div class="adv-four-pillars-bar">
-            <div class="adv-pillar-badge"><b>🎯</b><span>Efektivitas</span></div>
-            <div class="adv-pillar-badge"><b>💰</b><span>Biaya</span></div>
-            <div class="adv-pillar-badge"><b>⏱️</b><span>Ketahanan</span></div>
-            <div class="adv-pillar-badge"><b>🌿</b><span>Lingkungan</span></div>
+        <div class="adv-activity-panel" id="advActivityPanel">
+          <h3 class="adv-activity-title" id="advActivityTitle">🔎 Langkah 1: Amati Objek</h3>
+          <div class="adv-activity-instruction" id="advActivityInstruction">
+            Putar objek dari berbagai sudut dan aktifkan Kaca Pembesar untuk memeriksa permukaan logam secara detail.
           </div>
-          <p style="font-size:0.83rem;color:var(--ink-soft);margin:0">
-            Pertimbangkan 4 pilar sebelum mengambil keputusan:
-          </p>
-          <div class="adv-options-list" id="advOptionsList"></div>
+          <div id="advActivityContent"></div>
           <div class="adv-feedback-box" id="advFeedbackBox"></div>
-          <div style="margin-top:auto;display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn-green" id="advApplyBtn" style="flex:1">
-              🛠️ Terapkan Penyelamatan
-            </button>
-            <button class="btn-yellow" id="advNextAreaBtn" hidden>
-              Lanjut ke Peta 🗺️
-            </button>
+          <div class="adv-nav-row">
+            <span id="advScoreDisplay">⭐ Poin: 0</span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-yellow" id="advCheckBtn" style="display:none;">✓ Periksa Jawaban</button>
+              <button class="btn-green" id="advNextStepBtn">Lanjut →</button>
+              <button class="btn-yellow" id="advFinishAreaBtn" hidden>🏆 Selesai!</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
+
+    
 
     <!-- FINAL GAME: VICTORY -->
     <section class="screen adv-screen" id="advVictory" aria-label="Kemenangan Petualangan" hidden>
@@ -6112,935 +6290,937 @@
          ========================================================================== */
       var ADV_AREAS = {
         garden: {
-          id: 'garden',
-          title: 'Area 1: Taman Sekolah',
-          obj: 'Pagar Besi Hias Taman',
-          desc: 'Pagar besi pembatas tanaman hias di taman sekolah sering terkena percikan air penyiraman tanaman, tanah basah lembap, dan hujan. Bagian bawah dan sambungan jeruji mulai berkarat cokelat kemerahan. Sekolah menginginkan perlindungan yang aman bagi tanaman di sekitarnya dan hemat anggaran operasional.',
-          opts: [
-            {
-              name: 'Pelapisan Logam Krom Dekoratif (Decorative Chrome Plating)',
-              desc: 'Membongkar seluruh pagar dan membawanya ke bengkel industri untuk dilapisi kromium mengilap secara elektroplating.',
-              eff: 'Sangat Tinggi (Permukaan sangat keras dan tahan gores)',
-              cost: 'Sangat Mahal (Melampaui alokasi dana pemeliharaan sekolah)',
-              dur: 'Tinggi jika utuh, namun bila retak tipis besi cepat keropos',
-              env: 'Beresiko Tinggi (Limbah cair kromium heksavalen Cr⁶⁺ berbahaya bagi tanah)',
-              ok: false,
-              why: 'Kurang Tepat! Meskipun lapisan krom terlihat sangat mewah dan tahan gores, biayanya jauh melampaui kebutuhan pagar sekolah. Yang terpenting, proses industri elektroplating kromium menghasilkan limbah cair logam berat beracun (Cr⁶⁺) yang berbahaya bagi ekosistem tanah dan tanaman (bertentangan dengan prinsip SDG 12).'
-            },
-            {
-              name: 'Pengecatan Sistem Primer Anti-Karat & Cat Akhir Ramah Lingkungan',
-              desc: 'Membersihkan karat lama, mengaplikasikan cat dasar zink kromat/primer, lalu melapisinya dengan cat sintetis ramah lingkungan (low VOC).',
-              eff: 'Tinggi (Membentuk lapisan isolasi fisik kedap air & O₂)',
-              cost: 'Ekonomis & Terjangkau (Sesuai anggaran pemeliharaan sekolah)',
-              dur: 'Awet 3–5 Tahun (Cukup dicat ulang berkala tanpa bongkar)',
-              env: 'Sangat Ramah (Cat low-VOC aman bagi tanah & tanaman - SDG 12)',
-              ok: true,
-              why: 'Pilihan Tepat! Pengecatan dengan cat dasar primer adalah metode isolasi fisik (barrier) yang paling seimbang untuk pagar taman. Biayanya ekonomis, formulasi ramah lingkungan tidak meracuni akar tanaman bunga di sekitarnya, dan memperpanjang umur pagar tanpa menimbulkan limbah logam besi tua (SDG 9 & SDG 12).'
-            },
-            {
-              name: 'Pelapisan Plastik Polimer PVC Celup (PVC Dip Coating)',
-              desc: 'Melapisi seluruh jeruji pagar besi dengan selubung plastik tebal polimer PVC kedap air.',
-              eff: 'Sedang (Kedap air di awal, namun getas kena sinar UV matahari)',
-              cost: 'Sedang (Memerlukan cetakan celup panas industri)',
-              dur: 'Rentan rembesan air (Besi berkarat dari dalam tanpa terlihat)',
-              env: 'Sulit Terurai (Menghasilkan sampah mikroplastik - kontra SDG 12)',
-              ok: false,
-              why: 'Kurang Tepat! Paparan sinar UV matahari luar ruangan membuat plastik PVC cepat getas dan retak mikro. Uap air hujan yang terperangkap di balik lapisan plastik akan mengoksidasi besi dari dalam secara tersembunyi, serta limbah polimer sintetisnya sulit didaur ulang.'
-            }
-          ]
+          id: 'garden', title: 'Area 1: Taman Sekolah', obj: 'Pagar Besi Hias Taman',
+          steps: [
+            { id: 'observe',  label: '🔎 Amati',        title: '🔎 Langkah 1: Amati Pagar Besi' },
+            { id: 'find',     label: '🎯 Temukan Karat', title: '🎯 Langkah 2: Temukan Bagian Berkarat' },
+            { id: 'identify', label: '🧪 Identifikasi',  title: '🧪 Langkah 3: Identifikasi Proses Korosi' },
+            { id: 'decide',   label: '⚖️ Putuskan',      title: '⚖️ Langkah 4: Pilih Tindakan Penanganan' },
+            { id: 'result',   label: '✅ Hasil',          title: '✅ Hasil Tindakan' }
+          ],
+          hotspots: [
+            { id: 'joint', label: 'Sambungan Jeruji', x: 42, y: 55, type: 'rust',
+              magHtml: '<div style="width:100%;height:100%;background:radial-gradient(circle, #7c2d12 0%, #9a3412 40%, #c2410c 70%, #78350f 100%);display:flex;align-items:center;justify-content:center;font-size:2.2rem;">🟫</div>',
+              magDesc: 'Korosi parah! Sambungan logam menggabungkan dua permukaan — air menggenang di celah, mempercepat reaksi: Fe → Fe²⁺ + 2e⁻' },
+            { id: 'lower', label: 'Batang Bawah', x: 28, y: 72, type: 'rust',
+              magHtml: '<div style="width:100%;height:100%;background:radial-gradient(circle at 40% 40%, #ea580c 0%, #9a3412 50%, #7c2d12 100%);display:flex;align-items:center;justify-content:center;font-size:2rem;">🟤</div>',
+              magDesc: 'Batang bawah kontak tanah basah. Air+garam tanah = elektrolit konduktif → korosi galvanik dipercepat drastis.' },
+            { id: 'upper', label: 'Batang Atas', x: 60, y: 25, type: 'clean',
+              magHtml: '<div style="width:100%;height:100%;background:linear-gradient(135deg, #1e293b 0%, #475569 50%, #94a3b8 100%);display:flex;align-items:center;justify-content:center;font-size:2rem;">🩶</div>',
+              magDesc: 'Permukaan masih bersih dan berkilau. Jauh dari tanah dan air. Besi belum teroksidasi di bagian ini.' },
+            { id: 'paint', label: 'Area Bercat', x: 75, y: 45, type: 'clean',
+              magHtml: '<div style="width:100%;height:100%;background:linear-gradient(135deg, #15803d 0%, #16a34a 50%, #86efac 100%);display:flex;align-items:center;justify-content:center;font-size:2rem;">🟢</div>',
+              magDesc: 'Cat membentuk barrier fisik kedap O₂ dan H₂O. Besi di balik cat masih terlindungi sepenuhnya.' }
+          ],
+          rustHotspots: ['joint', 'lower'],
+          matchPairs: [
+            { left: '🌧️ Air hujan & tanah basah', right: 'Elektrolit yang mempercepat korosi', key: 'A' },
+            { left: '🔴 Warna merah-cokelat',     right: 'Fe₂O₃·nH₂O (karat besi)', key: 'B' },
+            { left: '⚡ Oksidasi besi',           right: 'Fe → Fe²⁺ + 2e⁻', key: 'C' },
+            { left: '💚 Cat pelindung',           right: 'Barrier fisik hambat O₂ dan H₂O', key: 'D' }
+          ],
+          decisions: [
+            { id: 'primer', icon: '🖌️', name: 'Cat Primer Anti-Karat',
+              tags: ['Efektivitas: Tinggi', 'Biaya: Ekonomis', 'Lingkungan: Ramah'], ok: true,
+              why: 'Tepat! Cat primer membentuk lapisan isolasi fisik yang mencegah O₂ dan H₂O bersentuhan dengan besi. Formulasi low-VOC aman bagi tanaman di taman sekolah. Mendukung SDG 9 dan SDG 12.' },
+            { id: 'chrome', icon: '✨', name: 'Pelapisan Krom Industri',
+              tags: ['Efektivitas: Sangat Tinggi', 'Biaya: Sangat Mahal', 'Lingkungan: Berbahaya'], ok: false,
+              why: 'Kurang tepat. Elektroplating krom menghasilkan limbah cair Cr⁶⁺ berbahaya bagi tanah dan akar tanaman di sekitar taman sekolah. Bertentangan dengan SDG 12.' },
+            { id: 'pvc', icon: '🧴', name: 'Selubung Plastik PVC',
+              tags: ['Efektivitas: Sedang', 'Biaya: Sedang', 'Lingkungan: Mikroplastik'], ok: false,
+              why: 'Kurang tepat. PVC getas kena sinar UV. Air hujan merembes ke balik plastik, karat tumbuh tersembunyi dari dalam. Limbah mikroplastik mencemari tanah.' }
+          ],
+          resultBefore: '🟫 Pagar Berkarat', resultAfter: '✅ Pagar Terlindungi',
+          resultDesc: 'Cat primer membentuk lapisan barrier fisik antara besi dan lingkungan. Reaksi oksidasi Fe → Fe²⁺ + 2e⁻ terhenti karena O₂ dan H₂O tidak dapat mencapai permukaan logam.'
         },
+
         field: {
-          id: 'field',
-          title: 'Area 2: Lapangan Sekolah',
-          obj: 'Tiang Gawang Logam Terbuka',
-          desc: 'Tiang gawang sepak bola logam berada di lapangan terbuka tanpa atap. Tiang terpapar sinar matahari terik, hujan asam, dan sering terkena benturan keras bola sepak yang mengikis lapisan pelindung biasa. Sekolah ingin solusi jangka panjang agar tidak perlu dicat ulang berkala tiap tahun.',
-          opts: [
-            {
-              name: 'Pengecatan Cat Epoksi Tugas Berat (Heavy-Duty Epoxy Paint)',
-              desc: 'Mengaplikasikan dua lapis resin cat epoksi tebal tahan air dan tahan bahan kimia luar ruangan.',
-              eff: 'Tinggi saat awal, namun tanpa proteksi anoda korban jika terbentur',
-              cost: 'Sedang di awal, namun boros karena harus dicat ulang tiap 2–3 thn',
-              dur: 'Tahan 2–3 Tahun (Benturan keras bola sepak meretakkan lapisan)',
-              env: 'Menghasilkan limbah kaleng cat, pelarut thinner, dan kerak epoksi',
-              ok: false,
-              why: 'Kurang Tepat! Cat epoksi memang tebal dan kedap air, tetapi epoksi adalah pelindung pasif tanpa anoda korban. Ketika terbentur keras bola sepak, lapisan epoksi akan mengalami retak mikro. Air hujan yang merembes ke celah retakan akan membuat karat menjalar di bawah lapisan epoksi (undercutting corrosion) sehingga harus sering dikerok dan dicat ulang.'
-            },
-            {
-              name: 'Penggantian Total dengan Paduan Stainless Steel (Baja Tahan Karat SUS 316)',
-              desc: 'Membongkar dan mengganti tiang gawang lama dengan tiang baru berbahan paduan baja nikel-kromium kualitas tinggi.',
-              eff: 'Sangat Tinggi (Membentuk lapisan pasivasi Cr₂O₃ permanen)',
-              cost: 'Sangat Mahal (3–5 kali lipat melebihi seluruh anggaran fasilitas sekolah)',
-              dur: 'Tahan puluhan tahun bebas karat',
-              env: 'Jejak Karbon Sangat Masif (Peleburan tambang boros energi masif)',
-              ok: false,
-              why: 'Kurang Tepat! Meskipun stainless steel sangat tahan karat, biayanya jauh melebihi anggaran sekolah. Secara prinsip keberlanjutan (SDG 12), ekstraksi dan peleburan paduan nikel-kromium membutuhkan energi dan jejak karbon (embodied carbon) yang sangat masif, yang tidak proporsional dan boros sumber daya hanya untuk tiang olahraga sekolah biasa.'
-            },
-            {
-              name: 'Galvanisasi Celup Panas (Hot-Dip Galvanizing / Pelapisan Seng)',
-              desc: 'Mencelupkan pipa baja ke dalam lelehan seng (Zn) sehingga membentuk ikatan metalurgi paduan seng-besi tahan benturan cuaca terbuka.',
-              eff: 'Sangat Tinggi (Proteksi aktif seng mengorbankan diri meski tergores bola)',
-              cost: 'Paling Hemat Jangka Panjang (Bebas biaya perawatan berulang)',
-              dur: 'Tahan 15–20 Tahun di ruang terbuka bebas atap tanpa naungan',
-              env: 'Sangat Berkelanjutan (Meniadakan limbah kaleng cat berkala - SDG 12)',
-              ok: true,
-              why: 'Pilihan Terbaik! Tiang di ruang terbuka bebas atap membutuhkan perlindungan aktif anoda korban. Seng (Zn) memiliki potensial reduksi lebih negatif dari besi (E° Zn²⁺/Zn = -0,76 V vs Fe²⁺/Fe = -0,44 V), sehingga seng mengorbankan elektronnya untuk melindungi besi meskipun permukaan tergores benturan bola. Ini menghemat anggaran pemeliharaan sekolah hingga 20 tahun dan meminimalkan limbah (SDG 9 & SDG 12).'
-            }
-          ]
+          id: 'field', title: 'Area 2: Lapangan Sekolah', obj: 'Peralatan Logam Lapangan',
+          steps: [
+            { id: 'observe',  label: '🔎 Amati',      title: '🔎 Langkah 1: Amati Peralatan Lapangan' },
+            { id: 'compare',  label: '⚖️ Bandingkan', title: '⚖️ Langkah 2: Bandingkan Kondisi Objek' },
+            { id: 'factors',  label: '🌦️ Faktor',     title: '🌦️ Langkah 3: Identifikasi Faktor Korosi' },
+            { id: 'predict',  label: '🔮 Prediksi',    title: '🔮 Langkah 4: Prediksi Dampak Lingkungan' },
+            { id: 'decide',   label: '⚖️ Putuskan',    title: '⚖️ Langkah 5: Pilih Pencegahan Terbaik' },
+            { id: 'result',   label: '✅ Hasil',        title: '✅ Hasil Tindakan' }
+          ],
+          hotspots: [
+            { id: 'goalpost', label: 'Tiang Gawang', x: 38, y: 30, type: 'rust',
+              magHtml: '<div style="width:100%;height:100%;background:radial-gradient(circle, #9a3412 0%, #c2410c 40%, #78350f 80%);display:flex;align-items:center;justify-content:center;font-size:2rem;">🟫</div>',
+              magDesc: 'Pitting corrosion parah! Terkena hujan asam dan UV terus-menerus. Ion agresif menembus lapisan oksida dan membuat lubang-lubang mikro.' },
+            { id: 'bench', label: 'Bangku Besi', x: 72, y: 62, type: 'rust',
+              magHtml: '<div style="width:100%;height:100%;background:radial-gradient(circle, #b45309 0%, #d97706 40%, #ca8a04 80%);display:flex;align-items:center;justify-content:center;font-size:2rem;">🟡</div>',
+              magDesc: 'Korosi sedang di area teduh. Kelembapan tinggi + sedikit sinar matahari = permukaan tetap lembap → korosi merayap perlahan.' },
+            { id: 'galv', label: 'Tiang Galvanis', x: 55, y: 45, type: 'clean',
+              magHtml: '<div style="width:100%;height:100%;background:linear-gradient(135deg, #94a3b8 0%, #cbd5e1 50%, #e2e8f0 100%);display:flex;align-items:center;justify-content:center;font-size:2rem;">🩶</div>',
+              magDesc: 'Terlindungi! Lapisan Zn mengorbankan diri (anoda korban). E° Zn = -0,76V lebih negatif dari Fe = -0,44V → Zn teroksidasi duluan, besi aman.' }
+          ],
+          rustHotspots: ['goalpost', 'bench'],
+          compareObjects: [
+            { name: 'Tiang Gawang', icon: '⚽', kondisi: 'Korosi Parah', faktor: 'Hujan langsung, UV, benturan bola', level: 3 },
+            { name: 'Bangku Besi', icon: '🪑', kondisi: 'Korosi Sedang', faktor: 'Kelembapan tinggi, area teduh', level: 2 },
+            { name: 'Tiang Galvanis', icon: '🏳️', kondisi: 'Baik (Terlindungi)', faktor: 'Lapisan Zn anoda korban aktif', level: 0 }
+          ],
+          factorItems: ['🌧️ Hujan Asam', '☀️ Sinar UV', '💨 Kelembapan Tinggi', '🧂 Garam Mineral', '💥 Benturan Fisik', '🌡️ Suhu Tinggi Siang Hari'],
+          factorCorrect: ['🌧️ Hujan Asam', '☀️ Sinar UV', '💨 Kelembapan Tinggi', '🧂 Garam Mineral', '💥 Benturan Fisik'],
+          predictOptions: [
+            { text: 'Jika hujan makin asam, korosi pada tiang yang tidak terlindungi akan makin cepat karena ion H⁺ meningkatkan konduktivitas elektrolit.', correct: true },
+            { text: 'Jika tiang dicat biasa, korosi berhenti sepenuhnya karena cat menutup semua pori besi secara permanen.', correct: false },
+            { text: 'Tiang galvanis tidak butuh perawatan apapun karena lapisan Zn tidak akan habis sama sekali selamanya.', correct: false }
+          ],
+          decisions: [
+            { id: 'galvanize', icon: '🔩', name: 'Galvanisasi Celup Panas',
+              tags: ['Ketahanan: 15–20 Th', 'Biaya: Hemat Panjang', 'Lingkungan: Berkelanjutan'], ok: true,
+              why: 'Tepat! E° Zn²⁺/Zn = -0,76V lebih negatif dari Fe²⁺/Fe = -0,44V. Seng mengorbankan diri sebagai anoda korban, melindungi besi meski tergores benturan bola. Tahan 15-20 tahun tanpa perawatan. Mendukung SDG 9 dan SDG 12.' },
+            { id: 'epoxy', icon: '🖌️', name: 'Cat Epoksi Tugas Berat',
+              tags: ['Ketahanan: 2–3 Th', 'Biaya: Boros Berkala', 'Lingkungan: Limbah Thinner'], ok: false,
+              why: 'Kurang tepat. Epoksi tidak memiliki proteksi anoda korban. Benturan bola meretakkan lapisan sehingga terjadi undercutting corrosion. Harus dicat ulang tiap 2-3 tahun, menghasilkan limbah cat.' },
+            { id: 'stainless', icon: '✨', name: 'Ganti Stainless Steel',
+              tags: ['Ketahanan: Sangat Tinggi', 'Biaya: 5x Lipat Anggaran', 'Lingkungan: Jejak C Masif'], ok: false,
+              why: 'Kurang tepat. Biaya 5 kali lipat anggaran sekolah. Embodied carbon peleburan Ni-Cr masif, tidak proporsional untuk tiang olahraga sekolah. Kontra SDG 12.' }
+          ],
+          resultBefore: '🟫 Tiang Berkarat', resultAfter: '✅ Tiang Terlindungi 20 Th',
+          resultDesc: 'Galvanisasi menciptakan proteksi katodik aktif. Zn (anoda korban) mengoksidasi diri lebih dulu: Zn → Zn²⁺ + 2e⁻, mengalirkan elektron ke besi dan mencegah besi teroksidasi bahkan saat permukaannya tergores.'
         },
+
         gate: {
-          id: 'gate',
-          title: 'Area 3: Gerbang Sekolah',
-          obj: 'Engsel & Roda Rel Gerbang Geser',
-          desc: 'Engsel silinder gerbang dan roda baja pada rel bawah merupakan bagian logam mekanik yang terus-menerus bergerak, menanggung beban berat pintu gerbang, dan bergesekan satu sama lain di udara terbuka. Gerbang macet, berat didorong, dan mulai timbul karat kasar.',
-          opts: [
-            {
-              name: 'Pelumasan Berkala dengan Gemuk Kalsium/Litium Tahan Air (Waterproof Grease)',
-              desc: 'Mengoleskan gemuk pasta pelumas tahan air pada poros engsel, bearing roda, dan alur rel geser secara berkala.',
-              eff: 'Sangat Tinggi khusus bagian bergerak (Mereduksi gesekan & tolak air)',
-              cost: 'Sangat Murah & Praktis (Cukup sedikit pelumas diaplikasikan rutin)',
-              dur: 'Awet 3–6 Bulan per siklus pelumasan berkala rutin',
-              env: 'Sangat Ramah (Mencegah keausan sehingga gerbang tak perlu ganti baru)',
-              ok: true,
-              why: 'Pilihan Tepat! Komponen logam yang berputar dan saling bergesekan menanggung gaya mekanik gesek (friction). Pelumas gemuk pasta (grease) menempel erat pada celah mikro logam, menolak kelembapan air hujan (hidrofobik), serta memperkecil koefisien gesekan sehingga roda berputar lancar tanpa aus dan bebas karat (SDG 12).'
-            },
-            {
-              name: 'Pengecatan Tebal Anti-Karat pada Sambungan Poros Engsel dan Roda',
-              desc: 'Membersihkan karat lalu menyemprotkan cat besi tahan cuaca tebal hingga ke seluruh celah engsel poros dan roda.',
-              eff: 'Merusak Gerak (Cat mengering di celah dan membuat gerbang macet total)',
-              cost: 'Pemborosan Biaya (Gerbang terkunci macet & berisiko merusak engsel)',
-              dur: 'Lapisan cat langsung retak dan rontok saat gerbang dipaksa bergerak',
-              env: 'Menghasilkan serpihan kerak cat rontok yang mencemari area gerbang',
-              ok: false,
-              why: 'Salah Besar! Pengecatan adalah solusi hebat untuk pagar atau permukaan diam, TETAPI pantang diaplikasikan pada celah mesin/engsel yang bergerak! Cat akan mengering di celah sempit, mengunci engsel, dan membuat gerbang macet total tidak bisa dibuka. Ketika dipaksa bergerak, lapisan cat akan langsung rontok tergerus dan menimbulkan limbah serpihan cat.'
-            },
-            {
-              name: 'Penggantian Poros Roda & Engsel dengan Bahan Tembaga Murni (Pure Copper)',
-              desc: 'Mengganti as poros roda dan bantalan engsel dengan logam tembaga yang tidak berkarat merah seperti besi.',
-              eff: 'Beresiko Merusak (Tembaga memicu korosi galvanik pada rangka besi)',
-              cost: 'Mahal (Harga bahan logam tembaga murni bernilai tinggi)',
-              dur: 'Tembaga terlalu lunak sehingga cepat aus peyang menahan beban gerbang',
-              env: 'Pemborosan logam mulia tembaga untuk komponen beban berat mekanik',
-              ok: false,
-              why: 'Kurang Tepat! Secara elektrokimia, tembaga memiliki potensial reduksi lebih tinggi (+0,34 V) dibanding besi (-0,44 V). Ketika tembaga dipasang bersentuhan langsung dengan rangka besi di lingkungan lembap terbuka, akan terjadi korosi galvanik: rangka besi justru terkorosi jauh lebih cepat! Selain itu, tembaga secara fisik terlalu lunak untuk menopang gerbang berat.'
-            }
-          ]
+          id: 'gate', title: 'Area 3: Gerbang Sekolah', obj: 'Gerbang Geser Sekolah',
+          steps: [
+            { id: 'observe',  label: '🔎 Amati',           title: '🔎 Langkah 1: Amati Gerbang Sekolah' },
+            { id: 'find',     label: '🎯 Temukan',          title: '🎯 Langkah 2: Temukan Bagian Bermasalah' },
+            { id: 'identify', label: '🧪 Analisis',         title: '🧪 Langkah 3: Analisis Kondisi dan Penyebab' },
+            { id: 'decide',   label: '⚖️ Putuskan',         title: '⚖️ Langkah 4: Pilih Tindakan Penyelamatan' },
+            { id: 'consider', label: '♻️ Keberlanjutan',    title: '♻️ Langkah 5: Pertimbangkan 4 Dimensi Keberlanjutan' },
+            { id: 'result',   label: '✅ Hasil',             title: '✅ Hasil Penyelamatan' }
+          ],
+          hotspots: [
+            { id: 'hinge', label: 'Engsel Pintu', x: 22, y: 48, type: 'rust',
+              magHtml: '<div style="width:100%;height:100%;background:radial-gradient(circle, #7c2d12 0%, #9a3412 35%, #c2410c 65%, #92400e 100%);display:flex;align-items:center;justify-content:center;font-size:2rem;">🟫</div>',
+              magDesc: 'Gesekan terus-menerus menghilangkan lapisan oksida pelindung. Permukaan besi baru terus terekspos O₂ dan H₂O → korosi dipercepat masif.' },
+            { id: 'wheel', label: 'Roda Rel Bawah', x: 50, y: 82, type: 'rust',
+              magHtml: '<div style="width:100%;height:100%;background:radial-gradient(circle, #ca8a04 0%, #b45309 40%, #9a3412 80%);display:flex;align-items:center;justify-content:center;font-size:2rem;">🟤</div>',
+              magDesc: 'Roda langsung di atas tanah basah. Gesekan mekanis + elektrolit air tanah = kombinasi korosi paling parah di seluruh gerbang.' },
+            { id: 'joint', label: 'Sambungan Las', x: 70, y: 38, type: 'rust',
+              magHtml: '<div style="width:100%;height:100%;background:radial-gradient(circle, #78350f 0%, #9a3412 45%, #c2410c 85%);display:flex;align-items:center;justify-content:center;font-size:2rem;">🔴</div>',
+              magDesc: 'Sambungan las memiliki tegangan sisa (residual stress). Stres mekanis mempercepat korosi intergranular di area sambungan.' },
+            { id: 'panel', label: 'Panel Tengah', x: 45, y: 30, type: 'clean',
+              magHtml: '<div style="width:100%;height:100%;background:linear-gradient(135deg, #1e293b 0%, #475569 50%, #94a3b8 100%);display:flex;align-items:center;justify-content:center;font-size:2rem;">🩶</div>',
+              magDesc: 'Panel tengah masih baik. Cat belum terkelupas, tidak ada gesekan mekanis, dan aliran udara baik mencegah penggumpalan uap air.' }
+          ],
+          rustHotspots: ['hinge', 'wheel', 'joint'],
+          analysisFacts: [
+            { icon: '⚙️', text: 'Engsel mengalami gesekan mekanis setiap kali gerbang dibuka-tutup', isCorrect: true },
+            { icon: '💧', text: 'Roda rel selalu lembap karena kontak langsung dengan tanah', isCorrect: true },
+            { icon: '⚡', text: 'Dua logam berbeda yang bersentuhan memicu korosi galvanik', isCorrect: true },
+            { icon: '🔥', text: 'Suhu tinggi di siang hari membantu mengeringkan air secara alami', isCorrect: false }
+          ],
+          decisions: [
+            { id: 'grease', icon: '🧈', name: 'Pelumas Gemuk Tahan Air',
+              tags: ['Efektivitas: Sangat Tinggi', 'Biaya: Sangat Murah', 'Lingkungan: Ramah'], ok: true,
+              why: 'Tepat! Gemuk kalsium/litium bersifat hidrofobik (menolak air) dan mengurangi gesekan mekanis. Mencegah kontak O₂ dan H₂O di celah engsel. Rutin 3-6 bulan. Mendukung SDG 12.' },
+            { id: 'paint', icon: '🖌️', name: 'Cat Tebal di Celah Engsel',
+              tags: ['Efektivitas: Merusak', 'Biaya: Rugi', 'Lingkungan: Serpihan Cat'], ok: false,
+              why: 'Sangat salah! Cat mengering di celah engsel → engsel terkunci macet! Ketika dipaksa bergerak, cat rontok menjadi serpihan limbah dan engsel rusak total.' },
+            { id: 'copper', icon: '🟡', name: 'Ganti Poros dengan Tembaga',
+              tags: ['Efektivitas: Merusak', 'Biaya: Mahal', 'Kimia: Korosi Galvanik'], ok: false,
+              why: 'Salah! E° Cu²⁺/Cu = +0,34V lebih tinggi dari Fe²⁺/Fe = -0,44V. Kontak tembaga-besi dalam larutan elektrolit → korosi galvanik masif! Rangka besi terkorosi jauh lebih cepat.' }
+          ],
+          sustainPillars: [
+            { icon: '🎯', name: 'Efektivitas',
+              q: 'Seberapa efektif pelumas menghentikan korosi pada engsel bergerak?',
+              opts: ['Sangat efektif – melapisi celah mikro dan menolak air secara hidrofobik', 'Hanya efektif untuk permukaan diam, bukan komponen bergerak', 'Tidak efektif sama sekali pada logam yang sudah berkarat'], correct: 0 },
+            { icon: '💰', name: 'Biaya',
+              q: 'Bagaimana profil biaya pelumasan berkala dibanding ganti komponen?',
+              opts: ['Sangat murah – sedikit pelumas untuk banyak manfaat', 'Sama mahalnya dengan mengganti seluruh engsel baru', 'Lebih mahal dari galvanisasi ulang seluruh gerbang'], correct: 0 },
+            { icon: '⏱️', name: 'Ketahanan',
+              q: 'Seberapa sering perlu melakukan pelumasan ulang?',
+              opts: ['Tiap 3–6 bulan sekali sudah cukup', 'Harus dilakukan setiap hari', 'Sekali pakai seumur hidup, tidak perlu diulang'], correct: 0 },
+            { icon: '🌿', name: 'Dampak Lingkungan',
+              q: 'Apa dampak lingkungan dari pelumasan yang benar dan teratur?',
+              opts: ['Sangat ramah – mencegah pembuangan komponen logam bekas', 'Menghasilkan limbah logam berat berbahaya', 'Merusak tanah dan air di sekitar gerbang sekolah'], correct: 0 }
+          ],
+          resultBefore: '⚙️ Gerbang Macet dan Berkarat', resultAfter: '✅ Gerbang Mulus dan Terlindungi',
+          resultDesc: 'Pelumas gemuk membentuk film hidrofobik tipis di celah engsel dan roda. Film ini menolak molekul H₂O, mengurangi gesekan, dan menyumbat jalur masuk O₂ → reaksi korosi terhenti secara efektif.'
         }
       };
 
-      var curAdvArea = null, curAdvOpt = -1;
+      /* ---- STATE VARIABLES ---- */
+      var curAdvArea = null;
+      var curAdvStep = 0;
+      var advTotalScore = 0;
+      var advTagged = {};
+      var advMagOn = false;
+      var adv3dRotX = 20;
+      var adv3dRotY = -15;
+      var advDecisionMade = false;
+      var advSustainAnswers = {};
+      var advPairSelected = { left: null, right: null };
+      var advPairMatched = {};
 
+      /* ---- PROGRESS (unchanged API, keeping original) ---- */
       function getAdvProgress() {
-        var p = player(true);
-        if (!p) return { garden: false, field: false, gate: false };
-        p.adv = p.adv || { garden: false, field: false, gate: false };
-        return p.adv;
+        try { return JSON.parse(localStorage.getItem('advProg') || '{}'); } catch (e) { return {}; }
       }
-
-      function saveAdvProgress(prog) {
-        var p = player(true);
-        if (p) { p.adv = prog; save(); }
+      function saveAdvProgress(pr) {
+        try { localStorage.setItem('advProg', JSON.stringify(pr)); } catch (e) {}
       }
-
       function isAllAdvDone() {
         var pr = getAdvProgress();
         return !!(pr.garden && pr.field && pr.gate);
       }
 
-      function areAllLevelsDone() {
-        return [0, 1, 2].every(function (k) { return isLevelPassed(lvOf(k)) });
+      /* ---- HELPERS ---- */
+      function advEsc(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+      function advSetContent(id, h) { var el = document.getElementById(id); if (el) el.innerHTML = h; }
+      function advSetText(id, t) { var el = document.getElementById(id); if (el) el.textContent = t; }
+      function advShowFb(type, h) {
+        var fb = document.getElementById('advFeedbackBox');
+        if (!fb) return;
+        fb.className = 'adv-feedback-box show ' + type;
+        fb.innerHTML = h;
+        fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      function advHideFb() {
+        var fb = document.getElementById('advFeedbackBox');
+        if (fb) { fb.className = 'adv-feedback-box'; fb.innerHTML = ''; }
+      }
+      function advShowBtn(id, show) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (id === 'advCheckBtn') el.style.display = show ? '' : 'none';
+        else el.hidden = !show;
+      }
+      function advUpdateScore() {
+        advSetText('advScoreDisplay', '⭐ Poin: ' + advTotalScore);
       }
 
-      /* ---------- SVG Generator Final Game ---------- */
-      function advExplorerAvatarSVG() {
-        return '<svg viewBox="0 0 240 280" aria-label="Avatar Corrosion Explorer">' +
-          '<defs>' +
-          '<linearGradient id="vestG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4a366"/><stop offset="1" stop-color="#a07238"/></linearGradient>' +
-          '<linearGradient id="hatG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8bf7d"/><stop offset="1" stop-color="#b58742"/></linearGradient>' +
-          '</defs>' +
-          '<!-- Body -->' +
-          '<rect x="55" y="160" width="130" height="110" rx="20" fill="#f4f6fc" stroke="#c9cfe3" stroke-width="3"/>' +
-          '<!-- Explorer Vest -->' +
-          '<path d="M55 170L85 162L105 270H55Z" fill="url(#vestG)"/>' +
-          '<path d="M185 170L155 162L135 270H185Z" fill="url(#vestG)"/>' +
-          '<rect x="62" y="210" width="22" height="26" rx="4" fill="#8a5e2c" stroke="#5a3d1c" stroke-width="1.5"/>' +
-          '<rect x="156" y="210" width="22" height="26" rx="4" fill="#8a5e2c" stroke="#5a3d1c" stroke-width="1.5"/>' +
-          '<!-- Neck & Head -->' +
-          '<rect x="105" y="138" width="30" height="30" fill="#f8d0a8"/>' +
-          '<ellipse cx="120" cy="105" rx="48" ry="52" fill="#f8d0a8"/>' +
-          '<!-- Face features -->' +
-          '<ellipse cx="102" cy="104" rx="6" ry="8" fill="#2c1a10"/>' +
-          '<ellipse cx="138" cy="104" rx="6" ry="8" fill="#2c1a10"/>' +
-          '<circle cx="104" cy="101" r="2.5" fill="#fff"/>' +
-          '<circle cx="140" cy="101" r="2.5" fill="#fff"/>' +
-          '<path d="M94 92q8-4 16 0M130 92q8-4 16 0" fill="none" stroke="#2c1a10" stroke-width="2.5" stroke-linecap="round"/>' +
-          '<path d="M108 126q12 14 24 0z" fill="#992b2b"/>' +
-          '<path d="M112 126q8 6 16 0" fill="#f87171"/>' +
-          '<!-- Explorer Hat -->' +
-          '<ellipse cx="120" cy="68" rx="68" ry="16" fill="url(#hatG)" stroke="#785020" stroke-width="2"/>' +
-          '<path d="M72 66Q70 20 120 20Q170 20 168 66Z" fill="url(#hatG)" stroke="#785020" stroke-width="2"/>' +
-          '<rect x="74" y="56" width="92" height="10" fill="#1d3a6b"/>' +
-          '<circle cx="120" cy="61" r="6" fill="#f7d24a" stroke="#fff" stroke-width="1.5"/>' +
-          '<!-- Magnifying Glass Tool -->' +
-          '<g transform="translate(160,140)">' +
-          '<circle cx="30" cy="30" r="24" fill="#d8f0ff" fill-opacity=".6" stroke="#c07820" stroke-width="6"/>' +
-          '<circle cx="30" cy="30" r="20" fill="none" stroke="#60a5fa" stroke-width="2" opacity=".7"/>' +
-          '<path d="M48 48L68 68" stroke="#8d4a18" stroke-width="10" stroke-linecap="round"/>' +
-          '<circle cx="24" cy="22" r="4" fill="#fff" opacity=".8"/>' +
-          '</g>' +
-          '<!-- Explorer Badge -->' +
-          '<g transform="translate(70,185)">' +
-          '<circle cx="12" cy="12" r="10" fill="#ffc72c" stroke="#92400e" stroke-width="2"/>' +
-          '<path d="M12 4l2 5h5l-4 3 2 5-5-3-5 3 2-5-4-3h5z" fill="#d97706"/>' +
-          '</g>' +
-          '</svg>';
+      /* ---- 3D CANVAS ---- */
+      function adv3dSetup() {
+        var canvas = document.getElementById('adv3dCanvas');
+        if (!canvas) return;
+        var wrap = canvas.parentElement;
+        canvas.width = wrap.clientWidth || 500;
+        canvas.height = Math.min(canvas.width * 0.5, 280);
+        wrap.style.height = canvas.height + 'px';
       }
 
-      function advSchoolMapSVG(pr) {
-        return '<svg class="adv-map-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">' +
-          '<defs>' +
-          '<linearGradient id="mapSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#70c4fc"/><stop offset="1" stop-color="#bfe8fd"/></linearGradient>' +
-          '<linearGradient id="mapGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#79d64f"/><stop offset="1" stop-color="#4aa836"/></linearGradient>' +
-          '<linearGradient id="trackG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#df6e3b"/><stop offset="1" stop-color="#c55325"/></linearGradient>' +
-          '</defs>' +
-          '<!-- Sky background -->' +
-          '<rect width="800" height="500" fill="url(#mapSky)"/>' +
-          '<ellipse cx="140" cy="60" rx="60" ry="18" fill="#fff" opacity=".9"/>' +
-          '<ellipse cx="640" cy="70" rx="70" ry="20" fill="#fff" opacity=".9"/>' +
-          '<!-- Ground terrain -->' +
-          '<path d="M0 160 Q400 120 800 150 L800 500 L0 500 Z" fill="url(#mapGrass)"/>' +
-          '<!-- Main School Building in center background -->' +
-          '<g transform="translate(260, 90)">' +
-          '<rect x="0" y="40" width="280" height="110" rx="4" fill="#fff5e0" stroke="#5a3a1a" stroke-width="3"/>' +
-          '<polygon points="-10,40 140,-10 290,40" fill="#c0392b" stroke="#5a3a1a" stroke-width="3"/>' +
-          '<rect x="110" y="85" width="60" height="65" fill="#8d5a31" stroke="#5a3a1a" stroke-width="2"/>' +
-          '<circle cx="140" cy="25" r="14" fill="#fff" stroke="#5a3a1a" stroke-width="2.5"/>' +
-          '<path d="M140 15v10l6 4" stroke="#5a3a1a" stroke-width="2"/>' +
-          '<!-- Windows -->' +
-          '<rect x="25" y="60" width="28" height="32" rx="3" fill="#90cdf4" stroke="#fff" stroke-width="2"/>' +
-          '<rect x="65" y="60" width="28" height="32" rx="3" fill="#90cdf4" stroke="#fff" stroke-width="2"/>' +
-          '<rect x="185" y="60" width="28" height="32" rx="3" fill="#90cdf4" stroke="#fff" stroke-width="2"/>' +
-          '<rect x="225" y="60" width="28" height="32" rx="3" fill="#90cdf4" stroke="#fff" stroke-width="2"/>' +
-          '</g>' +
-          '<!-- Athletic Field (Top Right) -->' +
-          '<g transform="translate(380, 180)">' +
-          '<ellipse cx="180" cy="70" rx="140" ry="60" fill="url(#trackG)" stroke="#fff" stroke-width="3"/>' +
-          '<ellipse cx="180" cy="70" rx="115" ry="46" fill="#38a169" stroke="#fff" stroke-width="2"/>' +
-          '<line x1="180" y1="24" x2="180" y2="116" stroke="#fff" stroke-width="2"/>' +
-          '<circle cx="180" cy="70" r="20" fill="none" stroke="#fff" stroke-width="2"/>' +
-          '<!-- Goalpost illustration -->' +
-          '<rect x="90" y="52" width="16" height="36" fill="none" stroke="' + (pr.field ? '#cbd5e1' : '#b45309') + '" stroke-width="3"/>' +
-          '</g>' +
-          '<!-- Garden Area (Left) -->' +
-          '<g transform="translate(60, 240)">' +
-          '<path d="M0 60 Q80 20 180 50 T220 140 T120 180 T0 120 Z" fill="#48bb78" stroke="#276749" stroke-width="2"/>' +
-          '<circle cx="60" cy="70" r="16" fill="#f687b3"/>' +
-          '<circle cx="110" cy="110" r="14" fill="#ecc94b"/>' +
-          '<circle cx="150" cy="75" r="15" fill="#ed8936"/>' +
-          '<circle cx="50" cy="130" r="14" fill="#fc8181"/>' +
-          '<!-- Garden Fence -->' +
-          '<line x1="20" y1="140" x2="180" y2="140" stroke="' + (pr.garden ? '#2e7d32' : '#92400e') + '" stroke-width="4"/>' +
-          '<line x1="30" y1="125" x2="30" y2="150" stroke="' + (pr.garden ? '#2e7d32' : '#92400e') + '" stroke-width="3"/>' +
-          '<line x1="60" y1="125" x2="60" y2="150" stroke="' + (pr.garden ? '#2e7d32' : '#92400e') + '" stroke-width="3"/>' +
-          '<line x1="90" y1="125" x2="90" y2="150" stroke="' + (pr.garden ? '#2e7d32' : '#92400e') + '" stroke-width="3"/>' +
-          '<line x1="120" y1="125" x2="120" y2="150" stroke="' + (pr.garden ? '#2e7d32' : '#92400e') + '" stroke-width="3"/>' +
-          '<line x1="150" y1="125" x2="150" y2="150" stroke="' + (pr.garden ? '#2e7d32' : '#92400e') + '" stroke-width="3"/>' +
-          '</g>' +
-          '<!-- Pavement Paths connecting areas -->' +
-          '<path d="M210 370 C 260 330, 360 320, 400 300 S 550 280, 560 250" stroke="#f6e05e" stroke-width="18" fill="none" stroke-linecap="round" stroke-dasharray="2 4"/>' +
-          '<path d="M400 300 C 460 350, 520 400, 610 390" stroke="#f6e05e" stroke-width="18" fill="none" stroke-linecap="round" stroke-dasharray="2 4"/>' +
-          '<!-- Gate Area (Bottom Right) -->' +
-          '<g transform="translate(560, 330)">' +
-          '<rect x="0" y="40" width="30" height="90" fill="#991b1b" stroke="#450a0a" stroke-width="2"/>' +
-          '<rect x="130" y="40" width="30" height="90" fill="#991b1b" stroke="#450a0a" stroke-width="2"/>' +
-          '<rect x="30" y="55" width="100" height="65" fill="none" stroke="' + (pr.gate ? '#2563eb' : '#9a3412') + '" stroke-width="4"/>' +
-          '<line x1="30" y1="120" x2="130" y2="120" stroke="#334155" stroke-width="6"/>' +
-          '<circle cx="50" cy="120" r="6" fill="' + (pr.gate ? '#64748b' : '#b45309') + '"/>' +
-          '<circle cx="110" cy="120" r="6" fill="' + (pr.gate ? '#64748b' : '#b45309') + '"/>' +
-          '</g>' +
-          '<!-- Trees on map -->' +
-          '<g transform="translate(190, 190)"><circle cx="0" cy="0" r="24" fill="#2f855a"/><circle cx="-8" cy="-6" r="16" fill="#38a169"/></g>' +
-          '<g transform="translate(340, 240)"><circle cx="0" cy="0" r="22" fill="#2f855a"/><circle cx="6" cy="-4" r="14" fill="#38a169"/></g>' +
-          '<g transform="translate(730, 260)"><circle cx="0" cy="0" r="26" fill="#2f855a"/><circle cx="-6" cy="-6" r="18" fill="#38a169"/></g>' +
-          '<!-- Compass Rose in corner -->' +
-          '<g transform="translate(50, 440)">' +
-          '<circle cx="0" cy="0" r="26" fill="#fff" stroke="#1d3a6b" stroke-width="2.5"/>' +
-          '<polygon points="0,-22 5,0 -5,0" fill="#e53e3e"/>' +
-          '<polygon points="0,22 5,0 -5,0" fill="#4a5568"/>' +
-          '<polygon points="22,0 0,5 0,-5" fill="#4a5568"/>' +
-          '<polygon points="-22,0 0,5 0,-5" fill="#4a5568"/>' +
-          '<text x="0" y="-8" text-anchor="middle" font-size="9" font-weight="900" fill="#e53e3e">U</text>' +
-          '</g>' +
-          '</svg>';
+      function adv3dDraw() {
+        var canvas = document.getElementById('adv3dCanvas');
+        if (!canvas || !curAdvArea) return;
+        var ctx = canvas.getContext('2d');
+        var W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+        var rx = adv3dRotX, ry = adv3dRotY;
+        if (curAdvArea === 'garden') adv3dGarden(ctx, W, H, rx, ry);
+        else if (curAdvArea === 'field') adv3dField(ctx, W, H, rx, ry);
+        else if (curAdvArea === 'gate') adv3dGate(ctx, W, H, rx, ry);
       }
 
-      function advGardenSceneSVG(isDone) {
-        var fenceColor = isDone ? '#2e7d32' : '#8c3d19';
-        var rustSpots = isDone ? '' :
-          '<ellipse cx="140" cy="260" rx="14" ry="8" fill="#d97706"/>' +
-          '<ellipse cx="280" cy="240" rx="16" ry="10" fill="#b45309"/>' +
-          '<ellipse cx="420" cy="270" rx="18" ry="9" fill="#d97706"/>' +
-          '<ellipse cx="340" cy="300" rx="12" ry="6" fill="#92400e"/>';
-        var shine = isDone ?
-          '<g fill="#fef08a"><path d="M140 230l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/><path d="M320 220l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"/><path d="M460 250l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/></g>' : '';
-
-        return '<svg class="adv-scene-svg" viewBox="0 0 600 450">' +
-          '<defs>' +
-          '<linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#bae6fd"/></linearGradient>' +
-          '<linearGradient id="gField" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#16a34a"/></linearGradient>' +
-          '</defs>' +
-          '<rect width="600" height="450" fill="url(#gSky)"/>' +
-          '<circle cx="500" cy="80" r="42" fill="#fde047" opacity=".9"/>' +
-          '<path d="M0 240 Q300 200 600 240 L600 450 L0 450 Z" fill="url(#gField)"/>' +
-          '<!-- Flowers in garden -->' +
-          '<g transform="translate(80, 340)"><circle cx="0" cy="0" r="18" fill="#ec4899"/><circle cx="0" cy="0" r="7" fill="#fde047"/></g>' +
-          '<g transform="translate(220, 360)"><circle cx="0" cy="0" r="22" fill="#f97316"/><circle cx="0" cy="0" r="8" fill="#fde047"/></g>' +
-          '<g transform="translate(380, 350)"><circle cx="0" cy="0" r="20" fill="#a855f7"/><circle cx="0" cy="0" r="7" fill="#fde047"/></g>' +
-          '<g transform="translate(510, 360)"><circle cx="0" cy="0" r="22" fill="#ef4444"/><circle cx="0" cy="0" r="8" fill="#fde047"/></g>' +
-          '<!-- Garden Fence Object -->' +
-          '<g id="advGardenFenceObj">' +
-          '<line x1="40" y1="230" x2="560" y2="230" stroke="' + fenceColor + '" stroke-width="8" stroke-linecap="round"/>' +
-          '<line x1="40" y1="310" x2="560" y2="310" stroke="' + fenceColor + '" stroke-width="8" stroke-linecap="round"/>' +
-          // Vertical pickets with spearheads
-          [70, 120, 170, 220, 270, 320, 370, 420, 470, 520].map(function (x) {
-            return '<line x1="' + x + '" y1="180" x2="' + x + '" y2="350" stroke="' + fenceColor + '" stroke-width="7"/>' +
-              '<polygon points="' + (x - 7) + ',180 ' + x + ',155 ' + (x + 7) + ',180" fill="' + (isDone ? '#eab308' : fenceColor) + '"/>';
-          }).join('') +
-          rustSpots + shine +
-          '</g>' +
-          '</svg>';
-      }
-
-      function advFieldSceneSVG(isDone) {
-        var postColor = isDone ? '#cbd5e1' : '#8b3a1a';
-        var rustSpots = isDone ? '' :
-          '<ellipse cx="180" cy="290" rx="16" ry="12" fill="#d97706"/>' +
-          '<ellipse cx="420" cy="290" rx="16" ry="12" fill="#b45309"/>' +
-          '<ellipse cx="300" cy="120" rx="20" ry="8" fill="#92400e"/>' +
-          '<path d="M180 260l-8 20h16z" fill="#78350f"/>';
-        var shine = isDone ?
-          '<g fill="#fef08a"><path d="M180 120l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"/><path d="M420 120l4 8 8 4-8 4-4 8-4-8-8-4 8-4z"/><path d="M300 120l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/></g>' : '';
-
-        return '<svg class="adv-scene-svg" viewBox="0 0 600 450">' +
-          '<defs>' +
-          '<linearGradient id="fSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#bae6fd"/></linearGradient>' +
-          '<linearGradient id="fGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22c55e"/><stop offset="1" stop-color="#15803d"/></linearGradient>' +
-          '</defs>' +
-          '<rect width="600" height="450" fill="url(#fSky)"/>' +
-          '<path d="M0 200 L600 200 L600 450 L0 450 Z" fill="url(#fGrass)"/>' +
-          '<!-- White field lines -->' +
-          '<ellipse cx="300" cy="380" rx="240" ry="70" fill="none" stroke="#fff" stroke-width="5" opacity=".8"/>' +
-          '<line x1="0" y1="320" x2="600" y2="320" stroke="#fff" stroke-width="4" opacity=".8"/>' +
-          '<!-- Soccer Goal Net -->' +
-          '<g opacity=".35" stroke="#fff" stroke-width="1.5">' +
-          '<line x1="180" y1="120" x2="220" y2="70"/><line x1="420" y1="120" x2="380" y2="70"/>' +
-          '<line x1="220" y1="70" x2="380" y2="70"/><line x1="220" y1="70" x2="220" y2="280"/><line x1="380" y1="70" x2="380" y2="280"/>' +
-          '</g>' +
-          '<!-- Steel Goalpost Object -->' +
-          '<g id="advFieldGoalObj">' +
-          '<line x1="180" y1="120" x2="420" y2="120" stroke="' + postColor + '" stroke-width="14" stroke-linecap="round"/>' +
-          '<line x1="180" y1="113" x2="180" y2="340" stroke="' + postColor + '" stroke-width="14" stroke-linecap="round"/>' +
-          '<line x1="420" y1="113" x2="420" y2="340" stroke="' + postColor + '" stroke-width="14" stroke-linecap="round"/>' +
-          rustSpots + shine +
-          '</g>' +
-          '<!-- Soccer ball on field -->' +
-          '<g transform="translate(300, 360)">' +
-          '<circle cx="0" cy="0" r="16" fill="#fff" stroke="#1e293b" stroke-width="2"/>' +
-          '<polygon points="0,-6 6,0 4,8 -4,8 -6,0" fill="#1e293b"/>' +
-          '</g>' +
-          '</svg>';
-      }
-
-      function advGateSceneSVG(isDone) {
-        var gateColor = isDone ? '#2563eb' : '#78350f';
-        var wheelColor = isDone ? '#475569' : '#b45309';
-        var rustSpots = isDone ? '' :
-          '<ellipse cx="210" cy="355" rx="14" ry="10" fill="#ea580c"/>' +
-          '<ellipse cx="390" cy="355" rx="14" ry="10" fill="#c2410c"/>' +
-          '<ellipse cx="140" cy="180" rx="12" ry="16" fill="#b45309"/>' +
-          '<ellipse cx="140" cy="270" rx="12" ry="16" fill="#9a3412"/>';
-        var lubeGleam = isDone ?
-          '<g fill="#fbbf24"><path d="M210 345q10 4 20 0t10 8" stroke="#f59e0b" stroke-width="3" fill="none"/>' +
-          '<circle cx="140" cy="180" r="10" fill="#fde047" opacity=".7"/>' +
-          '<circle cx="140" cy="270" r="10" fill="#fde047" opacity=".7"/>' +
-          '<path d="M210 330l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/><path d="M390 330l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/></g>' : '';
-
-        return '<svg class="adv-scene-svg" viewBox="0 0 600 450">' +
-          '<defs>' +
-          '<linearGradient id="gateSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#bae6fd"/></linearGradient>' +
-          '</defs>' +
-          '<rect width="600" height="450" fill="url(#gateSky)"/>' +
-          '<rect x="0" y="320" width="600" height="130" fill="#64748b"/>' +
-          '<!-- Steel Sliding Track on ground -->' +
-          '<rect x="0" y="350" width="600" height="12" fill="#334155"/>' +
-          '<line x1="0" y1="356" x2="600" y2="356" stroke="#94a3b8" stroke-width="2"/>' +
-          '<!-- Left Brick Pillar -->' +
-          '<g transform="translate(60, 110)">' +
-          '<rect x="0" y="0" width="80" height="240" fill="#b91c1c" stroke="#450a0a" stroke-width="3"/>' +
-          '<polygon points="-6,0 40,-24 86,0" fill="#7f1d1d" stroke="#450a0a" stroke-width="3"/>' +
-          // Brick pattern
-          '<line x1="0" y1="40" x2="80" y2="40" stroke="#fff" opacity=".3"/>' +
-          '<line x1="0" y1="80" x2="80" y2="80" stroke="#fff" opacity=".3"/>' +
-          '<line x1="0" y1="120" x2="80" y2="120" stroke="#fff" opacity=".3"/>' +
-          '<line x1="0" y1="160" x2="80" y2="160" stroke="#fff" opacity=".3"/>' +
-          '<line x1="0" y1="200" x2="80" y2="200" stroke="#fff" opacity=".3"/>' +
-          // Hinges
-          '<rect x="74" y="60" width="16" height="24" rx="3" fill="' + (isDone ? '#475569' : '#92400e') + '"/>' +
-          '<rect x="74" y="150" width="16" height="24" rx="3" fill="' + (isDone ? '#475569' : '#92400e') + '"/>' +
-          '</g>' +
-          '<!-- Right Brick Pillar -->' +
-          '<g transform="translate(460, 110)">' +
-          '<rect x="0" y="0" width="80" height="240" fill="#b91c1c" stroke="#450a0a" stroke-width="3"/>' +
-          '<polygon points="-6,0 40,-24 86,0" fill="#7f1d1d" stroke="#450a0a" stroke-width="3"/>' +
-          '</g>' +
-          '<!-- Heavy Iron Sliding Gate with Wheels -->' +
-          '<g id="advGateObj">' +
-          '<rect x="150" y="140" width="300" height="210" fill="none" stroke="' + gateColor + '" stroke-width="10"/>' +
-          '<line x1="150" y1="240" x2="450" y2="240" stroke="' + gateColor + '" stroke-width="8"/>' +
-          [190, 230, 270, 310, 350, 390, 430].map(function (x) {
-            return '<line x1="' + x + '" y1="140" x2="' + x + '" y2="350" stroke="' + gateColor + '" stroke-width="6"/>';
-          }).join('') +
-          '<!-- Wheels on bottom rail -->' +
-          '<circle cx="210" cy="355" r="16" fill="' + wheelColor + '" stroke="#1e293b" stroke-width="3"/>' +
-          '<circle cx="210" cy="355" r="6" fill="#94a3b8"/>' +
-          '<circle cx="390" cy="355" r="16" fill="' + wheelColor + '" stroke="#1e293b" stroke-width="3"/>' +
-          '<circle cx="390" cy="355" r="6" fill="#94a3b8"/>' +
-          rustSpots + lubeGleam +
-          '</g>' +
-          '</svg>';
-      }
-
-      /* ---------- Adventure Screen Handlers ---------- */
-      function openAdvIntro() {
-        $('#advIntroAvatar').innerHTML = advExplorerAvatarSVG();
-        show('advIntro');
-      }
-
-      
-      /* ---------- Explorer Avatar Walk & Magnifying Glass System ---------- */
-      var curPlayerPos = { x: 48, y: 58 };
-      var targetPos = null;
-      var keysDown = {};
-      var animLoopId = null;
-      var curActiveAreaHotspot = null;
-      var MOVE_SPEED = 0.85; // Speed in percentage per frame
-
-      function advMiniExplorerSVG() {
-        return '<svg viewBox="0 0 60 80" aria-hidden="true">' +
-          '<rect x="10" y="24" width="40" height="34" rx="8" fill="#a07238" stroke="#5a3d1c" stroke-width="2"/>' +
-          '<rect x="15" y="28" width="30" height="28" rx="6" fill="#f4f6fc" stroke="#3b82f6" stroke-width="2.5"/>' +
-          '<path d="M15 30L23 28L25 56H15Z" fill="#d4a366"/>' +
-          '<path d="M45 30L37 28L35 56H45Z" fill="#d4a366"/>' +
-          '<ellipse cx="30" cy="18" rx="14" ry="14" fill="#f8d0a8"/>' +
-          '<ellipse cx="25" cy="17" rx="2" ry="3" fill="#2c1a10"/>' +
-          '<ellipse cx="35" cy="17" rx="2" ry="3" fill="#2c1a10"/>' +
-          '<path d="M27 24q3 3 6 0" fill="none" stroke="#2c1a10" stroke-width="1.5" stroke-linecap="round"/>' +
-          '<ellipse cx="30" cy="10" rx="20" ry="5" fill="#e8bf7d" stroke="#785020" stroke-width="1.5"/>' +
-          '<path d="M17 10Q16 -2 30 -2Q44 -2 43 10Z" fill="#d4a366" stroke="#785020" stroke-width="1.5"/>' +
-          '<rect x="18" y="7" width="24" height="3" fill="#1d3a6b"/>' +
-          '<rect x="18" y="56" width="9" height="18" rx="3" fill="#1e3a8a"/>' +
-          '<rect x="33" y="56" width="9" height="18" rx="3" fill="#1e3a8a"/>' +
-          '<rect x="16" y="70" width="12" height="6" rx="2" fill="#451a03"/>' +
-          '<rect x="32" y="70" width="12" height="6" rx="2" fill="#451a03"/>' +
-          '<circle cx="46" cy="38" r="7" fill="#bae6fd" stroke="#d97706" stroke-width="2"/>' +
-          '<line x1="51" y1="43" x2="57" y2="49" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>' +
-          '</svg>';
-      }
-
-            /* ---------- Realistic 3D Zoom Magnifier Illustrations ---------- */
-      function advLensDetailSVG(areaKey, isDone) {
-        if (areaKey === 'garden') {
-          // 3D Iron Fence Bar
-          if (!isDone) {
-            return '<svg viewBox="0 0 140 140">' +
-              '<defs>' +
-              '<linearGradient id="ironBar3d" x1="0" y1="0" x2="1" y2="0">' +
-              '<stop offset="0%" stop-color="#1e293b"/><stop offset="25%" stop-color="#475569"/><stop offset="55%" stop-color="#94a3b8"/><stop offset="80%" stop-color="#334155"/><stop offset="100%" stop-color="#0f172a"/>' +
-              '</linearGradient>' +
-              '<radialGradient id="rustCrust3d" cx="40%" cy="40%" r="60%">' +
-              '<stop offset="0%" stop-color="#f97316"/><stop offset="50%" stop-color="#b45309"/><stop offset="85%" stop-color="#78350f"/><stop offset="100%" stop-color="#451a03"/>' +
-              '</radialGradient>' +
-              '<radialGradient id="waterDrop3d" cx="30%" cy="30%" r="70%">' +
-              '<stop offset="0%" stop-color="#ffffff"/><stop offset="40%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#0284c7"/>' +
-              '</radialGradient>' +
-              '</defs>' +
-              '<rect width="140" height="140" fill="#0f172a"/>' +
-              '<!-- Background garden blur -->' +
-              '<circle cx="20" cy="20" r="30" fill="#15803d" opacity=".3"/>' +
-              '<circle cx="120" cy="110" r="35" fill="#166534" opacity=".25"/>' +
-              '<!-- 3D Iron Bar (Vertical Cylinder) -->' +
-              '<rect x="42" y="0" width="56" height="140" fill="url(#ironBar3d)"/>' +
-              '<line x1="68" y1="0" x2="68" y2="140" stroke="#f1f5f9" stroke-width="3" opacity=".6"/>' +
-              '<!-- Horizontal Cross Rail Joint -->' +
-              '<rect x="0" y="70" width="140" height="28" fill="url(#ironBar3d)" opacity=".9"/>' +
-              '<line x1="0" y1="78" x2="140" y2="78" stroke="#f1f5f9" stroke-width="2" opacity=".5"/>' +
-              '<!-- Flaky 3D Rust Crust & Blisters eating through metal -->' +
-              '<path d="M42 25 Q65 18 80 32 T98 60 L98 105 Q70 120 42 100 Z" fill="url(#rustCrust3d)"/>' +
-              '<ellipse cx="62" cy="50" rx="16" ry="12" fill="#78350f"/>' +
-              '<ellipse cx="60" cy="49" rx="12" ry="8" fill="#ea580c"/>' +
-              '<ellipse cx="78" cy="78" rx="18" ry="14" fill="#9a3412"/>' +
-              '<ellipse cx="76" cy="77" rx="14" ry="9" fill="#c2410c"/>' +
-              '<ellipse cx="50" cy="85" rx="12" ry="8" fill="#78350f"/>' +
-              '<circle cx="84" cy="42" r="5" fill="#f97316"/>' +
-              '<circle cx="48" cy="62" r="4" fill="#ea580c"/>' +
-              '<!-- Peeling Rust Flakes with Drop Shadows -->' +
-              '<path d="M88 45 Q95 40 92 55 Q85 58 88 45 Z" fill="#7c2d12" stroke="#451a03" stroke-width="1"/>' +
-              '<path d="M40 78 Q34 72 38 90 Q44 88 40 78 Z" fill="#7c2d12" stroke="#451a03" stroke-width="1"/>' +
-              '<!-- Moisture / Rain Droplets attacking surface -->' +
-              '<ellipse cx="34" cy="40" rx="6" ry="8" fill="url(#waterDrop3d)" opacity=".9"/>' +
-              '<ellipse cx="104" cy="75" rx="5" ry="7" fill="url(#waterDrop3d)" opacity=".9"/>' +
-              '<!-- Label -->' +
-              '<rect x="10" y="120" width="120" height="16" rx="4" fill="rgba(0,0,0,0.75)"/>' +
-              '<text x="70" y="131" font-size="7.5" fill="#fde047" font-weight="900" text-anchor="middle">Batang Pagar: Karat Mengelupas</text>' +
-              '</svg>';
+      function adv3dGarden(ctx, W, H, rx, ry) {
+        var pX = ry * 1.2, pY = rx * 0.6;
+        var sky = ctx.createLinearGradient(0, 0, 0, H * 0.6);
+        sky.addColorStop(0, '#7ec8e3'); sky.addColorStop(1, '#c8e9f4');
+        ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H * 0.6);
+        var gnd = ctx.createLinearGradient(0, H * 0.58, 0, H);
+        gnd.addColorStop(0, '#5a9e3c'); gnd.addColorStop(1, '#3c7a28');
+        ctx.fillStyle = gnd; ctx.fillRect(0, H * 0.58, W, H);
+        var n = 8, bW = 13, fW = W * 0.78, sX = W * 0.11;
+        var gndY = H * 0.63 - pY * 0.3, topY = H * 0.22 - pY * 0.5, midY = H * 0.45 - pY * 0.3;
+        function gX(i) { return sX + (fW / (n - 1)) * i + pX * (i - n / 2) * 0.04; }
+        ctx.beginPath(); ctx.moveTo(gX(0), topY); ctx.lineTo(gX(n - 1), topY + pX * 0.05);
+        ctx.lineWidth = 10; ctx.strokeStyle = '#5a3a1a'; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(gX(0), midY); ctx.lineTo(gX(n - 1), midY + pX * 0.04);
+        ctx.lineWidth = 8; ctx.strokeStyle = '#5a3a1a'; ctx.stroke();
+        for (var i = 0; i < n; i++) {
+          var bx = gX(i), isR = (i === 2 || i === 3 || i === 5);
+          ctx.beginPath(); ctx.moveTo(bx, topY - 10); ctx.lineTo(bx, gndY);
+          ctx.lineWidth = bW;
+          if (isR) {
+            var rg = ctx.createLinearGradient(bx - bW / 2, 0, bx + bW / 2, 0);
+            rg.addColorStop(0, '#7c2d12'); rg.addColorStop(0.4, '#c2410c'); rg.addColorStop(1, '#9a3412');
+            ctx.strokeStyle = rg;
           } else {
-            return '<svg viewBox="0 0 140 140">' +
-              '<defs>' +
-              '<linearGradient id="paint3d" x1="0" y1="0" x2="1" y2="0">' +
-              '<stop offset="0%" stop-color="#14532d"/><stop offset="25%" stop-color="#16a34a"/><stop offset="50%" stop-color="#86efac"/><stop offset="75%" stop-color="#22c55e"/><stop offset="100%" stop-color="#052e16"/>' +
-              '</linearGradient>' +
-              '</defs>' +
-              '<rect width="140" height="140" fill="#0f172a"/>' +
-              '<!-- 3D Coated Iron Bar -->' +
-              '<rect x="42" y="0" width="56" height="140" fill="url(#paint3d)"/>' +
-              '<rect x="0" y="70" width="140" height="28" fill="url(#paint3d)" opacity=".95"/>' +
-              '<!-- High-Gloss Light Highlights -->' +
-              '<line x1="66" y1="0" x2="66" y2="140" stroke="#ffffff" stroke-width="5" opacity=".8" stroke-linecap="round"/>' +
-              '<line x1="0" y1="78" x2="140" y2="78" stroke="#ffffff" stroke-width="4" opacity=".7" stroke-linecap="round"/>' +
-              '<!-- Sparkling Clean Reflections -->' +
-              '<path d="M66 40l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fef08a"/>' +
-              '<path d="M100 78l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5z" fill="#ffffff"/>' +
-              '<rect x="10" y="120" width="120" height="16" rx="4" fill="rgba(0,0,0,0.75)"/>' +
-              '<text x="70" y="131" font-size="7.5" fill="#86efac" font-weight="900" text-anchor="middle">Cat Pelindung: Halus & Bebas Karat</text>' +
-              '</svg>';
+            var mg = ctx.createLinearGradient(bx - bW / 2, 0, bx + bW / 2, 0);
+            mg.addColorStop(0, '#1e293b'); mg.addColorStop(0.4, '#475569'); mg.addColorStop(1, '#334155');
+            ctx.strokeStyle = mg;
           }
-        } else if (areaKey === 'field') {
-          // 3D Steel Goalpost Pipe with Pitting Corrosion
-          if (!isDone) {
-            return '<svg viewBox="0 0 140 140">' +
-              '<defs>' +
-              '<linearGradient id="pipeMetal3d" x1="0" y1="0" x2="1" y2="0">' +
-              '<stop offset="0%" stop-color="#1e293b"/><stop offset="20%" stop-color="#475569"/><stop offset="50%" stop-color="#cbd5e1"/><stop offset="75%" stop-color="#475569"/><stop offset="100%" stop-color="#0f172a"/>' +
-              '</linearGradient>' +
-              '<radialGradient id="pitCrater3d" cx="35%" cy="35%" r="65%">' +
-              '<stop offset="0%" stop-color="#451a03"/><stop offset="50%" stop-color="#78350f"/><stop offset="85%" stop-color="#b45309"/><stop offset="100%" stop-color="#ea580c"/>' +
-              '</radialGradient>' +
-              '</defs>' +
-              '<rect width="140" height="140" fill="#0f172a"/>' +
-              '<!-- 3D Cylindrical Steel Pipe -->' +
-              '<rect x="36" y="0" width="68" height="140" fill="url(#pipeMetal3d)"/>' +
-              '<line x1="68" y1="0" x2="68" y2="140" stroke="#ffffff" stroke-width="4" opacity=".5"/>' +
-              '<!-- Severe Pitting Corrosion Craters eating into pipe -->' +
-              '<ellipse cx="70" cy="45" rx="18" ry="14" fill="url(#pitCrater3d)"/>' +
-              '<ellipse cx="68" cy="43" rx="10" ry="7" fill="#1c0a02"/>' +
-              '<ellipse cx="52" cy="85" rx="14" ry="11" fill="url(#pitCrater3d)"/>' +
-              '<ellipse cx="50" cy="84" rx="7" ry="5" fill="#1c0a02"/>' +
-              '<ellipse cx="85" cy="95" rx="12" ry="9" fill="url(#pitCrater3d)"/>' +
-              '<ellipse cx="84" cy="94" rx="6" ry="4" fill="#1c0a02"/>' +
-              '<circle cx="62" cy="108" r="4" fill="#b45309"/>' +
-              '<circle cx="82" cy="30" r="5" fill="#c2410c"/>' +
-              '<!-- Surface Blistering & Flaking Lines -->' +
-              '<path d="M54 36 Q70 28 88 38" stroke="#78350f" stroke-width="2.5" fill="none"/>' +
-              '<path d="M42 98 Q60 92 78 102" stroke="#78350f" stroke-width="2.5" fill="none"/>' +
-              '<rect x="8" y="120" width="124" height="16" rx="4" fill="rgba(0,0,0,0.75)"/>' +
-              '<text x="70" y="131" font-size="7.5" fill="#fde047" font-weight="900" text-anchor="middle">Pipa Gawang: Korosi Pitting Berlubang</text>' +
-              '</svg>';
-          } else {
-            return '<svg viewBox="0 0 140 140">' +
-              '<defs>' +
-              '<linearGradient id="galvZinc3d" x1="0" y1="0" x2="1" y2="0">' +
-              '<stop offset="0%" stop-color="#475569"/><stop offset="25%" stop-color="#94a3b8"/><stop offset="50%" stop-color="#f8fafc"/><stop offset="75%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#334155"/>' +
-              '</linearGradient>' +
-              '</defs>' +
-              '<rect width="140" height="140" fill="#0f172a"/>' +
-              '<!-- 3D Galvanized Steel Pipe -->' +
-              '<rect x="36" y="0" width="68" height="140" fill="url(#galvZinc3d)"/>' +
-              '<line x1="68" y1="0" x2="68" y2="140" stroke="#ffffff" stroke-width="6" opacity=".9"/>' +
-              '<!-- Zinc Crystal Spangle Pattern (Pola Kristal Seng 3D) -->' +
-              '<polygon points="46,20 58,15 54,28 42,26" fill="#94a3b8" opacity=".7"/>' +
-              '<polygon points="78,25 90,20 86,34 74,30" fill="#e2e8f0" opacity=".8"/>' +
-              '<polygon points="50,60 64,52 60,68 46,65" fill="#cbd5e1" opacity=".75"/>' +
-              '<polygon points="76,68 88,60 84,76 72,74" fill="#94a3b8" opacity=".7"/>' +
-              '<polygon points="48,100 62,94 58,108 44,105" fill="#e2e8f0" opacity=".8"/>' +
-              '<polygon points="74,106 88,98 84,114 70,110" fill="#cbd5e1" opacity=".75"/>' +
-              '<!-- Solar Sun Glint Reflection -->' +
-              '<path d="M68 50l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#ffffff"/>' +
-              '<rect x="8" y="120" width="124" height="16" rx="4" fill="rgba(0,0,0,0.75)"/>' +
-              '<text x="70" y="131" font-size="7.5" fill="#38bdf8" font-weight="900" text-anchor="middle">Galvanisasi Seng (Zn): Anoda Korban</text>' +
-              '</svg>';
-          }
-        } else {
-          // 3D Gate Wheel on Rail & Hinge Cylinder
-          if (!isDone) {
-            return '<svg viewBox="0 0 140 140">' +
-              '<defs>' +
-              '<linearGradient id="wheelMetal3d" x1="0" y1="0" x2="0" y2="1">' +
-              '<stop offset="0%" stop-color="#64748b"/><stop offset="45%" stop-color="#334155"/><stop offset="100%" stop-color="#0f172a"/>' +
-              '</linearGradient>' +
-              '<radialGradient id="rustDebris3d" cx="50%" cy="50%" r="50%">' +
-              '<stop offset="0%" stop-color="#ea580c"/><stop offset="70%" stop-color="#9a3412"/><stop offset="100%" stop-color="#451a03"/>' +
-              '</radialGradient>' +
-              '</defs>' +
-              '<rect width="140" height="140" fill="#0f172a"/>' +
-              '<!-- Floor Rail Track (Horizontal 3D Steel Bar) -->' +
-              '<rect x="0" y="96" width="140" height="24" fill="#334155"/>' +
-              '<rect x="0" y="92" width="140" height="6" fill="#64748b"/>' +
-              '<line x1="0" y1="94" x2="140" y2="94" stroke="#94a3b8" stroke-width="2"/>' +
-              '<!-- 3D Heavy Wheel sitting on track -->' +
-              '<circle cx="70" cy="62" r="38" fill="url(#wheelMetal3d)" stroke="#1e293b" stroke-width="3"/>' +
-              '<circle cx="70" cy="62" r="26" fill="#1e293b"/>' +
-              '<circle cx="70" cy="62" r="14" fill="#475569" stroke="#0f172a" stroke-width="2"/>' +
-              '<circle cx="70" cy="62" r="5" fill="#94a3b8"/>' +
-              '<!-- Abrasive Rust Grit & Friction Crusting in Contact Point -->' +
-              '<path d="M46 90 Q70 82 94 90 L92 98 Q70 94 48 98 Z" fill="url(#rustDebris3d)"/>' +
-              '<circle cx="56" cy="88" r="4" fill="#f97316"/>' +
-              '<circle cx="68" cy="86" r="5" fill="#c2410c"/>' +
-              '<circle cx="82" cy="88" r="4" fill="#f97316"/>' +
-              '<ellipse cx="70" cy="42" rx="10" ry="5" fill="#b45309"/>' +
-              '<!-- Friction Wear Scratches on Wheel Rim -->' +
-              '<line x1="42" y1="52" x2="50" y2="58" stroke="#f97316" stroke-width="2"/>' +
-              '<line x1="90" y1="54" x2="98" y2="48" stroke="#f97316" stroke-width="2"/>' +
-              '<path d="M36 82l-6-6M104 82l6-6" stroke="#fde047" stroke-width="2"/>' +
-              '<rect x="8" y="120" width="124" height="16" rx="4" fill="rgba(0,0,0,0.75)"/>' +
-              '<text x="70" y="131" font-size="7.5" fill="#fca5a5" font-weight="900" text-anchor="middle">Roda & Rel: Karat Gesekan Aus Macet</text>' +
-              '</svg>';
-          } else {
-            return '<svg viewBox="0 0 140 140">' +
-              '<defs>' +
-              '<linearGradient id="wheelClean3d" x1="0" y1="0" x2="0" y2="1">' +
-              '<stop offset="0%" stop-color="#94a3b8"/><stop offset="50%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/>' +
-              '</linearGradient>' +
-              '<radialGradient id="wetGrease3d" cx="40%" cy="40%" r="60%">' +
-              '<stop offset="0%" stop-color="#fef08a"/><stop offset="40%" stop-color="#fbbf24"/><stop offset="85%" stop-color="#d97706"/><stop offset="100%" stop-color="#92400e"/>' +
-              '</radialGradient>' +
-              '</defs>' +
-              '<rect width="140" height="140" fill="#0f172a"/>' +
-              '<!-- Polished Steel Rail -->' +
-              '<rect x="0" y="96" width="140" height="24" fill="#334155"/>' +
-              '<rect x="0" y="92" width="140" height="6" fill="#cbd5e1"/>' +
-              '<!-- Clean 3D Wheel -->' +
-              '<circle cx="70" cy="62" r="38" fill="url(#wheelClean3d)" stroke="#0f172a" stroke-width="2"/>' +
-              '<circle cx="70" cy="62" r="26" fill="#1e293b"/>' +
-              '<circle cx="70" cy="62" r="14" fill="#64748b"/>' +
-              '<!-- Wet Viscous Amber Grease Lubricant Film -->' +
-              '<path d="M42 90 Q70 82 98 90 L96 97 Q70 91 44 97 Z" fill="url(#wetGrease3d)"/>' +
-              '<circle cx="70" cy="62" r="8" fill="url(#wetGrease3d)" opacity=".9"/>' +
-              '<!-- Smooth Glide Motion Trails -->' +
-              '<path d="M30 62 Q70 42 110 62" stroke="#60a5fa" stroke-width="3" fill="none" stroke-linecap="round"/>' +
-              '<polygon points="110,62 102,56 104,66" fill="#60a5fa"/>' +
-              '<rect x="8" y="120" width="124" height="16" rx="4" fill="rgba(0,0,0,0.75)"/>' +
-              '<text x="70" y="131" font-size="7.5" fill="#fde047" font-weight="900" text-anchor="middle">Pelumas: Licin, Mulus & Bebas Aus</text>' +
-              '</svg>';
+          ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(bx, topY - 22); ctx.lineTo(bx - bW / 2, topY - 10);
+          ctx.lineTo(bx + bW / 2, topY - 10); ctx.closePath();
+          ctx.fillStyle = isR ? '#7c2d12' : '#1e293b'; ctx.fill();
+          if (isR) {
+            ctx.beginPath(); ctx.ellipse(bx, topY + (gndY - topY) * 0.4, bW * 0.8, 18, 0, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(249,115,22,0.35)'; ctx.fill();
           }
         }
+        ctx.fillStyle = '#3d2711'; ctx.fillRect(sX - 10, gndY - 4, fW + 20, 10);
+        // Flowers
+        [[sX + 30, gndY + 12], [sX + 90, gndY + 8], [W - sX - 50, gndY + 15]].forEach(function (f) {
+          ctx.beginPath(); ctx.arc(f[0], f[1], 6, 0, Math.PI * 2); ctx.fillStyle = '#f9a8d4'; ctx.fill();
+          ctx.beginPath(); ctx.moveTo(f[0], f[1] + 6); ctx.lineTo(f[0], f[1] + 20);
+          ctx.strokeStyle = '#16a34a'; ctx.lineWidth = 2; ctx.stroke();
+        });
+        adv3dArc(ctx, W, H, ry);
       }
 
-      var HOTSPOTS = {
-        garden: { key: 'garden', name: 'Pagar Besi Taman', x: 26, y: 64, desc: 'Karat terkelupas akibat cipratan air & tanah basah' },
-        field: { key: 'field', name: 'Tiang Gawang Logam', x: 52, y: 36, desc: 'Pitting corrosion akibat hujan terbuka & terik matahari' },
-        gate: { key: 'gate', name: 'Engsel & Rel Gerbang', x: 76, y: 72, desc: 'Karat gesekan mekanis menyebabkan macet & berdecit' }
-      };
-
-      function updatePlayerVisual(x, y, isWalking, flipLeft) {
-        var player = $('#advMapPlayer');
-        var sprite = $('#advPlayerSprite');
-        if (!player || !sprite) return;
-
-        player.style.left = x + '%';
-        player.style.top = y + '%';
-
-        if (isWalking) player.classList.add('walking');
-        else player.classList.remove('walking');
-
-        if (flipLeft === true) sprite.style.transform = 'scaleX(-1)';
-        else if (flipLeft === false) sprite.style.transform = 'scaleX(1)';
+      function adv3dField(ctx, W, H, rx, ry) {
+        var pX = ry * 1.2;
+        var sky = ctx.createLinearGradient(0, 0, 0, H * 0.5);
+        sky.addColorStop(0, '#60a5fa'); sky.addColorStop(1, '#bae6fd');
+        ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H * 0.5);
+        var gnd = ctx.createLinearGradient(0, H * 0.48, 0, H);
+        gnd.addColorStop(0, '#4ade80'); gnd.addColorStop(0.5, '#22c55e'); gnd.addColorStop(1, '#15803d');
+        ctx.fillStyle = gnd; ctx.fillRect(0, H * 0.48, W, H);
+        var gY = H * 0.52, gpX = W * 0.18, gpW = W * 0.28, gpH = H * 0.42;
+        var gpTop = gY - gpH;
+        var rg2 = ctx.createLinearGradient(gpX, 0, gpX + 10, 0);
+        rg2.addColorStop(0, '#7c2d12'); rg2.addColorStop(0.4, '#c2410c'); rg2.addColorStop(1, '#9a3412');
+        ctx.lineWidth = 10;
+        ctx.beginPath(); ctx.moveTo(gpX + pX * 0.1, gY); ctx.lineTo(gpX + pX * 0.1, gpTop); ctx.strokeStyle = rg2; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(gpX + gpW + pX * 0.1, gY); ctx.lineTo(gpX + gpW + pX * 0.1, gpTop); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(gpX + pX * 0.1, gpTop); ctx.lineTo(gpX + gpW + pX * 0.1, gpTop); ctx.stroke();
+        for (var ri = 0; ri < 4; ri++) {
+          ctx.beginPath(); ctx.arc(gpX + Math.random() * gpW + pX * 0.1, gpTop + Math.random() * gpH * 0.7, 4 + Math.random() * 5, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(249,115,22,0.5)'; ctx.fill();
+        }
+        var gpX2 = W * 0.74;
+        var mg2 = ctx.createLinearGradient(gpX2, 0, gpX2 + 12, 0);
+        mg2.addColorStop(0, '#475569'); mg2.addColorStop(0.5, '#cbd5e1'); mg2.addColorStop(1, '#94a3b8');
+        ctx.beginPath(); ctx.moveTo(gpX2, gY); ctx.lineTo(gpX2, gY - H * 0.5); ctx.lineWidth = 10; ctx.strokeStyle = mg2; ctx.stroke();
+        ctx.fillStyle = '#1e3a5f'; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText('GALVANIS', gpX2, gY - H * 0.52);
+        var bX = W * 0.46, bY = gY + H * 0.1;
+        ctx.fillStyle = '#7c2d12'; ctx.fillRect(bX, bY - 8, W * 0.14, 10);
+        ctx.fillStyle = '#5a3a1a'; ctx.fillRect(bX + 5, bY + 2, 10, 20); ctx.fillRect(bX + W * 0.14 - 15, bY + 2, 10, 20);
+        ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 2; ctx.setLineDash([8, 6]);
+        ctx.beginPath(); ctx.moveTo(W / 2, gY); ctx.lineTo(W / 2, H); ctx.stroke(); ctx.setLineDash([]);
+        adv3dArc(ctx, W, H, ry);
       }
 
-      function showTargetBeacon(x, y) {
-        var b = $('#advTargetBeacon');
-        if (!b) return;
-        b.style.left = x + '%';
-        b.style.top = y + '%';
-        b.style.display = 'block';
-      }
-
-      function hideTargetBeacon() {
-        var b = $('#advTargetBeacon');
-        if (b) b.style.display = 'none';
-      }
-
-      function startAdvGameLoop() {
-        if (animLoopId) cancelAnimationFrame(animLoopId);
-
-        function loop() {
-          if ($('#advMap').hidden) {
-            animLoopId = null;
-            return;
+      function adv3dGate(ctx, W, H, rx, ry) {
+        var pX = ry * 1.2;
+        var sky = ctx.createLinearGradient(0, 0, 0, H * 0.55);
+        sky.addColorStop(0, '#fbbf24'); sky.addColorStop(1, '#fde68a');
+        ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H * 0.55);
+        ctx.fillStyle = '#d97706'; ctx.fillRect(0, H * 0.54, W, H);
+        var gndY = H * 0.6, pW = 24, pLeft = W * 0.1, pRight = W * 0.88;
+        [pLeft, pRight].forEach(function (px) {
+          var pg = ctx.createLinearGradient(px, 0, px + pW, 0);
+          pg.addColorStop(0, '#6b7280'); pg.addColorStop(0.4, '#d1d5db'); pg.addColorStop(1, '#6b7280');
+          ctx.fillStyle = pg; ctx.fillRect(px + pX * 0.05, H * 0.08, pW, gndY - H * 0.08);
+          ctx.fillStyle = '#374151'; ctx.fillRect(px - 3 + pX * 0.05, H * 0.06, pW + 6, 10);
+        });
+        var panW = (W * 0.75) / 2, panTop = H * 0.12, panBot = gndY - 14, panH = panBot - panTop, bars = 6;
+        for (var half = 0; half < 2; half++) {
+          var panX = pLeft + pW + 4 + half * panW + pX * (half === 0 ? 0.08 : 0.12);
+          [panTop, panTop + panH * 0.33, panTop + panH * 0.66, panBot].forEach(function (ry2) {
+            var r2 = ctx.createLinearGradient(panX, ry2, panX + panW, ry2);
+            r2.addColorStop(0, '#1e293b'); r2.addColorStop(0.5, '#475569'); r2.addColorStop(1, '#1e293b');
+            ctx.fillStyle = r2; ctx.fillRect(panX, ry2, panW, 8);
+          });
+          for (var b = 0; b < bars; b++) {
+            var bx2 = panX + b * (panW / bars) + panW / bars / 2 - 5;
+            var isR2 = (half === 0 && (b === 1 || b === 4)) || (half === 1 && b === 2);
+            var vg = ctx.createLinearGradient(bx2, 0, bx2 + 10, 0);
+            if (isR2) { vg.addColorStop(0, '#7c2d12'); vg.addColorStop(0.5, '#c2410c'); vg.addColorStop(1, '#9a3412'); }
+            else { vg.addColorStop(0, '#1e293b'); vg.addColorStop(0.5, '#475569'); vg.addColorStop(1, '#334155'); }
+            ctx.fillStyle = vg; ctx.fillRect(bx2, panTop, 10, panH);
           }
+        }
+        var rg3 = ctx.createLinearGradient(0, gndY - 12, 0, gndY + 2);
+        rg3.addColorStop(0, '#d1d5db'); rg3.addColorStop(1, '#6b7280');
+        ctx.fillStyle = rg3; ctx.fillRect(pLeft, gndY - 12, pRight - pLeft + pW, 14);
+        var wX = pLeft + pW + panW + pX * 0.1, wY = gndY - 7;
+        ctx.beginPath(); ctx.arc(wX, wY, 11, 0, Math.PI * 2);
+        var wg = ctx.createRadialGradient(wX - 3, wY - 3, 2, wX, wY, 11);
+        wg.addColorStop(0, '#d97706'); wg.addColorStop(0.5, '#92400e'); wg.addColorStop(1, '#451a03');
+        ctx.fillStyle = wg; ctx.fill();
+        ctx.beginPath(); ctx.arc(wX, wY, 5, 0, Math.PI * 2); ctx.fillStyle = '#1e293b'; ctx.fill();
+        var hX = pLeft + pW + 4 + pX * 0.08;
+        [panTop + panH * 0.2, panTop + panH * 0.6].forEach(function (hY) {
+          var hg = ctx.createRadialGradient(hX, hY, 2, hX, hY, 10);
+          hg.addColorStop(0, '#fbbf24'); hg.addColorStop(0.4, '#c2410c'); hg.addColorStop(1, '#7c2d12');
+          ctx.beginPath(); ctx.arc(hX, hY, 10, 0, Math.PI * 2); ctx.fillStyle = hg; ctx.fill();
+          ctx.beginPath(); ctx.arc(hX, hY, 4, 0, Math.PI * 2); ctx.fillStyle = '#7c2d12'; ctx.fill();
+        });
+        adv3dArc(ctx, W, H, ry);
+      }
 
-          var dx = 0, dy = 0;
+      function adv3dArc(ctx, W, H, ry) {
+        ctx.save(); ctx.globalAlpha = 0.25; ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.arc(W * 0.5, H * 0.9, W * 0.42, Math.PI * 0.6, Math.PI * 2.4);
+        ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+      }
 
-          // Keyboard input
-          if (keysDown['w'] || keysDown['W'] || keysDown['ArrowUp']) dy -= 1;
-          if (keysDown['s'] || keysDown['S'] || keysDown['ArrowDown']) dy += 1;
-          if (keysDown['a'] || keysDown['A'] || keysDown['ArrowLeft']) dx -= 1;
-          if (keysDown['d'] || keysDown['D'] || keysDown['ArrowRight']) dx += 1;
-
-          // Target input from Touch Screen / Mouse Click / Drag
-          if (targetPos) {
-            var tdx = targetPos.x - curPlayerPos.x;
-            var tdy = targetPos.y - curPlayerPos.y;
-            var dist = Math.hypot(tdx, tdy);
-            if (dist > 1.2) {
-              dx = tdx / dist;
-              dy = tdy / dist;
+      /* ---- MAGNIFIER ---- */
+      function advInitMagnifier() {
+        var wrap = document.getElementById('adv3dViewerWrap');
+        var mag = document.getElementById('advMagnifier');
+        var toggle = document.getElementById('advMagToggle');
+        if (!wrap || !mag || !toggle) return;
+        advMagOn = false;
+        mag.classList.remove('visible');
+        toggle.className = 'adv-mag-toggle';
+        document.getElementById('advMagToggleLabel').textContent = 'OFF';
+        toggle.onclick = function () {
+          advMagOn = !advMagOn;
+          document.getElementById('advMagToggleLabel').textContent = advMagOn ? 'ON' : 'OFF';
+          toggle.classList.toggle('on', advMagOn);
+          if (!advMagOn) mag.classList.remove('visible');
+        };
+        function handleMove(clientX, clientY) {
+          if (!advMagOn) return;
+          var rect = wrap.getBoundingClientRect();
+          var px = ((clientX - rect.left) / rect.width) * 100;
+          var py = ((clientY - rect.top) / rect.height) * 100;
+          px = Math.max(5, Math.min(95, px));
+          py = Math.max(5, Math.min(95, py));
+          mag.style.left = px + '%'; mag.style.top = py + '%';
+          mag.classList.add('visible');
+          var area = ADV_AREAS[curAdvArea];
+          var nearest = null, bestD = 9999;
+          if (area && area.hotspots) {
+            area.hotspots.forEach(function (hs) {
+              var dx = hs.x - px, dy = hs.y - py, d = Math.sqrt(dx * dx + dy * dy);
+              if (d < bestD) { bestD = d; nearest = hs; }
+            });
+            if (bestD > 20) nearest = null;
+          }
+          var glassEl = document.getElementById('advMagnifierGlass');
+          if (glassEl) {
+            if (nearest) {
+              glassEl.innerHTML = nearest.magHtml || '<div style="width:100%;height:100%;background:#1e293b;"></div>';
             } else {
-              targetPos = null;
-              hideTargetBeacon();
-              checkProximityHotspots();
+              glassEl.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:0.65rem;text-align:center;padding:6px;">Gerakkan ke area yang dicurigai…</div>';
             }
           }
-
-          var moving = (dx !== 0 || dy !== 0);
-
-          if (moving) {
-            var len = Math.hypot(dx, dy);
-            if (len > 0) { dx /= len; dy /= len; }
-
-            var nextX = Math.max(14, Math.min(86, curPlayerPos.x + dx * MOVE_SPEED));
-            var nextY = Math.max(24, Math.min(84, curPlayerPos.y + dy * MOVE_SPEED));
-
-            var flip = (dx < -0.1) ? true : ((dx > 0.1) ? false : null);
-            curPlayerPos = { x: nextX, y: nextY };
-            updatePlayerVisual(nextX, nextY, true, flip);
-
-            // Hide popup while actively walking
-            var lens = $('#advLensPopup');
-            if (lens && !lens.hidden) lens.hidden = true;
-
-            // Proximity check on the go
-            checkProximityHotspots(true);
-          } else {
-            updatePlayerVisual(curPlayerPos.x, curPlayerPos.y, false, null);
-          }
-
-          animLoopId = requestAnimationFrame(loop);
         }
-
-        animLoopId = requestAnimationFrame(loop);
+        wrap.addEventListener('mousemove', function (e) { handleMove(e.clientX, e.clientY); });
+        wrap.addEventListener('touchmove', function (e) {
+          e.preventDefault();
+          if (e.touches.length > 0) handleMove(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: false });
       }
 
-      function checkProximityHotspots(whileMoving) {
-        var closest = null, minDist = 999;
-        Object.keys(HOTSPOTS).forEach(function (k) {
-          var hs = HOTSPOTS[k];
-          var d = Math.hypot(curPlayerPos.x - hs.x, curPlayerPos.y - hs.y);
-          if (d < minDist) { minDist = d; closest = hs; }
+      /* ---- 3D ROTATION ---- */
+      function advInit3dRotation() {
+        var wrap = document.getElementById('adv3dViewerWrap');
+        if (!wrap) return;
+        var dragging = false, lastX = 0, lastY = 0;
+        wrap.addEventListener('pointerdown', function (e) {
+          if (advMagOn) return;
+          dragging = true; lastX = e.clientX; lastY = e.clientY;
+          wrap.setPointerCapture(e.pointerId);
         });
+        wrap.addEventListener('pointermove', function (e) {
+          if (!dragging || advMagOn) return;
+          adv3dRotY += (e.clientX - lastX) * 0.4;
+          adv3dRotX += (e.clientY - lastY) * 0.25;
+          adv3dRotX = Math.max(-40, Math.min(50, adv3dRotX));
+          lastX = e.clientX; lastY = e.clientY;
+          adv3dDraw();
+        });
+        wrap.addEventListener('pointerup', function () { dragging = false; });
+        wrap.addEventListener('pointercancel', function () { dragging = false; });
+        wrap.addEventListener('touchstart', function (e) { if (e.touches.length === 1 && !advMagOn) dragging = true; }, { passive: true });
+        wrap.addEventListener('touchend', function () { dragging = false; });
+      }
 
-        // Trigger zoom if within 15% distance
-        if (minDist <= 15 && closest) {
-          if (!whileMoving || curActiveAreaHotspot !== closest.key) {
-            showMagnifierFor(closest);
+      /* ---- HOTSPOT OVERLAY ---- */
+      function advRenderHotspots(tagMode) {
+        var overlay = document.getElementById('advHotspotOverlay');
+        if (!overlay || !curAdvArea) return;
+        var area = ADV_AREAS[curAdvArea];
+        if (!area || !area.hotspots) return;
+        overlay.innerHTML = '';
+        overlay.style.pointerEvents = tagMode ? 'all' : 'none';
+        area.hotspots.forEach(function (hs) {
+          var size = 48;
+          var div = document.createElement('div');
+          div.className = 'adv-hotspot-area' + (tagMode ? ' ' + hs.type : '');
+          if (advTagged[hs.id]) div.classList.add('tagged', advTagged[hs.id]);
+          div.style.cssText = 'position:absolute;left:' + hs.x + '%;top:' + hs.y + '%;width:' + size + 'px;height:' + size + 'px;transform:translate(-50%,-50%);';
+          div.innerHTML = '<span class="adv-hotspot-icon">' + (advTagged[hs.id] ? (advTagged[hs.id] === 'rust' ? '🔴' : '✅') : (tagMode ? '?' : '')) + '</span>';
+          if (tagMode) {
+            div.style.pointerEvents = 'all';
+            div.onclick = function () {
+              if (!advTagged[hs.id]) advTagged[hs.id] = 'rust';
+              else if (advTagged[hs.id] === 'rust') advTagged[hs.id] = 'clean';
+              else delete advTagged[hs.id];
+              advRenderHotspots(tagMode);
+              tone([440, 554]);
+            };
           }
-        } else {
-          curActiveAreaHotspot = null;
-        }
+          overlay.appendChild(div);
+        });
       }
 
-      function showMagnifierFor(hs) {
-        curActiveAreaHotspot = hs.key;
-        var pr = getAdvProgress();
-        var isDone = !!pr[hs.key];
-        var lens = $('#advLensPopup');
-        if (!lens) return;
-
-        // Position adaptively so it never clips off-viewport
-        var topPos = hs.y < 50 ? (hs.y + 16) : (hs.y - 18);
-        lens.style.left = hs.x + '%';
-        lens.style.top = topPos + '%';
-
-        $('#advLensGlass').innerHTML = advLensDetailSVG(hs.key, isDone);
-        $('#advLensTitle').textContent = '🔍 ' + hs.name;
-        $('#advLensDesc').textContent = isDone ? '✓ Fasilitas ini sudah berhasil dilindungi dan bebas korosi!' : hs.desc;
-
-        var actBtn = $('#advLensActionBtn');
-        actBtn.textContent = isDone ? 'Lihat Fasilitas 🔎' : 'Amati & Selamatkan 🛠️';
-        actBtn.onclick = function () {
-          lens.hidden = true;
-          openAdvArea(hs.key);
-        };
-
-        lens.hidden = false;
-        tone([587, 784, 988]);
-      }
-
-      function setTargetCoord(clientX, clientY) {
-        var mapVp = $('#advMapViewport');
-        if (!mapVp) return;
-        var rect = mapVp.getBoundingClientRect();
-        var xPct = Math.max(14, Math.min(86, ((clientX - rect.left) / rect.width) * 100));
-        var yPct = Math.max(24, Math.min(84, ((clientY - rect.top) / rect.height) * 100));
-        targetPos = { x: xPct, y: yPct };
-        showTargetBeacon(xPct, yPct);
-        tone([380, 420]);
-      }
-
-      function walkToAreaHotspot(areaKey) {
-        var hs = HOTSPOTS[areaKey];
-        if (!hs) return;
-        targetPos = { x: hs.x, y: hs.y };
-        showTargetBeacon(hs.x, hs.y);
-        tone([440, 554]);
-      }
-
-      function openAdvMap() {
-        var pr = getAdvProgress();
-        if ($('#advPlayerSprite') && !$('#advPlayerSprite').innerHTML) {
-          $('#advPlayerSprite').innerHTML = advMiniExplorerSVG();
-        }
-        updatePlayerVisual(curPlayerPos.x, curPlayerPos.y, false, false);
-        if ($('#advLensPopup')) $('#advLensPopup').hidden = true;
-        hideTargetBeacon();
-        targetPos = null;
-
-        var doneCount = (pr.garden ? 1 : 0) + (pr.field ? 1 : 0) + (pr.gate ? 1 : 0);
-        var pct = Math.round((doneCount / 3) * 100);
-
-        $('#advMapProgFill').style.width = pct + '%';
-        $('#advMapProgLabel').textContent = 'Progres: ' + doneCount + '/3 Fasilitas Diselamatkan (' + pct + '%)';
-        $('#advMapSvgHost').innerHTML = advSchoolMapSVG(pr);
-
-        function updatePin(elId, stId, isDone) {
-          var b = $('#' + elId), s = $('#' + stId);
-          if (!b || !s) return;
-          if (isDone) {
-            b.className = 'adv-pin-btn done';
-            s.textContent = '✓ Aman';
-          } else {
-            b.className = 'adv-pin-btn urgent';
-            s.textContent = '⚠️ Karat!';
-          }
-        }
-        updatePin('pinGarden', 'pinGardenStatus', pr.garden);
-        updatePin('pinField', 'pinFieldStatus', pr.field);
-        updatePin('pinGate', 'pinGateStatus', pr.gate);
-
-        show('advMap');
-        startAdvGameLoop();
-
-        // Focus map viewport so keyboard WASD works immediately
-        var vp = $('#advMapViewport');
-        if (vp) vp.focus();
-
-        if (doneCount === 3) {
-          tone([523, 659, 784, 1046]);
-        }
-      }
-
-      function openAdvArea(areaKey) {
-        curAdvArea = areaKey;
-        curAdvOpt = -1;
-        var area = ADV_AREAS[areaKey];
-        var pr = getAdvProgress();
-        var isDone = !!pr[areaKey];
-
-        $('#advPlayTitle').textContent = area.title;
-        $('#advInspectObj').textContent = 'Objek: ' + area.obj;
-        $('#advInspectDesc').textContent = area.desc;
-
-        renderAdvScene(isDone);
-
-        var html = area.opts.map(function (opt, idx) {
-          return '<div class="adv-opt-item" data-idx="' + idx + '">' +
-            '<div class="adv-opt-head">' +
-            '<span>' + (idx + 1) + '. ' + esc(opt.name) + '</span>' +
-            '</div>' +
-            '<div class="adv-opt-desc">' + esc(opt.desc) + '</div>' +
-            '<div class="adv-opt-grid-2x2">' +
-            '<div class="m-card"><span class="m-pill m-eff">🎯 Efektivitas</span><span class="m-val">' + esc(opt.eff) + '</span></div>' +
-            '<div class="m-card"><span class="m-pill m-cost">💰 Biaya</span><span class="m-val">' + esc(opt.cost) + '</span></div>' +
-            '<div class="m-card"><span class="m-pill m-dur">⏱️ Ketahanan</span><span class="m-val">' + esc(opt.dur) + '</span></div>' +
-            '<div class="m-card"><span class="m-pill m-env">🌿 Lingkungan</span><span class="m-val">' + esc(opt.env) + '</span></div>' +
-            '</div>' +
-            '</div>';
+      /* ---- STEP BAR ---- */
+      function advRenderSteps() {
+        var area = ADV_AREAS[curAdvArea];
+        var bar = document.getElementById('advStepsBar');
+        if (!bar || !area) return;
+        bar.innerHTML = area.steps.map(function (s, i) {
+          var cls = i < curAdvStep ? 'done' : (i === curAdvStep ? 'active' : '');
+          return (i > 0 ? '<span class="adv-step-arrow">›</span>' : '') +
+            '<span class="adv-step-pill ' + cls + '">' + s.label + '</span>';
         }).join('');
+      }
 
-        $('#advOptionsList').innerHTML = html;
+      /* ---- RUN STEP ---- */
+      function advRunStep(stepIdx) {
+        var area = ADV_AREAS[curAdvArea];
+        if (!area || !area.steps[stepIdx]) return;
+        curAdvStep = stepIdx;
+        var step = area.steps[stepIdx];
+        advSetText('advActivityTitle', step.title);
+        advHideFb();
+        advRenderSteps();
+        advShowBtn('advCheckBtn', false);
+        advShowBtn('advNextStepBtn', true);
+        advShowBtn('advFinishAreaBtn', false);
+        advSetText('advNextStepBtn', 'Lanjut →');
+        // Reset onclick
+        document.getElementById('advNextStepBtn').onclick = function () { advRunStep(stepIdx + 1); };
+        // Dispatch
+        var fn = 'advStep_' + curAdvArea + '_' + step.id;
+        if (typeof window[fn] === 'function') window[fn](area, step, stepIdx);
+        else if (step.id === 'result') advShowResult(area);
+        adv3dDraw();
+      }
 
-        var fb = $('#advFeedbackBox');
-        fb.className = 'adv-feedback-box';
-        fb.innerHTML = '';
+      /* ===========================================
+         STEP HANDLERS – GARDEN
+         =========================================== */
+      window.advStep_garden_observe = function (area) {
+        advRenderHotspots(false);
+        advSetContent('advActivityContent', '');
+        advSetText('advActivityInstruction', 'Seret objek untuk memutar pagar dari berbagai sudut. Aktifkan Kaca Pembesar dan gerakkan ke seluruh permukaan untuk memeriksa detail logam. Perhatikan warna, tekstur, dan kondisi tiap bagian pagar!');
+        advSetText('advNextStepBtn', 'Siap Temukan Korosi →');
+        document.getElementById('advNextStepBtn').onclick = function () { advTagged = {}; advRunStep(1); };
+      };
 
-        if (isDone) {
-          $('#advApplyBtn').hidden = true;
-          $('#advNextAreaBtn').hidden = false;
-          $('#advNextAreaBtn').textContent = 'Area ini Sudah Tuntas! Kembali ke Peta 🗺️';
-          $('#advHotspotBtn').hidden = true;
-        } else {
-          $('#advApplyBtn').hidden = false;
-          $('#advNextAreaBtn').hidden = true;
-          $('#advHotspotBtn').hidden = false;
+      window.advStep_garden_find = function (area) {
+        advRenderHotspots(true);
+        advSetText('advActivityInstruction', 'Klik bagian pagar yang menurutmu mengalami KOROSI (tandai 🔴) dan yang MASIH BAIK (tandai ✅). Tekan lagi untuk mengganti tag. Gunakan Kaca Pembesar untuk membantu!');
+        advSetContent('advActivityContent', '<p style="font-size:0.8rem;color:#5a2e04;margin:0;">Klik hotspot di objek untuk memberi tag. Tekan "Periksa Jawaban" setelah selesai.</p>');
+        advShowBtn('advCheckBtn', true);
+        document.getElementById('advCheckBtn').onclick = function () {
+          var ok = 0;
+          area.hotspots.forEach(function (hs) { if (advTagged[hs.id] === hs.type) ok++; });
+          if (ok === area.hotspots.length) {
+            advTotalScore += 20; advUpdateScore(); tone([523, 659, 784, 1046]);
+            advShowFb('success', '<b>🎉 Luar Biasa!</b> Semua bagian diidentifikasi tepat! Sambungan jeruji dan batang bawah paling mudah korosi karena kontak langsung dengan air dan tanah basah — keduanya berfungsi sebagai elektrolit yang mempercepat reaksi redoks.');
+            advShowBtn('advCheckBtn', false);
+            advSetText('advNextStepBtn', 'Identifikasi Proses →');
+            document.getElementById('advNextStepBtn').onclick = function () { advRunStep(2); };
+          } else {
+            tone([330, 262]);
+            advShowFb('warning', '<b>⚠️ Belum Semua Tepat</b> (' + ok + '/' + area.hotspots.length + '). Gunakan Kaca Pembesar lebih teliti! Perhatikan warna kemerahan-cokelat dan tekstur kasar yang menandai korosi.');
+          }
+        };
+        document.getElementById('advNextStepBtn').onclick = function () { advRunStep(2); };
+      };
+
+      window.advStep_garden_identify = function (area) {
+        advRenderHotspots(false);
+        var pairs = area.matchPairs;
+        advPairSelected = { left: null, right: null };
+        advPairMatched = {};
+        advSetText('advActivityInstruction', 'Pasangkan setiap konsep di kiri dengan penjelasannya di kanan! Klik satu item di kiri, lalu klik pasangannya di kanan.');
+        function renderPairs() {
+          var lHtml = pairs.map(function (p, i) {
+            var cls = advPairMatched[p.key] ? 'matched' : (advPairSelected.left === i ? 'selected' : '');
+            return '<div class="adv-id-item ' + cls + '" data-side="L" data-idx="' + i + '">' + advEsc(p.left) + '</div>';
+          }).join('');
+          var rHtml = pairs.map(function (p, i) {
+            var cls = advPairMatched[p.key] ? 'matched' : (advPairSelected.right === i ? 'selected' : '');
+            return '<div class="adv-id-item ' + cls + '" data-side="R" data-idx="' + i + '">' + advEsc(p.right) + '</div>';
+          }).join('');
+          advSetContent('advPairsLeft', lHtml);
+          advSetContent('advPairsRight', rHtml);
+          document.querySelectorAll('.adv-id-item[data-side]').forEach(function (el) {
+            if (el.classList.contains('matched')) return;
+            el.onclick = function () {
+              var side = el.dataset.side, idx = +el.dataset.idx;
+              if (side === 'L') advPairSelected.left = idx; else advPairSelected.right = idx;
+              if (advPairSelected.left !== null && advPairSelected.right !== null) {
+                var lp = pairs[advPairSelected.left], rp = pairs[advPairSelected.right];
+                if (lp.key === rp.key) { advPairMatched[lp.key] = true; advTotalScore += 5; advUpdateScore(); tone([554, 659]); }
+                else { tone([330, 262]); }
+                advPairSelected = { left: null, right: null };
+                renderPairs();
+                if (Object.keys(advPairMatched).length === pairs.length) {
+                  advTotalScore += 10; advUpdateScore();
+                  advShowFb('success', '<b>🧪 Sempurna!</b> Semua pasangan cocok! Korosi = reaksi elektrokimia: anoda (besi) → Fe → Fe²⁺ + 2e⁻. Katoda (oksigen) → O₂ + 4e⁻ + 2H₂O → 4OH⁻. Hasilnya: Fe₂O₃·nH₂O (karat merah).');
+                  advSetText('advNextStepBtn', 'Pilih Tindakan →');
+                  document.getElementById('advNextStepBtn').onclick = function () { advRunStep(3); };
+                }
+              } else renderPairs();
+            };
+          });
         }
+        advSetContent('advActivityContent', '<div class="adv-id-pairs"><div class="adv-id-left" id="advPairsLeft"></div><div class="adv-id-right" id="advPairsRight"></div></div>');
+        renderPairs();
+        advShowBtn('advCheckBtn', false);
+        advShowBtn('advNextStepBtn', false);
+      };
 
-        var items = document.querySelectorAll('.adv-opt-item');
-        Array.prototype.forEach.call(items, function (item) {
-          item.onclick = function () {
-            Array.prototype.forEach.call(items, function (it) { it.classList.remove('selected'); });
-            item.classList.add('selected');
-            curAdvOpt = +item.dataset.idx;
-            tone([440, 554]);
+      window.advStep_garden_decide = function (area) {
+        advRenderHotspots(false);
+        advDecisionMade = false;
+        advSetText('advActivityInstruction', 'Pilih tindakan penanganan yang PALING TEPAT untuk pagar taman sekolah! Pertimbangkan efektivitas, biaya, dan dampak lingkungan.');
+        advSetContent('advActivityContent', '<div class="adv-decision-visual-grid">' +
+          area.decisions.map(function (d, i) {
+            return '<div class="adv-dec-card" data-idx="' + i + '"><span class="adv-dec-visual">' + d.icon + '</span>' +
+              '<span class="adv-dec-name">' + advEsc(d.name) + '</span>' +
+              '<div style="margin-top:5px;">' + d.tags.map(function (t) {
+                var c = t.includes('Efek') ? 'eff' : (t.includes('Biaya') ? 'cost' : 'env');
+                return '<span class="adv-dec-tag ' + c + '">' + advEsc(t) + '</span>';
+              }).join(' ') + '</div></div>';
+          }).join('') + '</div>');
+        advShowBtn('advCheckBtn', false); advShowBtn('advNextStepBtn', false);
+        document.querySelectorAll('.adv-dec-card').forEach(function (card) {
+          card.onclick = function () {
+            if (advDecisionMade) return; advDecisionMade = true;
+            var idx = +card.dataset.idx, dec = area.decisions[idx];
+            document.querySelectorAll('.adv-dec-card').forEach(function (c) { c.classList.remove('selected'); });
+            card.classList.add(dec.ok ? 'correct' : 'wrong');
+            if (dec.ok) { advTotalScore += 25; advUpdateScore(); tone([523, 659, 784, 1046]); advShowFb('success', '<b>✅ ' + advEsc(dec.name) + ':</b> ' + advEsc(dec.why)); }
+            else {
+              tone([330, 262]); advShowFb('warning', '<b>⚠️ ' + advEsc(dec.name) + ':</b> ' + advEsc(dec.why));
+              setTimeout(function () { document.querySelectorAll('.adv-dec-card').forEach(function (c, ci) { if (area.decisions[ci].ok) c.classList.add('correct'); }); }, 1200);
+            }
+            advShowBtn('advNextStepBtn', true); advSetText('advNextStepBtn', 'Lihat Hasil →');
+            document.getElementById('advNextStepBtn').onclick = function () { advRunStep(4); };
           };
         });
+      };
 
+      window.advStep_garden_result = function (area) { advShowResult(area); };
+
+      /* ===========================================
+         STEP HANDLERS – FIELD
+         =========================================== */
+      window.advStep_field_observe = function (area) {
+        advRenderHotspots(false);
+        advSetContent('advActivityContent', '');
+        advSetText('advActivityInstruction', 'Putar objek untuk mengamati peralatan lapangan dari berbagai sudut. Aktifkan Kaca Pembesar dan periksa kondisi tiang gawang, bangku besi, dan tiang galvanis. Catat perbedaan kondisi tiap objek!');
+        advSetText('advNextStepBtn', 'Bandingkan Kondisi →');
+        document.getElementById('advNextStepBtn').onclick = function () { advRunStep(1); };
+      };
+
+      window.advStep_field_compare = function (area) {
+        advRenderHotspots(true);
+        advSetText('advActivityInstruction', 'Gunakan Kaca Pembesar untuk memeriksa masing-masing objek. Perhatikan perbedaan kondisi dan faktor korosi pada tiap peralatan lapangan!');
+        advSetContent('advActivityContent', '<div style="display:flex;flex-direction:column;gap:8px;">' +
+          area.compareObjects.map(function (o) {
+            var bars = '';
+            for (var bi = 0; bi < 3; bi++) bars += '<span style="display:inline-block;width:16px;height:10px;border-radius:3px;margin-right:3px;background:' + (bi < o.level ? '#ef4444' : '#d1d5db') + ';"></span>';
+            return '<div style="display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #d0c2ad;border-radius:12px;padding:9px 12px;">' +
+              '<span style="font-size:1.6rem;">' + o.icon + '</span>' +
+              '<div style="flex:1;"><b style="font-size:0.85rem;">' + advEsc(o.name) + '</b><br>' +
+              '<span style="font-size:0.76rem;color:#78350f;">Kondisi: ' + advEsc(o.kondisi) + '</span>' +
+              '<div style="margin-top:3px;">' + bars + '<span style="font-size:0.72rem;color:#ef4444;margin-left:4px;">Tingkat korosi</span></div>' +
+              '<div style="font-size:0.72rem;color:#5a2e04;margin-top:2px;">Faktor: ' + advEsc(o.faktor) + '</div></div></div>';
+          }).join('') + '</div>');
+        advShowBtn('advCheckBtn', false);
+        advSetText('advNextStepBtn', 'Identifikasi Faktor →');
+        document.getElementById('advNextStepBtn').onclick = function () { advRunStep(2); };
+      };
+
+      window.advStep_field_factors = function (area) {
+        advSetText('advActivityInstruction', 'Pilih semua faktor yang MEMPERCEPAT korosi tiang gawang di lapangan terbuka. Hati-hati, ada yang bukan faktor utama!');
+        advSetContent('advActivityContent',
+          '<p style="font-size:0.8rem;color:#5a2e04;margin:0 0 8px;">Centang faktor-faktor yang mempercepat korosi tiang gawang:</p>' +
+          '<div class="adv-drag-area">' +
+          area.factorItems.map(function (item) {
+            return '<label style="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border:2px solid #d0c2ad;border-radius:999px;background:#fff;cursor:pointer;font-size:0.8rem;font-weight:800;">' +
+              '<input type="checkbox" value="' + advEsc(item) + '" style="accent-color:#f59e0b;width:14px;height:14px;"> ' + advEsc(item) + '</label>';
+          }).join('') + '</div>');
+        advShowBtn('advCheckBtn', true);
+        document.getElementById('advCheckBtn').onclick = function () {
+          var checked = Array.from(document.querySelectorAll('.adv-drag-area input:checked')).map(function (cb) { return cb.value; });
+          var cSet = new Set(area.factorCorrect), sSet = new Set(checked);
+          var allOk = area.factorCorrect.every(function (c) { return sSet.has(c); });
+          var noWrong = checked.every(function (c) { return cSet.has(c); });
+          if (allOk && noWrong) {
+            advTotalScore += 15; advUpdateScore(); tone([523, 659, 784]);
+            advShowFb('success', '<b>🌦️ Tepat!</b> Air hujan/asam (elektrolit), sinar UV (merusak lapisan), kelembapan (menjaga elektrolit aktif), garam mineral (meningkatkan konduktivitas), dan benturan fisik (menghilangkan oksida pelindung) semuanya mempercepat korosi tiang gawang. Suhu tinggi di siang hari justru mengeringkan air sehingga menghambat korosi.');
+            advShowBtn('advCheckBtn', false);
+            advSetText('advNextStepBtn', 'Prediksi Dampak →');
+            document.getElementById('advNextStepBtn').onclick = function () { advRunStep(3); };
+          } else {
+            tone([330, 262]);
+            advShowFb('warning', '<b>⚠️ Belum Tepat.</b> Periksa ulang: apakah semua faktor yang dipilih benar-benar mempercepat korosi tiang di lapangan terbuka? Suhu tinggi di siang hari justru membantu mengeringkan air sehingga menghambat korosi.');
+          }
+        };
+        document.getElementById('advNextStepBtn').onclick = function () { advRunStep(3); };
+      };
+
+      window.advStep_field_predict = function (area) {
+        advSetText('advActivityInstruction', 'Berdasarkan pemahamanmu tentang faktor korosi, pilih SATU pernyataan yang paling BENAR:');
+        advSetContent('advActivityContent', area.predictOptions.map(function (o, i) {
+          return '<div class="adv-id-item" data-idx="' + i + '" style="text-align:left;padding:10px 14px;margin-bottom:7px;cursor:pointer;border-radius:12px;">' + advEsc(o.text) + '</div>';
+        }).join(''));
+        advShowBtn('advCheckBtn', false); advShowBtn('advNextStepBtn', false);
+        document.querySelectorAll('.adv-id-item[data-idx]').forEach(function (el) {
+          el.onclick = function () {
+            var idx = +el.dataset.idx, opt = area.predictOptions[idx];
+            document.querySelectorAll('.adv-id-item[data-idx]').forEach(function (e) { e.classList.remove('selected', 'matched', 'error'); });
+            el.classList.add(opt.correct ? 'matched' : 'error');
+            if (opt.correct) {
+              advTotalScore += 10; advUpdateScore(); tone([523, 659, 784]);
+              advShowFb('success', '<b>🔮 Prediksi Tepat!</b> Hujan lebih asam (pH rendah, [H⁺] tinggi) meningkatkan konduktivitas elektrolit dan mempercepat reaksi katodik: O₂ + 4H⁺ + 4e⁻ → 2H₂O, sehingga korosi pada tiang yang tidak terlindungi semakin masif.');
+            } else {
+              tone([330, 262]);
+              advShowFb('warning', '<b>⚠️ Kurang Tepat.</b> Cat biasa adalah pelindung PASIF tanpa anoda korban — begitu retak, besi langsung korosi lagi. Lapisan Zn memang habis bertahap (anoda korban aktif) tetapi melindungi secara elektrokimia meski permukaannya tergores.');
+            }
+            advShowBtn('advNextStepBtn', true); advSetText('advNextStepBtn', 'Pilih Pencegahan →');
+            document.getElementById('advNextStepBtn').onclick = function () { advRunStep(4); };
+          };
+        });
+      };
+
+      window.advStep_field_decide = function (area) {
+        advDecisionMade = false;
+        advRenderHotspots(false);
+        advSetText('advActivityInstruction', 'Pilih metode pencegahan TERBAIK untuk tiang gawang di lapangan terbuka yang sering terbentur bola dan kena hujan langsung!');
+        advSetContent('advActivityContent', '<div class="adv-decision-visual-grid">' +
+          area.decisions.map(function (d, i) {
+            return '<div class="adv-dec-card" data-idx="' + i + '"><span class="adv-dec-visual">' + d.icon + '</span>' +
+              '<span class="adv-dec-name">' + advEsc(d.name) + '</span>' +
+              '<div style="margin-top:5px;">' + d.tags.map(function (t) {
+                var c = t.includes('Ketah') ? 'eff' : (t.includes('Biaya') ? 'cost' : 'env');
+                return '<span class="adv-dec-tag ' + c + '">' + advEsc(t) + '</span>';
+              }).join(' ') + '</div></div>';
+          }).join('') + '</div>');
+        advShowBtn('advCheckBtn', false); advShowBtn('advNextStepBtn', false);
+        document.querySelectorAll('.adv-dec-card').forEach(function (card) {
+          card.onclick = function () {
+            if (advDecisionMade) return; advDecisionMade = true;
+            var idx = +card.dataset.idx, dec = area.decisions[idx];
+            document.querySelectorAll('.adv-dec-card').forEach(function (c) { c.classList.remove('selected'); });
+            card.classList.add(dec.ok ? 'correct' : 'wrong');
+            if (dec.ok) { advTotalScore += 25; advUpdateScore(); tone([523, 659, 784, 1046]); advShowFb('success', '<b>✅ ' + advEsc(dec.name) + ':</b> ' + advEsc(dec.why)); }
+            else {
+              tone([330, 262]); advShowFb('warning', '<b>⚠️ ' + advEsc(dec.name) + ':</b> ' + advEsc(dec.why));
+              setTimeout(function () { document.querySelectorAll('.adv-dec-card').forEach(function (c, ci) { if (area.decisions[ci].ok) c.classList.add('correct'); }); }, 1200);
+            }
+            advShowBtn('advNextStepBtn', true); advSetText('advNextStepBtn', 'Lihat Hasil →');
+            document.getElementById('advNextStepBtn').onclick = function () { advRunStep(5); };
+          };
+        });
+      };
+
+      window.advStep_field_result = function (area) { advShowResult(area); };
+
+      /* ===========================================
+         STEP HANDLERS – GATE
+         =========================================== */
+      window.advStep_gate_observe = function (area) {
+        advRenderHotspots(false);
+        advSetContent('advActivityContent', '');
+        advSetText('advActivityInstruction', 'Putar dan amati gerbang geser sekolah dari berbagai sudut. Aktifkan Kaca Pembesar untuk memeriksa kondisi engsel, roda rel, sambungan las, dan panel besi secara mendetail. Mana bagian yang paling bermasalah?');
+        advSetText('advNextStepBtn', 'Temukan Masalah →');
+        document.getElementById('advNextStepBtn').onclick = function () { advTagged = {}; advRunStep(1); };
+      };
+
+      window.advStep_gate_find = function (area) {
+        advRenderHotspots(true);
+        advSetText('advActivityInstruction', 'Klik bagian gerbang yang menurutmu mengalami korosi (🔴) dan yang masih baik (✅). Gunakan Kaca Pembesar untuk memeriksa lebih dekat!');
+        advSetContent('advActivityContent', '<p style="font-size:0.8rem;color:#5a2e04;margin:0 0 8px;">Klik hotspot untuk memberi tanda: 🔴 Berkarat / ✅ Masih Baik</p>');
+        advShowBtn('advCheckBtn', true);
+        document.getElementById('advCheckBtn').onclick = function () {
+          var ok = 0;
+          area.hotspots.forEach(function (hs) { if (advTagged[hs.id] === hs.type) ok++; });
+          if (ok >= area.hotspots.length - 1) {
+            advTotalScore += 20; advUpdateScore(); tone([523, 659, 784]);
+            advShowFb('success', '<b>🎯 Hebat!</b> ' + ok + '/' + area.hotspots.length + ' bagian diidentifikasi dengan benar! Engsel, roda rel, dan sambungan las adalah tiga titik paling rentan karena gesekan mekanis + paparan air tanah + tegangan sisa pengelasan.');
+            advShowBtn('advCheckBtn', false);
+            advSetText('advNextStepBtn', 'Analisis Penyebab →');
+            document.getElementById('advNextStepBtn').onclick = function () { advRunStep(2); };
+          } else {
+            tone([330, 262]);
+            advShowFb('warning', '<b>⚠️ Masih Ada yang Keliru</b> (' + ok + '/' + area.hotspots.length + '). Periksa lebih teliti bagian yang sering bergerak dan yang langsung bersentuhan dengan tanah!');
+          }
+        };
+        document.getElementById('advNextStepBtn').onclick = function () { advRunStep(2); };
+      };
+
+      window.advStep_gate_identify = function (area) {
+        advRenderHotspots(false);
+        var facts = area.analysisFacts;
+        var selFacts = {};
+        advSetText('advActivityInstruction', 'Dari pernyataan-pernyataan berikut, pilih yang BENAR-BENAR menyebabkan atau mempercepat korosi pada gerbang sekolah (bisa lebih dari satu):');
+        function renderFacts() {
+          var html = facts.map(function (f, i) {
+            var cls = selFacts[i] ? (f.isCorrect ? 'matched' : 'error') : '';
+            return '<div class="adv-id-item ' + cls + '" data-idx="' + i + '" style="text-align:left;padding:9px 12px;cursor:pointer;margin-bottom:6px;">' + f.icon + ' ' + advEsc(f.text) + '</div>';
+          }).join('');
+          document.getElementById('advFactsList').innerHTML = html;
+          document.querySelectorAll('.adv-id-item[data-idx]').forEach(function (el) {
+            el.onclick = function () { var idx = +el.dataset.idx; selFacts[idx] = !selFacts[idx]; renderFacts(); };
+          });
+        }
+        advSetContent('advActivityContent', '<div id="advFactsList"></div>');
+        renderFacts();
+        advShowBtn('advCheckBtn', true);
+        document.getElementById('advCheckBtn').onclick = function () {
+          var cOk = 0, wrong = 0;
+          facts.forEach(function (f, i) { if (f.isCorrect && selFacts[i]) cOk++; if (!f.isCorrect && selFacts[i]) wrong++; });
+          var maxC = facts.filter(function (f) { return f.isCorrect; }).length;
+          if (cOk === maxC && wrong === 0) {
+            advTotalScore += 15; advUpdateScore(); tone([523, 659, 784]);
+            advShowFb('success', '<b>🧪 Analisis Sempurna!</b> Gesekan mekanis menghilangkan lapisan oksida pelindung, kelembapan konstan di roda rel menyediakan elektrolit, dan dua logam berbeda (misalnya besi-tembaga) memicu korosi galvanik. Suhu tinggi di siang hari justru mengeringkan air → menghambat korosi.');
+            advShowBtn('advCheckBtn', false);
+            advSetText('advNextStepBtn', 'Pilih Tindakan →');
+            document.getElementById('advNextStepBtn').onclick = function () { advRunStep(3); };
+          } else {
+            tone([330, 262]);
+            advShowFb('warning', '<b>⚠️ Periksa Ulang.</b> Apakah semua penyebab sudah dipilih? Apakah ada yang bukan penyebab namun dipilih? Suhu tinggi membantu mengeringkan permukaan, bukan mempercepat korosi secara langsung.');
+          }
+        };
+        document.getElementById('advNextStepBtn').onclick = function () { advRunStep(3); };
+      };
+
+      window.advStep_gate_decide = function (area) {
+        advDecisionMade = false;
+        advRenderHotspots(false);
+        advSetText('advActivityInstruction', 'Pilih tindakan PALING TEPAT untuk mengatasi korosi pada engsel dan roda rel gerbang yang bergerak setiap hari!');
+        advSetContent('advActivityContent', '<div class="adv-decision-visual-grid">' +
+          area.decisions.map(function (d, i) {
+            return '<div class="adv-dec-card" data-idx="' + i + '"><span class="adv-dec-visual">' + d.icon + '</span>' +
+              '<span class="adv-dec-name">' + advEsc(d.name) + '</span>' +
+              '<div style="margin-top:5px;">' + d.tags.map(function (t) {
+                var c = t.includes('Efek') ? 'eff' : (t.includes('Biaya') ? 'cost' : 'env');
+                return '<span class="adv-dec-tag ' + c + '">' + advEsc(t) + '</span>';
+              }).join(' ') + '</div></div>';
+          }).join('') + '</div>');
+        advShowBtn('advCheckBtn', false); advShowBtn('advNextStepBtn', false);
+        document.querySelectorAll('.adv-dec-card').forEach(function (card) {
+          card.onclick = function () {
+            if (advDecisionMade) return; advDecisionMade = true;
+            var idx = +card.dataset.idx, dec = area.decisions[idx];
+            document.querySelectorAll('.adv-dec-card').forEach(function (c) { c.classList.remove('selected'); });
+            card.classList.add(dec.ok ? 'correct' : 'wrong');
+            if (dec.ok) { advTotalScore += 25; advUpdateScore(); tone([523, 659, 784, 1046]); advShowFb('success', '<b>✅ ' + advEsc(dec.name) + ':</b> ' + advEsc(dec.why)); }
+            else {
+              tone([330, 262]); advShowFb('warning', '<b>⚠️ ' + advEsc(dec.name) + ':</b> ' + advEsc(dec.why));
+              setTimeout(function () { document.querySelectorAll('.adv-dec-card').forEach(function (c, ci) { if (area.decisions[ci].ok) c.classList.add('correct'); }); }, 1200);
+            }
+            advShowBtn('advNextStepBtn', true); advSetText('advNextStepBtn', 'Pertimbangkan 4 Dimensi →');
+            document.getElementById('advNextStepBtn').onclick = function () { advRunStep(4); };
+          };
+        });
+      };
+
+      window.advStep_gate_consider = function (area) {
+        advSustainAnswers = {};
+        var pillars = area.sustainPillars;
+        advSetText('advActivityInstruction', 'Untuk setiap dimensi keberlanjutan, pilih pernyataan yang paling tepat menggambarkan keunggulan pelumasan gemuk tahan air:');
+        function renderPillars() {
+          var html = pillars.map(function (p, pi) {
+            var answered = advSustainAnswers[pi] !== undefined;
+            return '<div style="margin-bottom:14px;"><b style="font-size:0.85rem;">' + p.icon + ' ' + advEsc(p.name) + ':</b><br>' +
+              '<div style="font-size:0.78rem;color:#5a2e04;margin:3px 0 5px;">' + advEsc(p.q) + '</div>' +
+              p.opts.map(function (opt, oi) {
+                var isAns = advSustainAnswers[pi] === oi;
+                var cls = isAns ? (oi === p.correct ? 'matched' : 'error') : '';
+                return '<div class="adv-id-item ' + cls + '" data-pi="' + pi + '" data-oi="' + oi + '" style="text-align:left;padding:7px 10px;margin-bottom:4px;cursor:' + (answered ? 'default' : 'pointer') + ';font-size:0.8rem;">' + advEsc(opt) + '</div>';
+              }).join('') + '</div>';
+          }).join('');
+          document.getElementById('advPillarContent').innerHTML = html;
+          document.querySelectorAll('.adv-id-item[data-pi]').forEach(function (el) {
+            var pi = +el.dataset.pi;
+            if (advSustainAnswers[pi] !== undefined) return;
+            el.onclick = function () {
+              var oi = +el.dataset.oi;
+              advSustainAnswers[pi] = oi;
+              if (oi === pillars[pi].correct) { advTotalScore += 5; advUpdateScore(); tone([554, 659]); }
+              else tone([330, 262]);
+              renderPillars();
+              if (Object.keys(advSustainAnswers).length === pillars.length) {
+                var allRight = pillars.every(function (p2, pi2) { return advSustainAnswers[pi2] === p2.correct; });
+                if (allRight) advShowFb('success', '<b>♻️ Pemahaman Keberlanjutan Sempurna!</b> Pelumasan berkala adalah solusi 4 dimensi: sangat efektif untuk komponen bergerak, biaya murah, perlu diulang tiap 3-6 bulan, dan sangat ramah lingkungan dengan mencegah pembuangan komponen logam bekas. Mendukung SDG 12!');
+                else advShowFb('info', '<b>💡 Semua Dimensi Dijawab.</b> Pelumasan gemuk kalsium/litium unggul di SEMUA dimensi: efektif menolak air secara hidrofobik, sangat murah, cukup 3-6 bulan sekali, dan mencegah limbah logam. Periksa jawaban yang masih merah.');
+                advShowBtn('advNextStepBtn', true); advSetText('advNextStepBtn', 'Lihat Hasil →');
+                document.getElementById('advNextStepBtn').onclick = function () { advRunStep(5); };
+              }
+            };
+          });
+        }
+        advSetContent('advActivityContent', '<div id="advPillarContent"></div>');
+        renderPillars();
+        advShowBtn('advCheckBtn', false); advShowBtn('advNextStepBtn', false);
+      };
+
+      window.advStep_gate_result = function (area) { advShowResult(area); };
+
+      /* ---- SHARED RESULT ---- */
+      function advShowResult(area) {
+        advRenderHotspots(false);
+        advSetText('advActivityInstruction', 'Lihat perubahan kondisi setelah tindakan penanganan yang tepat diterapkan!');
+        var scoreLabel = advTotalScore;
+        advSetContent('advActivityContent',
+          '<div class="adv-result-animation">' +
+          '<span class="adv-result-icon">🏆</span>' +
+          '<div class="adv-result-change">' +
+          '<div class="adv-result-before"><div style="font-size:2rem;">' + area.resultBefore.split(' ')[0] + '</div><div>' + advEsc(area.resultBefore) + '</div></div>' +
+          '<div class="adv-result-arrow">→</div>' +
+          '<div class="adv-result-after"><div style="font-size:2rem;">' + area.resultAfter.split(' ')[0] + '</div><div>' + advEsc(area.resultAfter) + '</div></div>' +
+          '</div>' +
+          '<div style="font-size:0.84rem;color:#5a2e04;line-height:1.5;margin-top:10px;">' + advEsc(area.resultDesc) + '</div>' +
+          '<div style="margin-top:12px;font-size:0.9rem;font-weight:800;color:#15803d;">⭐ Total Poin Area Ini: ' + scoreLabel + '</div>' +
+          '</div>');
+        advShowFb('success', '<b>🌟 Area Selesai!</b> Penerapan tindakan berhasil! Kembali ke peta untuk menjelajahi area berikutnya.');
+        var pr = getAdvProgress(); pr[area.id] = true; saveAdvProgress(pr);
+        setTimeout(function () {
+          var capId = area.id.charAt(0).toUpperCase() + area.id.slice(1);
+          var pinEl = document.getElementById('pin' + capId);
+          var pinSt = document.getElementById('pin' + capId + 'Status');
+          if (pinEl) pinEl.className = 'adv-pin-btn done';
+          if (pinSt) pinSt.textContent = '✓ Aman';
+        }, 300);
+        advShowBtn('advCheckBtn', false); advShowBtn('advNextStepBtn', false);
+        advShowBtn('advFinishAreaBtn', true);
+        document.getElementById('advFinishAreaBtn').textContent = isAllAdvDone() ? '🏆 Lihat Kemenangan!' : '🗺️ Kembali ke Peta';
+        document.getElementById('advFinishAreaBtn').onclick = function () { if (isAllAdvDone()) openAdvVictory(); else openAdvMap(); };
+        tone([523, 659, 784, 1046, 1319]);
+      }
+
+      /* ---- MASTER openAdvArea ---- */
+      function openAdvArea(areaKey) {
+        curAdvArea = areaKey;
+        curAdvStep = 0;
+        advTotalScore = 0;
+        advTagged = {};
+        advSustainAnswers = {};
+        advPairSelected = { left: null, right: null };
+        advPairMatched = {};
+        advDecisionMade = false;
+        adv3dRotX = 20; adv3dRotY = -15;
+        var area = ADV_AREAS[areaKey];
+        if (!area) return;
+        var pr = getAdvProgress();
+        var isDone = !!pr[areaKey];
+        advSetText('advPlayTitle', area.title);
+        advUpdateScore();
+        adv3dSetup();
+        advInit3dRotation();
+        advInitMagnifier();
+        adv3dDraw();
+        // Show hint then fade
+        var hint = document.getElementById('advRotateHint');
+        if (hint) { hint.style.animation = 'none'; void hint.offsetWidth; hint.style.animation = 'hintFade 3.5s ease-in-out forwards'; }
+        if (isDone) { advRenderSteps(); advShowResult(area); }
+        else advRunStep(0);
         show('advPlay');
       }
 
-      function renderAdvScene(isDone) {
-        var host = $('#advSceneHost');
-        if (curAdvArea === 'garden') host.innerHTML = advGardenSceneSVG(isDone);
-        else if (curAdvArea === 'field') host.innerHTML = advFieldSceneSVG(isDone);
-        else if (curAdvArea === 'gate') host.innerHTML = advGateSceneSVG(isDone);
-      }
-
-      function advApplyAction() {
-        if (curAdvOpt < 0) {
-          openModal('<h2>Pilih Tindakan Dulu! ⚠️</h2><p>Silakan klik salah satu kartu opsi tindakan di samping kanan dengan mempertimbangkan 4 pilar (Efektivitas, Biaya, Ketahanan, dan Lingkungan).</p>');
-          return;
-        }
-
-        var area = ADV_AREAS[curAdvArea];
-        var opt = area.opts[curAdvOpt];
-        var fb = $('#advFeedbackBox');
-
-        if (opt.ok) {
-          tone([523, 659, 784, 1046]);
-          var pr = getAdvProgress();
-          pr[curAdvArea] = true;
-          saveAdvProgress(pr);
-
-          renderAdvScene(true);
-
-          fb.className = 'adv-feedback-box success show';
-          fb.innerHTML = '<b>🎉 Luar Biasa! Tindakan Berhasil!</b><p style="margin:4px 0">' + esc(opt.why) + '</p>';
-
-          $('#advApplyBtn').hidden = true;
-          $('#advHotspotBtn').hidden = true;
-
-          var allDone = isAllAdvDone();
-          $('#advNextAreaBtn').hidden = false;
-          if (allDone) {
-            $('#advNextAreaBtn').textContent = '🏆 Buka Hasil Kemenangan Explorer!';
-            $('#advNextAreaBtn').onclick = openAdvVictory;
-          } else {
-            $('#advNextAreaBtn').textContent = 'Lanjut ke Peta Petualangan 🗺️';
-            $('#advNextAreaBtn').onclick = openAdvMap;
-          }
-        } else {
-          tone([330, 262]);
-          fb.className = 'adv-feedback-box warning show';
-          fb.innerHTML = '<b>⚠️ Pertimbangan Belum Tepat:</b><p style="margin:4px 0">' + esc(opt.why) + '</p><small>Coba evaluasi kembali opsi lain berdasarkan efektivitas, biaya, ketahanan, dan dampak lingkungannya!</small>';
-        }
-      }
 
       function openAdvVictory() {
         tone([523, 659, 784, 1046, 1318]);
