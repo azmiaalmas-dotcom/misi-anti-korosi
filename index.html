@@ -941,6 +941,143 @@
       border: 1px solid #3b82f6;
     }
 
+
+    /* Ultra-Clean Responsive Matrix Grid (2x2 on desktop, 1 col on mobile) */
+    .adv-opt-grid-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed #d0c2ad;
+    }
+    .m-card {
+      background: #fdfaf6;
+      border: 1px solid #eddcc6;
+      border-radius: 8px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .m-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.69rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      align-self: flex-start;
+      white-space: nowrap;
+    }
+    .m-eff { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .m-cost { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .m-dur { background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+    .m-env { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .m-val {
+      font-size: 0.77rem;
+      color: #2b1c0a;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    /* Enhanced Mobile Adaptations (Merapikan tampilan di HP) */
+    @media (max-width: 768px) {
+      .adv-screen {
+        padding: 6px 4px !important;
+      }
+      .adv-card {
+        padding: 12px 10px !important;
+        border-radius: 16px !important;
+      }
+      .adv-head {
+        margin-bottom: 6px !important;
+        gap: 6px !important;
+      }
+      .adv-title-ribbon {
+        font-size: 0.95rem !important;
+        padding: 4px 12px !important;
+      }
+      .adv-play-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+      .adv-interactive-stage {
+        aspect-ratio: 16/9 !important;
+        max-height: 190px !important;
+      }
+      .adv-inspect-box {
+        padding: 6px 8px !important;
+        font-size: 0.78rem !important;
+        margin-top: 6px !important;
+      }
+      .adv-four-pillars-bar {
+        display: none !important; /* Dihilangkan di HP agar tidak membuang ruang layar */
+      }
+      .adv-opt-item {
+        padding: 9px 10px !important;
+        border-radius: 12px !important;
+      }
+      .adv-opt-grid-2x2 {
+        grid-template-columns: 1fr !important; /* 1 kolom penuh di layar HP agar teks leluasa */
+        gap: 4px !important;
+        margin-top: 6px !important;
+        padding-top: 6px !important;
+      }
+      .m-card {
+        padding: 4px 6px !important;
+      }
+      .m-val {
+        font-size: 0.74rem !important;
+      }
+      .adv-map-viewport {
+        max-height: 380px !important;
+      }
+      .adv-tour-pills {
+        top: 6px !important;
+        left: 6px !important;
+        bottom: auto !important;
+        max-width: 75% !important;
+        gap: 4px !important;
+      }
+      .adv-tour-btn {
+        padding: 2px 7px !important;
+        font-size: 0.68rem !important;
+      }
+      .adv-map-controls {
+        bottom: 6px !important;
+        right: 6px !important;
+        padding: 3px !important;
+      }
+      .adv-dpad-btn {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.8rem !important;
+      }
+      .adv-map-hint {
+        font-size: 0.72rem !important;
+        padding: 3px 8px !important;
+        margin-bottom: 6px !important;
+      }
+      .adv-lens-popup {
+        max-width: 90vw !important;
+        padding: 10px !important;
+      }
+      .adv-lens-frame {
+        width: 110px !important;
+        height: 110px !important;
+      }
+      .adv-vic-badges-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+      }
+      .adv-vic-esd-card {
+        font-size: 0.8rem !important;
+        padding: 8px 10px !important;
+      }
+    }
+
   </style>
 </head>
 
@@ -5918,37 +6055,37 @@
           id: 'garden',
           title: 'Area 1: Taman Sekolah',
           obj: 'Pagar Besi Hias Taman',
-          desc: 'Pagar besi di sekitar tanaman bunga mulai berkarat cokelat kemerahan karena sering terkena percikan air penyiraman tanaman, tanah basah lembap, dan air hujan.',
+          desc: 'Pagar besi pembatas tanaman hias di taman sekolah sering terkena percikan air penyiraman tanaman, tanah basah lembap, dan hujan. Bagian bawah dan sambungan jeruji mulai berkarat cokelat kemerahan. Sekolah menginginkan perlindungan yang aman bagi tanaman di sekitarnya dan hemat anggaran operasional.',
           opts: [
             {
-              name: 'Pembersihan Karat + Pengecatan Anti-Karat Berkala',
-              desc: 'Mengikis karat lama sampai bersih, lalu melapisinya dengan cat anti-karat pelindung fisik.',
-              eff: 'Tinggi (Melapisi besi dari kontak air & oksigen)',
-              cost: 'Hemat & Terjangkau (Sesuai anggaran kas sekolah)',
-              dur: 'Tahan 2–3 Tahun (Mudah dirawat & dicat ulang)',
-              env: 'Sangat Ramah (Tanpa limbah logam baru - SDG 12)',
+              name: 'Pelapisan Logam Krom Dekoratif (Decorative Chrome Plating)',
+              desc: 'Membongkar seluruh pagar dan membawanya ke bengkel industri untuk dilapisi kromium mengilap secara elektroplating.',
+              eff: 'Sangat Tinggi (Permukaan sangat keras dan tahan gores)',
+              cost: 'Sangat Mahal (Melampaui alokasi dana pemeliharaan sekolah)',
+              dur: 'Tinggi jika utuh, namun bila retak tipis besi cepat keropos',
+              env: 'Beresiko Tinggi (Limbah cair kromium heksavalen Cr⁶⁺ berbahaya bagi tanah)',
+              ok: false,
+              why: 'Kurang Tepat! Meskipun lapisan krom terlihat sangat mewah dan tahan gores, biayanya jauh melampaui kebutuhan pagar sekolah. Yang terpenting, proses industri elektroplating kromium menghasilkan limbah cair logam berat beracun (Cr⁶⁺) yang berbahaya bagi ekosistem tanah dan tanaman (bertentangan dengan prinsip SDG 12).'
+            },
+            {
+              name: 'Pengecatan Sistem Primer Anti-Karat & Cat Akhir Ramah Lingkungan',
+              desc: 'Membersihkan karat lama, mengaplikasikan cat dasar zink kromat/primer, lalu melapisinya dengan cat sintetis ramah lingkungan (low VOC).',
+              eff: 'Tinggi (Membentuk lapisan isolasi fisik kedap air & O₂)',
+              cost: 'Ekonomis & Terjangkau (Sesuai anggaran pemeliharaan sekolah)',
+              dur: 'Awet 3–5 Tahun (Cukup dicat ulang berkala tanpa bongkar)',
+              env: 'Sangat Ramah (Cat low-VOC aman bagi tanah & tanaman - SDG 12)',
               ok: true,
-              why: 'Pilihan Tepat! Pengecatan merupakan metode isolasi fisik paling ideal untuk pagar taman sekolah. Biayanya hemat, mudah diaplikasikan, tidak mencemari tanah tanaman hias, dan memperpanjang umur pagar tanpa menimbulkan limbah logam baru (SDG 9 & SDG 12).'
+              why: 'Pilihan Tepat! Pengecatan dengan cat dasar primer adalah metode isolasi fisik (barrier) yang paling seimbang untuk pagar taman. Biayanya ekonomis, formulasi ramah lingkungan tidak meracuni akar tanaman bunga di sekitarnya, dan memperpanjang umur pagar tanpa menimbulkan limbah logam besi tua (SDG 9 & SDG 12).'
             },
             {
-              name: 'Melumasi Seluruh Pagar dengan Minyak/Oli Mesin',
-              desc: 'Mengoleskan oli pelumas ke seluruh jeruji pagar besi tanaman.',
-              eff: 'Rendah (Cepat luntur saat terkena guyuran air hujan)',
-              cost: 'Murah di awal, tapi boros karena harus diulang terus',
-              dur: 'Sangat Singkat (Hanya bertahan kurang dari 1 bulan)',
-              env: 'Mencemari Tanah Tanaman & Mengotori Seragam Siswa',
+              name: 'Pelapisan Plastik Polimer PVC Celup (PVC Dip Coating)',
+              desc: 'Melapisi seluruh jeruji pagar besi dengan selubung plastik tebal polimer PVC kedap air.',
+              eff: 'Sedang (Kedap air di awal, namun getas kena sinar UV matahari)',
+              cost: 'Sedang (Memerlukan cetakan celup panas industri)',
+              dur: 'Rentan rembesan air (Besi berkarat dari dalam tanpa terlihat)',
+              env: 'Sulit Terurai (Menghasilkan sampah mikroplastik - kontra SDG 12)',
               ok: false,
-              why: 'Kurang Tepat! Oli di luar ruangan cepat tercuci oleh air hujan sehingga mencemari tanah tanaman hias dan akan menempel kotor pada seragam siswa saat bersandar di pagar taman.'
-            },
-            {
-              name: 'Membongkar dan Membuang Pagar, Ganti Besi Baru',
-              desc: 'Membongkar seluruh pagar berkarat dan membeli pagar besi baru.',
-              eff: 'Tinggi sesaat, tapi cepat berkarat lagi bila tak dirawat',
-              cost: 'Sangat Mahal & Memboroskan Anggaran Sekolah',
-              dur: 'Cepat rusak kembali bila tidak dilapisi anti-karat',
-              env: 'Banyak Menumpuk Limbah Logam Bekas (Kontra-SDG 12)',
-              ok: false,
-              why: 'Kurang Tepat! Tindakan ini memboroskan anggaran sekolah dan menghasilkan limbah logam tidak perlu. Karat pada pagar masih bisa dibersihkan dan dicat ulang dengan biaya jauh lebih hemat!'
+              why: 'Kurang Tepat! Paparan sinar UV matahari luar ruangan membuat plastik PVC cepat getas dan retak mikro. Uap air hujan yang terperangkap di balik lapisan plastik akan mengoksidasi besi dari dalam secara tersembunyi, serta limbah polimer sintetisnya sulit didaur ulang.'
             }
           ]
         },
@@ -5956,37 +6093,37 @@
           id: 'field',
           title: 'Area 2: Lapangan Sekolah',
           obj: 'Tiang Gawang Logam Terbuka',
-          desc: 'Tiang gawang sepak bola berada di area lapangan terbuka tanpa atap, terpapar panas terik matahari dan hujan terus menerus, serta sering terbentur bola sehingga cat biasa cepat terkelupas dan berkarat parah.',
+          desc: 'Tiang gawang sepak bola logam berada di lapangan terbuka tanpa atap. Tiang terpapar sinar matahari terik, hujan asam, dan sering terkena benturan keras bola sepak yang mengikis lapisan pelindung biasa. Sekolah ingin solusi jangka panjang agar tidak perlu dicat ulang berkala tiap tahun.',
           opts: [
             {
-              name: 'Galvanisasi (Pelapisan Seng / Proteksi Anoda Korban)',
-              desc: 'Melapisi baja tiang dengan seng (Zn) yang bekerja sebagai anoda korban tahan benturan bola & cuaca.',
-              eff: 'Sangat Tinggi (Proteksi aktif seng meski lapisan tergores)',
-              cost: 'Paling Hemat Jangka Panjang (Bebas biaya perawatan rutin)',
-              dur: 'Tahan 15–20 Tahun di ruang terbuka bebas atap',
-              env: 'Sangat Berkelanjutan (Meniadakan limbah kaleng cat berkala)',
+              name: 'Pengecatan Cat Epoksi Tugas Berat (Heavy-Duty Epoxy Paint)',
+              desc: 'Mengaplikasikan dua lapis resin cat epoksi tebal tahan air dan tahan bahan kimia luar ruangan.',
+              eff: 'Tinggi saat awal, namun tanpa proteksi anoda korban jika terbentur',
+              cost: 'Sedang di awal, namun boros karena harus dicat ulang tiap 2–3 thn',
+              dur: 'Tahan 2–3 Tahun (Benturan keras bola sepak meretakkan lapisan)',
+              env: 'Menghasilkan limbah kaleng cat, pelarut thinner, dan kerak epoksi',
+              ok: false,
+              why: 'Kurang Tepat! Cat epoksi memang tebal dan kedap air, tetapi epoksi adalah pelindung pasif tanpa anoda korban. Ketika terbentur keras bola sepak, lapisan epoksi akan mengalami retak mikro. Air hujan yang merembes ke celah retakan akan membuat karat menjalar di bawah lapisan epoksi (undercutting corrosion) sehingga harus sering dikerok dan dicat ulang.'
+            },
+            {
+              name: 'Penggantian Total dengan Paduan Stainless Steel (Baja Tahan Karat SUS 316)',
+              desc: 'Membongkar dan mengganti tiang gawang lama dengan tiang baru berbahan paduan baja nikel-kromium kualitas tinggi.',
+              eff: 'Sangat Tinggi (Membentuk lapisan pasivasi Cr₂O₃ permanen)',
+              cost: 'Sangat Mahal (3–5 kali lipat melebihi seluruh anggaran fasilitas sekolah)',
+              dur: 'Tahan puluhan tahun bebas karat',
+              env: 'Jejak Karbon Sangat Masif (Peleburan tambang boros energi masif)',
+              ok: false,
+              why: 'Kurang Tepat! Meskipun stainless steel sangat tahan karat, biayanya jauh melebihi anggaran sekolah. Secara prinsip keberlanjutan (SDG 12), ekstraksi dan peleburan paduan nikel-kromium membutuhkan energi dan jejak karbon (embodied carbon) yang sangat masif, yang tidak proporsional dan boros sumber daya hanya untuk tiang olahraga sekolah biasa.'
+            },
+            {
+              name: 'Galvanisasi Celup Panas (Hot-Dip Galvanizing / Pelapisan Seng)',
+              desc: 'Mencelupkan pipa baja ke dalam lelehan seng (Zn) sehingga membentuk ikatan metalurgi paduan seng-besi tahan benturan cuaca terbuka.',
+              eff: 'Sangat Tinggi (Proteksi aktif seng mengorbankan diri meski tergores bola)',
+              cost: 'Paling Hemat Jangka Panjang (Bebas biaya perawatan berulang)',
+              dur: 'Tahan 15–20 Tahun di ruang terbuka bebas atap tanpa naungan',
+              env: 'Sangat Berkelanjutan (Meniadakan limbah kaleng cat berkala - SDG 12)',
               ok: true,
-              why: 'Pilihan Terbaik! Tiang di ruang terbuka bebas atap membutuhkan ketahanan ekstrem. Seng (Zn) melindungi besi secara anoda korban—bahkan jika tergores benturan bola, besi tetap terlindungi. Ini menghemat biaya pemeliharaan sekolah hingga belasan tahun dan mengurangi limbah kaleng cat berkala (SDG 9 & SDG 12).'
-            },
-            {
-              name: 'Pengecatan Biasa Tanpa Antikarat Setiap Bulan',
-              desc: 'Hanya mengecat ulang dengan cat tembok biasa secara berulang setiap kali luntur.',
-              eff: 'Rendah (Cat biasa cepat mengelupas akibat benturan bola)',
-              cost: 'Sangat Boros (Biaya pembelian cat terus berulang)',
-              dur: 'Hanya Bertahan 1–2 Bulan di cuaca luar ruangan',
-              env: 'Banyak Menghasilkan Kaleng & Limbah Kimia Cat',
-              ok: false,
-              why: 'Kurang Tepat! Cat tembok biasa tidak tahan air hujan luar ruangan dan tidak memiliki agen anoda korban. Biaya perawatan berulang menjadi sangat boros dan cat mudah mengelupas kembali saat terbentur bola.'
-            },
-            {
-              name: 'Menutupi Tiang dengan Kain Plastik Terpal',
-              desc: 'Membungkus tiang gawang dengan terpal plastik setiap selesai jam olahraga.',
-              eff: 'Sangat Buruk (Uap air terperangkap mempercepat karat)',
-              cost: 'Murah di awal, namun tidak menyelesaikan masalah',
-              dur: 'Sangat Singkat (Plastik mudah sobek dan lapuk cuaca)',
-              env: 'Menambah Timbulan Sampah Plastik Rusak',
-              ok: false,
-              why: 'Kurang Tepat! Plastik justru memerangkap uap air dan kondensasi di dalam bungkusan, membuat kelembapan udara meningkat dan mempercepat karat tersembunyi!'
+              why: 'Pilihan Terbaik! Tiang di ruang terbuka bebas atap membutuhkan perlindungan aktif anoda korban. Seng (Zn) memiliki potensial reduksi lebih negatif dari besi (E° Zn²⁺/Zn = -0,76 V vs Fe²⁺/Fe = -0,44 V), sehingga seng mengorbankan elektronnya untuk melindungi besi meskipun permukaan tergores benturan bola. Ini menghemat anggaran pemeliharaan sekolah hingga 20 tahun dan meminimalkan limbah (SDG 9 & SDG 12).'
             }
           ]
         },
@@ -5994,37 +6131,37 @@
           id: 'gate',
           title: 'Area 3: Gerbang Sekolah',
           obj: 'Engsel & Roda Rel Gerbang Geser',
-          desc: 'Engsel pemutar dan rel roda gerbang utama berkarat kasar akibat gesekan logam terus-menerus dan kelembapan udara luar, menyebabkan gerbang macet, sangat berat didorong, dan berdecit bising.',
+          desc: 'Engsel silinder gerbang dan roda baja pada rel bawah merupakan bagian logam mekanik yang terus-menerus bergerak, menanggung beban berat pintu gerbang, dan bergesekan satu sama lain di udara terbuka. Gerbang macet, berat didorong, dan mulai timbul karat kasar.',
           opts: [
             {
-              name: 'Pelumasan Berkala dengan Gemuk/Oli Khusus (Lubrication)',
-              desc: 'Mengoleskan pelumas gemuk (grease) pada engsel dan poros roda agar terlindungi dari udara dan mengurangi gesekan.',
-              eff: 'Sangat Tinggi (Khusus komponen logam bergerak/berputar)',
-              cost: 'Sangat Murah & Praktis (Cukup sedikit gemuk/oli pelumas)',
-              dur: 'Awet 3–6 Bulan per pelumasan berkala rutin',
-              env: 'Sangat Ramah (Mencegah gerbang rusak & diganti baru)',
+              name: 'Pelumasan Berkala dengan Gemuk Kalsium/Litium Tahan Air (Waterproof Grease)',
+              desc: 'Mengoleskan gemuk pasta pelumas tahan air pada poros engsel, bearing roda, dan alur rel geser secara berkala.',
+              eff: 'Sangat Tinggi khusus bagian bergerak (Mereduksi gesekan & tolak air)',
+              cost: 'Sangat Murah & Praktis (Cukup sedikit pelumas diaplikasikan rutin)',
+              dur: 'Awet 3–6 Bulan per siklus pelumasan berkala rutin',
+              env: 'Sangat Ramah (Mencegah keausan sehingga gerbang tak perlu ganti baru)',
               ok: true,
-              why: 'Pilihan Tepat! Bagian logam yang berputar dan bergesekan membutuhkan pelumas (*grease/oli*). Pelumas menutup permukaan dari oksigen & air sekaligus memperkecil gaya gesek (*friction*), sehingga gerbang berputar mulus tanpa karat dan tidak macet.'
+              why: 'Pilihan Tepat! Komponen logam yang berputar dan saling bergesekan menanggung gaya mekanik gesek (friction). Pelumas gemuk pasta (grease) menempel erat pada celah mikro logam, menolak kelembapan air hujan (hidrofobik), serta memperkecil koefisien gesekan sehingga roda berputar lancar tanpa aus dan bebas karat (SDG 12).'
             },
             {
-              name: 'Mengecat Tebal Bagian Poros Engsel dan Roda',
-              desc: 'Melapisi seluruh celah engsel dan roda dengan cat besi tebal sampai kering.',
-              eff: 'Merusak (Cat mengeras & mengunci gerbang hingga macet total)',
-              cost: 'Rugi Biaya (Gerbang terkunci macet & harus diperbaiki)',
-              dur: 'Cat langsung retak dan rontok saat engsel dipaksa gerak',
-              env: 'Pemborosan Bahan Cat & Berpotensi Merusak Gerbang',
+              name: 'Pengecatan Tebal Anti-Karat pada Sambungan Poros Engsel dan Roda',
+              desc: 'Membersihkan karat lalu menyemprotkan cat besi tahan cuaca tebal hingga ke seluruh celah engsel poros dan roda.',
+              eff: 'Merusak Gerak (Cat mengering di celah dan membuat gerbang macet total)',
+              cost: 'Pemborosan Biaya (Gerbang terkunci macet & berisiko merusak engsel)',
+              dur: 'Lapisan cat langsung retak dan rontok saat gerbang dipaksa bergerak',
+              env: 'Menghasilkan serpihan kerak cat rontok yang mencemari area gerbang',
               ok: false,
-              why: 'Fatal! Mengecat celah engsel yang bergerak akan membuat cat mengering dan mengeras di dalam celah, mengunci engsel, dan membuat gerbang macet total tidak bisa dibuka!'
+              why: 'Salah Besar! Pengecatan adalah solusi hebat untuk pagar atau permukaan diam, TETAPI pantang diaplikasikan pada celah mesin/engsel yang bergerak! Cat akan mengering di celah sempit, mengunci engsel, dan membuat gerbang macet total tidak bisa dibuka. Ketika dipaksa bergerak, lapisan cat akan langsung rontok tergerus dan menimbulkan limbah serpihan cat.'
             },
             {
-              name: 'Menyiram Engsel dengan Air Garam agar Karat Rontok',
-              desc: 'Menyiramkan larutan air garam pada bagian roda yang berkarat.',
-              eff: 'Sangat Merusak (Air garam elektrolit mempercepat korosi 10x)',
-              cost: 'Murah di awal, namun merusak total logam gerbang',
-              dur: 'Besi hancur dan keropos dalam hitungan minggu',
-              env: 'Merusak Logam & Mencemari Lingkungan Gerbang',
+              name: 'Penggantian Poros Roda & Engsel dengan Bahan Tembaga Murni (Pure Copper)',
+              desc: 'Mengganti as poros roda dan bantalan engsel dengan logam tembaga yang tidak berkarat merah seperti besi.',
+              eff: 'Beresiko Merusak (Tembaga memicu korosi galvanik pada rangka besi)',
+              cost: 'Mahal (Harga bahan logam tembaga murni bernilai tinggi)',
+              dur: 'Tembaga terlalu lunak sehingga cepat aus peyang menahan beban gerbang',
+              env: 'Pemborosan logam mulia tembaga untuk komponen beban berat mekanik',
               ok: false,
-              why: 'Sangat Salah! Air garam merupakan elektrolit kuat yang mempercepat reaksi redoks korosi secara drastis! Engsel dan roda akan hancur berkarat dalam waktu singkat.'
+              why: 'Kurang Tepat! Secara elektrokimia, tembaga memiliki potensial reduksi lebih tinggi (+0,34 V) dibanding besi (-0,44 V). Ketika tembaga dipasang bersentuhan langsung dengan rangka besi di lingkungan lembap terbuka, akan terjadi korosi galvanik: rangka besi justru terkorosi jauh lebih cepat! Selain itu, tembaga secara fisik terlalu lunak untuk menopang gerbang berat.'
             }
           ]
         }
@@ -6758,11 +6895,11 @@
             '<span>' + (idx + 1) + '. ' + esc(opt.name) + '</span>' +
             '</div>' +
             '<div class="adv-opt-desc">' + esc(opt.desc) + '</div>' +
-            '<div class="adv-opt-matrix-clean">' +
-            '<div class="adv-m-row"><span class="m-pill m-eff">🎯 Efektivitas</span><span class="m-text">' + esc(opt.eff) + '</span></div>' +
-            '<div class="adv-m-row"><span class="m-pill m-cost">💰 Biaya</span><span class="m-text">' + esc(opt.cost) + '</span></div>' +
-            '<div class="adv-m-row"><span class="m-pill m-dur">⏱️ Ketahanan</span><span class="m-text">' + esc(opt.dur) + '</span></div>' +
-            '<div class="adv-m-row"><span class="m-pill m-env">🌿 Lingkungan</span><span class="m-text">' + esc(opt.env) + '</span></div>' +
+            '<div class="adv-opt-grid-2x2">' +
+            '<div class="m-card"><span class="m-pill m-eff">🎯 Efektivitas</span><span class="m-val">' + esc(opt.eff) + '</span></div>' +
+            '<div class="m-card"><span class="m-pill m-cost">💰 Biaya</span><span class="m-val">' + esc(opt.cost) + '</span></div>' +
+            '<div class="m-card"><span class="m-pill m-dur">⏱️ Ketahanan</span><span class="m-val">' + esc(opt.dur) + '</span></div>' +
+            '<div class="m-card"><span class="m-pill m-env">🌿 Lingkungan</span><span class="m-val">' + esc(opt.env) + '</span></div>' +
             '</div>' +
             '</div>';
         }).join('');
@@ -7003,12 +7140,9 @@
 
       $('#advPlayBack').onclick = openAdvMap;
       $('#advHotspotBtn').onclick = function () {
-        var area = ADV_AREAS[curAdvArea];
-        openModal('<h2>Hasil Investigasi: ' + esc(area.obj) + ' 🔍</h2>' +
-          '<p>' + esc(area.desc) + '</p>' +
-          '<p style="margin-top:10px;font-size:0.92rem;color:var(--ink-soft)">Tentukan tindakan pencegahan atau perbaikan korosi di panel kanan dengan menyeimbangkan efektivitas ilmiah, efisiensi biaya, ketahanan terhadap cuaca, dan dampak bagi lingkungan.</p>' +
-          '<div style="margin-top:12px;text-align:center"><button class="btn-yellow btn-small" id="mInspectOk">Tentukan Solusi</button></div>');
-        $('#mInspectOk').onclick = closeModal;
+        if ($('#advSceneLensBtn')) {
+          $('#advSceneLensBtn').click();
+        }
       };
 
       $('#advApplyBtn').onclick = advApplyAction;
