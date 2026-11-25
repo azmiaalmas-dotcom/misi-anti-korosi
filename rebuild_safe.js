@@ -217,13 +217,19 @@ console.log('CSS injected. New size:', html.length);
 // PART 2: REPLACE #advPlay HTML SECTION
 // =====================================================
 const OLD_PLAY_MARKER_START = '<section class="screen adv-screen" id="advPlay"';
-const OLD_PLAY_MARKER_END = '</section>\n\n    <!-- FINAL GAME: VICTORY';
+// Use the FINAL GAME: VICTORY comment as end marker — robust regardless of \r\n vs \n
+const VICTORY_COMMENT = '<!-- FINAL GAME: VICTORY';
 const playHtmlStart = html.indexOf(OLD_PLAY_MARKER_START);
-const playHtmlEnd = html.indexOf(OLD_PLAY_MARKER_END, playHtmlStart);
-if (playHtmlStart === -1 || playHtmlEnd === -1) {
-  console.error('Cannot find #advPlay section!', playHtmlStart, playHtmlEnd);
+// Find the </section> that immediately precedes the VICTORY comment
+const victoryCommentPos = html.indexOf(VICTORY_COMMENT, playHtmlStart);
+// Search backwards from victoryCommentPos for the </section>
+const playHtmlEnd = html.lastIndexOf('</section>', victoryCommentPos) + '</section>'.length;
+// Now playHtmlEnd points to right AFTER the </section> that closes advPlay
+if (playHtmlStart === -1 || victoryCommentPos === -1) {
+  console.error('Cannot find #advPlay section!', playHtmlStart, victoryCommentPos);
   process.exit(1);
 }
+console.log('playHtmlStart:', playHtmlStart, '| playHtmlEnd:', playHtmlEnd, '| victoryCommentPos:', victoryCommentPos);
 
 const NEW_PLAY_HTML = `<section class="screen adv-screen" id="advPlay" aria-label="Eksplorasi Area" hidden>
       <div class="adv-head">
@@ -272,7 +278,8 @@ const NEW_PLAY_HTML = `<section class="screen adv-screen" id="advPlay" aria-labe
 
     `;
 
-html = html.substring(0, playHtmlStart) + NEW_PLAY_HTML + html.substring(playHtmlEnd);
+// Replace from playHtmlStart up to (not including) the whitespace+VICTORY comment
+html = html.substring(0, playHtmlStart) + NEW_PLAY_HTML + '\n\n    ' + html.substring(victoryCommentPos);
 console.log('advPlay HTML replaced. New size:', html.length);
 
 // =====================================================
