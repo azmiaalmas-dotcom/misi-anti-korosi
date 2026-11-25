@@ -604,6 +604,247 @@
       }
     }
 
+
+    /* Moving Avatar & Magnifying Glass Styles */
+    .adv-map-hint {
+      background: rgba(254, 243, 199, 0.95);
+      border: 1.5px solid #d97706;
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #78350f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+    .adv-map-player {
+      position: absolute;
+      transform: translate(-50%, -85%);
+      width: 48px;
+      height: 64px;
+      pointer-events: none;
+      z-index: 25;
+      transition: left 0.75s cubic-bezier(0.25, 0.1, 0.25, 1), top 0.75s cubic-bezier(0.25, 0.1, 0.25, 1);
+      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.3));
+    }
+    .adv-player-shadow {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 9px;
+      background: rgba(0, 0, 0, 0.28);
+      border-radius: 50%;
+    }
+    .adv-player-sprite {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.2s ease;
+    }
+    .adv-map-player.walking .adv-player-sprite {
+      animation: advPlayerWalk 0.35s infinite alternate ease-in-out;
+    }
+    @keyframes advPlayerWalk {
+      0% { transform: translateY(0) rotate(-3deg); }
+      100% { transform: translateY(-7px) rotate(3deg); }
+    }
+    .adv-player-bubble {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      border: 2px solid #5a3a1a;
+      border-radius: 12px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #2b1c0a;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      pointer-events: none;
+      margin-bottom: 6px;
+      z-index: 30;
+      animation: advFadeIn 0.3s ease;
+    }
+
+    /* Magnifying Glass Zoom Popup */
+    .adv-lens-popup {
+      position: absolute;
+      transform: translate(-50%, -102%);
+      background: #fffdf5;
+      border: 3px solid #5a3a1a;
+      border-radius: 18px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.35), 0 0 0 4px rgba(255,199,44,0.45);
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 250px;
+      box-sizing: border-box;
+      animation: advLensPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes advLensPop {
+      0% { transform: translate(-50%, -75%) scale(0.6); opacity: 0; }
+      100% { transform: translate(-50%, -102%) scale(1); opacity: 1; }
+    }
+    .adv-lens-frame {
+      position: relative;
+      width: 105px;
+      height: 105px;
+      border-radius: 50%;
+      border: 5px solid #d4a366;
+      background: #0f172a;
+      box-shadow: inset 0 0 14px rgba(0,0,0,0.7), 0 4px 12px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+    .adv-lens-glass {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .adv-lens-glass svg {
+      width: 100%;
+      height: 100%;
+    }
+    .adv-lens-glare {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.2) 100%);
+      pointer-events: none;
+    }
+    .adv-lens-handle {
+      position: absolute;
+      right: -12px;
+      bottom: -12px;
+      width: 12px;
+      height: 34px;
+      background: linear-gradient(90deg, #b45309, #78350f);
+      border-radius: 5px;
+      transform: rotate(-45deg);
+      border: 2px solid #451a03;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .adv-lens-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: #92400e;
+      margin: 0;
+      text-align: center;
+    }
+    .adv-lens-desc {
+      font-size: 0.78rem;
+      color: #451a03;
+      line-height: 1.35;
+      text-align: center;
+      margin: 0;
+    }
+
+    /* On-screen Directional Controller */
+    .adv-map-controls {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
+      border: 2px solid #5a3a1a;
+      border-radius: 12px;
+      padding: 5px 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 20;
+    }
+    .adv-dpad-row {
+      display: flex;
+      gap: 3px;
+    }
+    .adv-dpad-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      background: #fff;
+      border: 2px solid #6b3500;
+      box-shadow: 0 2px 0 #4a2400;
+      font-size: 0.85rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s;
+    }
+    .adv-dpad-btn:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+    .adv-tour-pills {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      z-index: 20;
+    }
+    .adv-tour-btn {
+      background: #fff;
+      border: 2px solid #5a3a1a;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #2b1c0a;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #4a2c10;
+      transition: transform 0.15s;
+    }
+    .adv-tour-btn:hover {
+      transform: translateY(-2px);
+      background: #fffaea;
+    }
+    .adv-tour-btn:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    /* Magnifier In Area Scene */
+    .adv-scene-lens-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 2.5px solid #5a3a1a;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-family: var(--font-display);
+      font-size: 0.84rem;
+      color: #3b1900;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 8;
+    }
+    .adv-scene-lens-btn:hover {
+      background: #fffaea;
+      transform: scale(1.04);
+    }
+
   </style>
 </head>
 
@@ -3999,8 +4240,22 @@
           <div class="adv-prog-fill" id="advMapProgFill" style="width:0%"></div>
           <div class="adv-prog-label" id="advMapProgLabel">Progres: 0/3 Fasilitas Diselamatkan</div>
         </div>
-        <div class="adv-map-viewport">
+        <div class="adv-map-hint">
+          <span>💡</span> <b>Panduan Explorer:</b> Klik area di peta atau gunakan tombol panah untuk berkeliling. Dekati objek berkarat untuk mengamatinya dengan kaca pembesar!
+        </div>
+        <div class="adv-map-viewport" id="advMapViewport">
           <div id="advMapSvgHost" style="width:100%;height:100%"></div>
+
+          <!-- Moving Explorer Character -->
+          <div class="adv-map-player" id="advMapPlayer" style="left:48%;top:58%">
+            <div class="adv-player-bubble" id="advPlayerBubble" hidden>
+              <span id="advPlayerBubbleText">Ayo kita amati korosi!</span>
+            </div>
+            <div class="adv-player-sprite" id="advPlayerSprite"></div>
+            <div class="adv-player-shadow"></div>
+          </div>
+
+          <!-- Pins for 3 Areas -->
           <button class="adv-pin-btn urgent" id="pinGarden" style="left:26%;top:64%" aria-label="Area 1: Taman Sekolah">
             <span class="adv-pin-icon">🌿</span>
             <span>Taman Sekolah</span>
@@ -4016,6 +4271,37 @@
             <span>Gerbang Sekolah</span>
             <span class="adv-pin-status" id="pinGateStatus">Perlu Dicek</span>
           </button>
+
+          <!-- Interactive Magnifying Glass Zoom Popup -->
+          <div class="adv-lens-popup" id="advLensPopup" style="left:26%;top:64%" hidden>
+            <div class="adv-lens-frame">
+              <div class="adv-lens-glass" id="advLensGlass"></div>
+              <div class="adv-lens-glare"></div>
+              <div class="adv-lens-handle"></div>
+            </div>
+            <h4 class="adv-lens-title" id="advLensTitle">🔍 Kaca Pembesar Korosi</h4>
+            <p class="adv-lens-desc" id="advLensDesc">Terdeteksi reaksi oksidasi redoks pada logam!</p>
+            <button class="btn-yellow btn-small" id="advLensActionBtn" style="font-size:0.82rem;padding:6px 14px">
+              Tindakan Penyelamatan 🛠️
+            </button>
+          </div>
+
+          <!-- Quick Navigation Pills -->
+          <div class="adv-tour-pills">
+            <button class="adv-tour-btn" id="tourGardenBtn">🌿 Menuju Taman</button>
+            <button class="adv-tour-btn" id="tourFieldBtn">⚽ Menuju Lapangan</button>
+            <button class="adv-tour-btn" id="tourGateBtn">🏫 Menuju Gerbang</button>
+          </div>
+
+          <!-- Directional D-Pad Controls -->
+          <div class="adv-map-controls">
+            <button class="adv-dpad-btn" id="dpadUp" aria-label="Atas">▲</button>
+            <div class="adv-dpad-row">
+              <button class="adv-dpad-btn" id="dpadLeft" aria-label="Kiri">◀</button>
+              <button class="adv-dpad-btn" id="dpadDown" aria-label="Bawah">▼</button>
+              <button class="adv-dpad-btn" id="dpadRight" aria-label="Kanan">▶</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -4033,6 +4319,10 @@
         <div class="adv-card adv-scene-card">
           <div class="adv-interactive-stage">
             <div id="advSceneHost" style="width:100%;height:100%"></div>
+            <button class="adv-scene-lens-btn" id="advSceneLensBtn">
+              <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7" fill="none" stroke="#3b1900" stroke-width="2.5"/><path d="M16 16l4.5 4.5" stroke="#3b1900" stroke-width="2.5" stroke-linecap="round"/></svg>
+              <span>Zoom Kaca Pembesar</span>
+            </button>
             <button class="adv-hotspot-pulse" id="advHotspotBtn" style="left:50%;top:68%">
               <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7" fill="none" stroke="#3b1900" stroke-width="2.5"/><path d="M16 16l4.5 4.5" stroke="#3b1900" stroke-width="2.5" stroke-linecap="round"/></svg>
               <span id="advHotspotLabel">Selidiki Karat!</span>
@@ -5930,8 +6220,232 @@
         show('advIntro');
       }
 
+      
+      /* ---------- Explorer Avatar Walk & Magnifying Glass System ---------- */
+      var curPlayerPos = { x: 48, y: 58 };
+      var moveTimer = null;
+      var curActiveAreaHotspot = null;
+
+      function advMiniExplorerSVG() {
+        return '<svg viewBox="0 0 60 80" aria-hidden="true">' +
+          '<!-- Backpack / Tools -->' +
+          '<rect x="10" y="24" width="40" height="34" rx="8" fill="#a07238" stroke="#5a3d1c" stroke-width="2"/>' +
+          '<!-- Body -->' +
+          '<rect x="15" y="28" width="30" height="28" rx="6" fill="#f4f6fc" stroke="#3b82f6" stroke-width="2.5"/>' +
+          '<!-- Vest -->' +
+          '<path d="M15 30L23 28L25 56H15Z" fill="#d4a366"/>' +
+          '<path d="M45 30L37 28L35 56H45Z" fill="#d4a366"/>' +
+          '<!-- Head -->' +
+          '<ellipse cx="30" cy="18" rx="14" ry="14" fill="#f8d0a8"/>' +
+          '<ellipse cx="25" cy="17" rx="2" ry="3" fill="#2c1a10"/>' +
+          '<ellipse cx="35" cy="17" rx="2" ry="3" fill="#2c1a10"/>' +
+          '<path d="M27 24q3 3 6 0" fill="none" stroke="#2c1a10" stroke-width="1.5" stroke-linecap="round"/>' +
+          '<!-- Explorer Hat -->' +
+          '<ellipse cx="30" cy="10" rx="20" ry="5" fill="#e8bf7d" stroke="#785020" stroke-width="1.5"/>' +
+          '<path d="M17 10Q16 -2 30 -2Q44 -2 43 10Z" fill="#d4a366" stroke="#785020" stroke-width="1.5"/>' +
+          '<rect x="18" y="7" width="24" height="3" fill="#1d3a6b"/>' +
+          '<!-- Legs -->' +
+          '<rect x="18" y="56" width="9" height="18" rx="3" fill="#1e3a8a"/>' +
+          '<rect x="33" y="56" width="9" height="18" rx="3" fill="#1e3a8a"/>' +
+          '<rect x="16" y="70" width="12" height="6" rx="2" fill="#451a03"/>' +
+          '<rect x="32" y="70" width="12" height="6" rx="2" fill="#451a03"/>' +
+          '<!-- Small Magnifier in Hand -->' +
+          '<circle cx="46" cy="38" r="7" fill="#bae6fd" stroke="#d97706" stroke-width="2"/>' +
+          '<line x1="51" y1="43" x2="57" y2="49" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>' +
+          '</svg>';
+      }
+
+      function advLensDetailSVG(areaKey, isDone) {
+        if (areaKey === 'garden') {
+          if (!isDone) {
+            return '<svg viewBox="0 0 120 120">' +
+              '<defs><radialGradient id="rustG"><stop offset="0%" stop-color="#ea580c"/><stop offset="100%" stop-color="#7c2d12"/></radialGradient></defs>' +
+              '<rect width="120" height="120" fill="#334155"/>' +
+              '<!-- Metal Base Fe -->' +
+              '<rect x="15" y="20" width="90" height="80" fill="#64748b" stroke="#475569" stroke-width="3"/>' +
+              '<!-- Porous Rust Pits Fe2O3.nH2O -->' +
+              '<path d="M25 40 Q45 25 70 45 T100 50 L95 85 Q65 95 30 80 Z" fill="url(#rustG)"/>' +
+              '<circle cx="45" cy="55" r="9" fill="#9a3412"/>' +
+              '<circle cx="75" cy="65" r="11" fill="#78350f"/>' +
+              '<circle cx="55" cy="72" r="7" fill="#c2410c"/>' +
+              '<!-- Attacking Water Drops & Oxygen -->' +
+              '<circle cx="35" cy="32" r="6" fill="#38bdf8" opacity=".9"/><text x="35" y="35" font-size="7" fill="#fff" text-anchor="middle" font-weight="900">H₂O</text>' +
+              '<circle cx="85" cy="32" r="6" fill="#60a5fa" opacity=".9"/><text x="85" y="35" font-size="7" fill="#fff" text-anchor="middle" font-weight="900">O₂</text>' +
+              '<text x="60" y="112" font-size="7.5" fill="#fef08a" font-weight="900" text-anchor="middle">Fe²⁺ + O₂ + H₂O → Karat</text>' +
+              '</svg>';
+          } else {
+            return '<svg viewBox="0 0 120 120">' +
+              '<rect width="120" height="120" fill="#1e293b"/>' +
+              '<rect x="15" y="45" width="90" height="55" fill="#475569"/>' +
+              '<!-- Thick Glossy Protective Green Paint Barrier -->' +
+              '<rect x="15" y="25" width="90" height="25" fill="#22c55e" stroke="#15803d" stroke-width="2"/>' +
+              '<line x1="20" y1="30" x2="100" y2="30" stroke="#86efac" stroke-width="3" stroke-linecap="round"/>' +
+              '<!-- Water & Oxygen Bouncing Off -->' +
+              '<path d="M35 12 L45 22 L35 24" fill="none" stroke="#38bdf8" stroke-width="2"/>' +
+              '<circle cx="32" cy="12" r="5" fill="#38bdf8"/><text x="32" y="14" font-size="6" fill="#fff" text-anchor="middle" font-weight="900">H₂O</text>' +
+              '<path d="M85 12 L75 22 L85 24" fill="none" stroke="#60a5fa" stroke-width="2"/>' +
+              '<circle cx="88" cy="12" r="5" fill="#60a5fa"/><text x="88" y="14" font-size="6" fill="#fff" text-anchor="middle" font-weight="900">O₂</text>' +
+              '<text x="60" y="112" font-size="7.5" fill="#86efac" font-weight="900" text-anchor="middle">Cat Pelindung: Air & O₂ Terhalang!</text>' +
+              '</svg>';
+          }
+        } else if (areaKey === 'field') {
+          if (!isDone) {
+            return '<svg viewBox="0 0 120 120">' +
+              '<rect width="120" height="120" fill="#1e293b"/>' +
+              '<!-- Steel pipe cross section with deep pits -->' +
+              '<circle cx="60" cy="60" r="44" fill="#64748b" stroke="#334155" stroke-width="4"/>' +
+              '<circle cx="60" cy="60" r="28" fill="#0f172a"/>' +
+              '<!-- Pitting Corrosion Craters -->' +
+              '<path d="M60 16 Q72 32 82 22 Q95 40 102 52" fill="none" stroke="#c2410c" stroke-width="8" stroke-linecap="round"/>' +
+              '<circle cx="70" cy="24" r="5" fill="#9a3412"/>' +
+              '<circle cx="92" cy="38" r="6" fill="#78350f"/>' +
+              '<path d="M30 30L24 18M96 28L108 20" stroke="#facc15" stroke-width="3" stroke-linecap="round"/>' +
+              '<text x="60" y="64" font-size="8" fill="#f97316" font-weight="900" text-anchor="middle">Pitting</text>' +
+              '<text x="60" y="112" font-size="7.5" fill="#fde047" font-weight="900" text-anchor="middle">Karat Berlubang Terpapar Cuaca</text>' +
+              '</svg>';
+          } else {
+            return '<svg viewBox="0 0 120 120">' +
+              '<rect width="120" height="120" fill="#0f172a"/>' +
+              '<circle cx="60" cy="60" r="44" fill="#64748b"/>' +
+              '<circle cx="60" cy="60" r="28" fill="#1e293b"/>' +
+              '<!-- Zinc Galvanized Layer -->' +
+              '<circle cx="60" cy="60" r="48" fill="none" stroke="#e2e8f0" stroke-width="7"/>' +
+              '<!-- Crystal spangle pattern -->' +
+              '<polygon points="40,16 48,12 45,22" fill="#94a3b8"/>' +
+              '<polygon points="76,14 84,18 78,24" fill="#cbd5e1"/>' +
+              '<polygon points="100,50 106,60 98,64" fill="#94a3b8"/>' +
+              '<text x="60" y="58" font-size="9" fill="#38bdf8" font-weight="900" text-anchor="middle">Zn</text>' +
+              '<text x="60" y="70" font-size="6.5" fill="#e2e8f0" text-anchor="middle">Anoda Korban</text>' +
+              '<text x="60" y="112" font-size="7.5" fill="#38bdf8" font-weight="900" text-anchor="middle">Galvanisasi Seng Tahan 20 Thn!</text>' +
+              '</svg>';
+          }
+        } else {
+          // Gate
+          if (!isDone) {
+            return '<svg viewBox="0 0 120 120">' +
+              '<rect width="120" height="120" fill="#1e293b"/>' +
+              '<!-- Wheel & Rail contact point -->' +
+              '<circle cx="60" cy="40" r="32" fill="#475569" stroke="#334155" stroke-width="4"/>' +
+              '<rect x="15" y="70" width="90" height="24" fill="#334155"/>' +
+              '<!-- Rust friction debris between wheel & rail -->' +
+              '<path d="M40 70 Q60 62 80 70 Z" fill="#ea580c"/>' +
+              '<circle cx="50" cy="68" r="3" fill="#f97316"/>' +
+              '<circle cx="62" cy="66" r="4" fill="#c2410c"/>' +
+              '<circle cx="72" cy="68" r="3" fill="#f97316"/>' +
+              '<!-- Friction Sparks & Screech line -->' +
+              '<path d="M32 60L24 54M88 60L96 54" stroke="#facc15" stroke-width="2.5"/>' +
+              '<text x="60" y="44" font-size="8" fill="#fca5a5" font-weight="900" text-anchor="middle">DECIT!</text>' +
+              '<text x="60" y="112" font-size="7.5" fill="#fca5a5" font-weight="900" text-anchor="middle">Karat Gesekan: Macet & Aus</text>' +
+              '</svg>';
+          } else {
+            return '<svg viewBox="0 0 120 120">' +
+              '<rect width="120" height="120" fill="#0f172a"/>' +
+              '<circle cx="60" cy="40" r="32" fill="#64748b"/>' +
+              '<rect x="15" y="70" width="90" height="24" fill="#334155"/>' +
+              '<!-- Lubricating Grease Film -->' +
+              '<path d="M30 68 Q60 60 90 68 L90 74 Q60 66 30 74 Z" fill="#f59e0b" stroke="#fbbf24" stroke-width="1.5"/>' +
+              '<circle cx="60" cy="40" r="10" fill="#fef08a" opacity=".6"/>' +
+              '<!-- Smooth glide motion arrows -->' +
+              '<path d="M25 40 Q60 20 95 40" fill="none" stroke="#60a5fa" stroke-width="3" stroke-linecap="round"/>' +
+              '<polygon points="95,40 88,34 90,44" fill="#60a5fa"/>' +
+              '<text x="60" y="112" font-size="7.5" fill="#fde047" font-weight="900" text-anchor="middle">Pelumas: Licin, Mulus & Kedap O₂!</text>' +
+              '</svg>';
+          }
+        }
+      }
+
+      function moveExplorerTo(xPct, yPct, onArrival) {
+        xPct = Math.max(16, Math.min(84, xPct));
+        yPct = Math.max(26, Math.min(82, yPct));
+
+        var player = $('#advMapPlayer');
+        var sprite = $('#advMapSprite');
+        var lens = $('#advLensPopup');
+        if (!player || !sprite) return;
+
+        // Hide lens popup while walking
+        if (lens) lens.hidden = true;
+        curActiveAreaHotspot = null;
+
+        // Face direction
+        if (xPct < curPlayerPos.x - 1) sprite.style.transform = 'scaleX(-1)';
+        else if (xPct > curPlayerPos.x + 1) sprite.style.transform = 'scaleX(1)';
+
+        player.classList.add('walking');
+        curPlayerPos = { x: xPct, y: yPct };
+        player.style.left = xPct + '%';
+        player.style.top = yPct + '%';
+
+        var dist = Math.hypot(xPct - curPlayerPos.x, yPct - curPlayerPos.y);
+        var dur = Math.max(0.45, Math.min(1.1, dist * 0.02 + 0.5));
+        player.style.transition = 'left ' + dur + 's ease-in-out, top ' + dur + 's ease-in-out';
+
+        tone([380, 420]);
+
+        if (moveTimer) clearTimeout(moveTimer);
+        moveTimer = setTimeout(function () {
+          player.classList.remove('walking');
+          checkProximityHotspots();
+          if (onArrival) onArrival();
+        }, dur * 1000);
+      }
+
+      var HOTSPOTS = {
+        garden: { key: 'garden', name: 'Pagar Besi Taman', x: 26, y: 64, desc: 'Karat terkelupas akibat cipratan air & tanah basah' },
+        field: { key: 'field', name: 'Tiang Gawang Logam', x: 52, y: 36, desc: 'Pitting corrosion akibat hujan terbuka & terik matahari' },
+        gate: { key: 'gate', name: 'Engsel & Rel Gerbang', x: 76, y: 72, desc: 'Karat gesekan mekanis menyebabkan macet & berdecit' }
+      };
+
+      function checkProximityHotspots() {
+        var closest = null, minDist = 999;
+        Object.keys(HOTSPOTS).forEach(function (k) {
+          var hs = HOTSPOTS[k];
+          var d = Math.hypot(curPlayerPos.x - hs.x, curPlayerPos.y - hs.y);
+          if (d < minDist) { minDist = d; closest = hs; }
+        });
+
+        // Trigger zoom if within 16% distance
+        if (minDist <= 16 && closest) {
+          showMagnifierFor(closest);
+        }
+      }
+
+      function showMagnifierFor(hs) {
+        curActiveAreaHotspot = hs.key;
+        var pr = getAdvProgress();
+        var isDone = !!pr[hs.key];
+        var lens = $('#advLensPopup');
+        if (!lens) return;
+
+        lens.style.left = hs.x + '%';
+        lens.style.top = (hs.y - 6) + '%';
+        $('#advLensGlass').innerHTML = advLensDetailSVG(hs.key, isDone);
+        $('#advLensTitle').textContent = '🔍 ' + hs.name;
+        $('#advLensDesc').textContent = isDone ? '✓ Fasilitas ini sudah berhasil dilindungi dan bebas korosi!' : hs.desc;
+
+        var actBtn = $('#advLensActionBtn');
+        actBtn.textContent = isDone ? 'Lihat Fasilitas 🔎' : 'Amati & Selamatkan 🛠️';
+        actBtn.onclick = function () {
+          lens.hidden = true;
+          openAdvArea(hs.key);
+        };
+
+        lens.hidden = false;
+        tone([587, 784, 988]);
+      }
+
       function openAdvMap() {
         var pr = getAdvProgress();
+        // Setup Explorer Sprite
+        if ($('#advPlayerSprite') && !$('#advPlayerSprite').innerHTML) {
+          $('#advPlayerSprite').innerHTML = advMiniExplorerSVG();
+        }
+        var player = $('#advMapPlayer');
+        if (player) {
+          player.style.left = curPlayerPos.x + '%';
+          player.style.top = curPlayerPos.y + '%';
+        }
+        if ($('#advLensPopup')) $('#advLensPopup').hidden = true;
         var doneCount = (pr.garden ? 1 : 0) + (pr.field ? 1 : 0) + (pr.gate ? 1 : 0);
         var pct = Math.round((doneCount / 3) * 100);
 
@@ -6105,9 +6619,69 @@
       $('#advMapBack').onclick = openAdvIntro;
       $('#advMapMenu').onclick = function () { show('menu'); };
 
-      $('#pinGarden').onclick = function () { openAdvArea('garden'); };
-      $('#pinField').onclick = function () { openAdvArea('field'); };
-      $('#pinGate').onclick = function () { openAdvArea('gate'); };
+      // Interactive Movement on Map
+      var mapVp = $('#advMapViewport');
+      if (mapVp) {
+        mapVp.onclick = function (e) {
+          if (e.target.closest('button')) return;
+          var rect = mapVp.getBoundingClientRect();
+          var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+          var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+          moveExplorerTo(xPct, yPct);
+        };
+      }
+
+      // Walking to pins
+      $('#pinGarden').onclick = function () {
+        moveExplorerTo(26, 64, function () { showMagnifierFor(HOTSPOTS.garden); });
+      };
+      $('#pinField').onclick = function () {
+        moveExplorerTo(52, 36, function () { showMagnifierFor(HOTSPOTS.field); });
+      };
+      $('#pinGate').onclick = function () {
+        moveExplorerTo(76, 72, function () { showMagnifierFor(HOTSPOTS.gate); });
+      };
+
+      // Tour Buttons
+      if ($('#tourGardenBtn')) $('#tourGardenBtn').onclick = function () { moveExplorerTo(26, 64, function () { showMagnifierFor(HOTSPOTS.garden); }); };
+      if ($('#tourFieldBtn')) $('#tourFieldBtn').onclick = function () { moveExplorerTo(52, 36, function () { showMagnifierFor(HOTSPOTS.field); }); };
+      if ($('#tourGateBtn')) $('#tourGateBtn').onclick = function () { moveExplorerTo(76, 72, function () { showMagnifierFor(HOTSPOTS.gate); }); };
+
+      // D-Pad Controls
+      var dStep = 7;
+      if ($('#dpadUp')) $('#dpadUp').onclick = function () { moveExplorerTo(curPlayerPos.x, curPlayerPos.y - dStep); };
+      if ($('#dpadDown')) $('#dpadDown').onclick = function () { moveExplorerTo(curPlayerPos.x, curPlayerPos.y + dStep); };
+      if ($('#dpadLeft')) $('#dpadLeft').onclick = function () { moveExplorerTo(curPlayerPos.x - dStep, curPlayerPos.y); };
+      if ($('#dpadRight')) $('#dpadRight').onclick = function () { moveExplorerTo(curPlayerPos.x + dStep, curPlayerPos.y); };
+
+      // Keyboard Controls (WASD / Arrows) when on advMap screen
+      window.addEventListener('keydown', function (e) {
+        if ($('#advMap').hidden) return;
+        if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') { moveExplorerTo(curPlayerPos.x, curPlayerPos.y - dStep); e.preventDefault(); }
+        else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') { moveExplorerTo(curPlayerPos.x, curPlayerPos.y + dStep); e.preventDefault(); }
+        else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') { moveExplorerTo(curPlayerPos.x - dStep, curPlayerPos.y); e.preventDefault(); }
+        else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') { moveExplorerTo(curPlayerPos.x + dStep, curPlayerPos.y); e.preventDefault(); }
+      });
+
+      // Area Scene Zoom Lens Button
+      if ($('#advSceneLensBtn')) {
+        $('#advSceneLensBtn').onclick = function () {
+          var pr = getAdvProgress();
+          var isDone = !!pr[curAdvArea];
+          var area = ADV_AREAS[curAdvArea];
+          openModal('<h2>🔍 Kaca Pembesar Korosi: ' + esc(area.obj) + '</h2>' +
+            '<div style="display:flex;justify-content:center;margin:12px 0">' +
+            '<div style="width:150px;height:150px;border-radius:50%;border:6px solid #d4a366;background:#0f172a;box-shadow:0 6px 16px rgba(0,0,0,0.4);overflow:hidden">' +
+            advLensDetailSVG(curAdvArea, isDone) +
+            '</div></div>' +
+            '<p style="font-size:0.92rem;line-height:1.45;color:var(--ink);text-align:center">' +
+            (isDone ? '✓ <b>Fasilitas Terlindungi:</b> Reaksi oksidasi korosi terhambat sempurna oleh metode perlindungan yang kamu pilih!' :
+              '⚠️ <b>Struktur Mikro Karat:</b> Terlihat molekul oksigen dan air menembus pori-pori logam besi, melepaskan elektron dan membentuk karat rapuh Fe₂O₃·nH₂O.') +
+            '</p>' +
+            '<div style="margin-top:14px;text-align:center"><button class="btn-yellow btn-small" id="mLensOk">Tutup Pengamatan</button></div>');
+          $('#mLensOk').onclick = closeModal;
+        };
+      }
 
       $('#advPlayBack').onclick = openAdvMap;
       $('#advHotspotBtn').onclick = function () {
