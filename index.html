@@ -985,11 +985,20 @@
     /* Enhanced Mobile Adaptations (Merapikan tampilan di HP) */
     @media (max-width: 768px) {
       .adv-screen {
-        padding: 6px 4px !important;
+        padding: 8px 6px !important;
+        min-height: 100vh !important;
+        justify-content: flex-start !important;
       }
       .adv-card {
-        padding: 12px 10px !important;
+        padding: 10px 8px !important;
         border-radius: 16px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .adv-card.adv-map-card {
+        padding: 8px !important;
+        display: flex !important;
+        flex-direction: column !important;
       }
       .adv-head {
         margin-bottom: 6px !important;
@@ -998,6 +1007,90 @@
       .adv-title-ribbon {
         font-size: 0.95rem !important;
         padding: 4px 12px !important;
+      }
+      .adv-prog-bar-wrap {
+        height: 18px !important;
+        margin-bottom: 5px !important;
+      }
+      .adv-prog-label {
+        font-size: 0.7rem !important;
+        line-height: 18px !important;
+      }
+      .adv-map-hint {
+        font-size: 0.69rem !important;
+        padding: 3px 8px !important;
+        margin-bottom: 6px !important;
+        border-radius: 8px !important;
+      }
+      /* Map Viewport on mobile: generous height, zero clutter */
+      .adv-map-viewport {
+        height: clamp(250px, 46vh, 340px) !important;
+        aspect-ratio: unset !important;
+        max-height: none !important;
+        border-radius: 12px !important;
+      }
+      /* Compact Pins: Never collide, never cut off */
+      .adv-pin-btn {
+        padding: 3px 6px !important;
+        font-size: 0.72rem !important;
+        border-radius: 10px !important;
+        border-width: 2px !important;
+        gap: 3px !important;
+        box-shadow: 0 3px 0 #3d2711, 0 4px 8px rgba(0,0,0,.25) !important;
+      }
+      .adv-pin-icon {
+        font-size: 0.92rem !important;
+      }
+      .adv-pin-name {
+        font-size: 0.7rem !important;
+      }
+      .adv-pin-status {
+        font-size: 0.6rem !important;
+        padding: 1px 4px !important;
+      }
+      /* Moving Explorer on mobile */
+      .adv-map-player {
+        transform: translate(-50%, -85%) scale(0.8) !important;
+      }
+      /* Center Lens Popup in Mobile Viewport */
+      .adv-lens-popup {
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 86% !important;
+        max-width: 270px !important;
+        padding: 10px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.55), 0 0 0 999px rgba(0,0,0,0.38) !important;
+        z-index: 100 !important;
+      }
+      .adv-lens-frame {
+        width: 105px !important;
+        height: 105px !important;
+      }
+      /* Clean Footer Bar below map */
+      .adv-map-footer-bar {
+        margin-top: 6px !important;
+        padding: 5px 6px !important;
+        gap: 6px !important;
+      }
+      .adv-dest-nav {
+        gap: 3px !important;
+      }
+      .adv-dest-label {
+        font-size: 0.68rem !important;
+      }
+      .adv-dest-btns {
+        gap: 3px !important;
+      }
+      .adv-dest-btns .adv-tour-btn {
+        padding: 2px 7px !important;
+        font-size: 0.68rem !important;
+        border-width: 1.5px !important;
+      }
+      .adv-dpad-btn {
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 0.74rem !important;
       }
       .adv-play-grid {
         grid-template-columns: 1fr !important;
@@ -1013,14 +1106,14 @@
         margin-top: 6px !important;
       }
       .adv-four-pillars-bar {
-        display: none !important; /* Dihilangkan di HP agar tidak membuang ruang layar */
+        display: none !important;
       }
       .adv-opt-item {
         padding: 9px 10px !important;
         border-radius: 12px !important;
       }
       .adv-opt-grid-2x2 {
-        grid-template-columns: 1fr !important; /* 1 kolom penuh di layar HP agar teks leluasa */
+        grid-template-columns: 1fr !important;
         gap: 4px !important;
         margin-top: 6px !important;
         padding-top: 6px !important;
@@ -1031,43 +1124,6 @@
       .m-val {
         font-size: 0.74rem !important;
       }
-      .adv-map-viewport {
-        max-height: 380px !important;
-      }
-      .adv-tour-pills {
-        top: 6px !important;
-        left: 6px !important;
-        bottom: auto !important;
-        max-width: 75% !important;
-        gap: 4px !important;
-      }
-      .adv-tour-btn {
-        padding: 2px 7px !important;
-        font-size: 0.68rem !important;
-      }
-      .adv-map-controls {
-        bottom: 6px !important;
-        right: 6px !important;
-        padding: 3px !important;
-      }
-      .adv-dpad-btn {
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 0.8rem !important;
-      }
-      .adv-map-hint {
-        font-size: 0.72rem !important;
-        padding: 3px 8px !important;
-        margin-bottom: 6px !important;
-      }
-      .adv-lens-popup {
-        max-width: 90vw !important;
-        padding: 10px !important;
-      }
-      .adv-lens-frame {
-        width: 110px !important;
-        height: 110px !important;
-      }
       .adv-vic-badges-grid {
         grid-template-columns: 1fr !important;
         gap: 8px !important;
@@ -1077,7 +1133,6 @@
         padding: 8px 10px !important;
       }
     }
-
   </style>
 </head>
 
@@ -4474,8 +4529,10 @@
           <div class="adv-prog-label" id="advMapProgLabel">Progres: 0/3 Fasilitas Diselamatkan</div>
         </div>
         <div class="adv-map-hint">
-          <span>💡</span> <b>Panduan Explorer:</b> Klik area di peta atau gunakan tombol panah untuk berkeliling. Dekati objek berkarat untuk mengamatinya dengan kaca pembesar!
+          <span>💡</span> <b>Panduan:</b> Sentuh lokasi di peta atau gunakan tombol di bawah untuk menjelajah!
         </div>
+
+        <!-- Clean Viewport: Map Artwork, Character & Pins Only (No Overlapping Bars) -->
         <div class="adv-map-viewport" id="advMapViewport" tabindex="0" role="application" aria-label="Area Peta Sekolah Interaktif">
           <!-- Target Beacon for Touch / Click -->
           <div class="adv-target-beacon" id="advTargetBeacon" style="display:none"></div>
@@ -4490,21 +4547,21 @@
             <div class="adv-player-shadow"></div>
           </div>
 
-          <!-- Pins for 3 Areas -->
+          <!-- Compact Pins for 3 Areas -->
           <button class="adv-pin-btn urgent" id="pinGarden" style="left:26%;top:64%" aria-label="Area 1: Taman Sekolah">
             <span class="adv-pin-icon">🌿</span>
-            <span>Taman Sekolah</span>
-            <span class="adv-pin-status" id="pinGardenStatus">Perlu Dicek</span>
+            <span class="adv-pin-name">Taman</span>
+            <span class="adv-pin-status" id="pinGardenStatus">⚠️ Karat!</span>
           </button>
-          <button class="adv-pin-btn urgent" id="pinField" style="left:52%;top:36%" aria-label="Area 2: Lapangan Sekolah">
+          <button class="adv-pin-btn urgent" id="pinField" style="left:50%;top:34%" aria-label="Area 2: Lapangan Sekolah">
             <span class="adv-pin-icon">⚽</span>
-            <span>Lapangan Sekolah</span>
-            <span class="adv-pin-status" id="pinFieldStatus">Perlu Dicek</span>
+            <span class="adv-pin-name">Lapangan</span>
+            <span class="adv-pin-status" id="pinFieldStatus">⚠️ Karat!</span>
           </button>
-          <button class="adv-pin-btn urgent" id="pinGate" style="left:76%;top:72%" aria-label="Area 3: Gerbang Sekolah">
+          <button class="adv-pin-btn urgent" id="pinGate" style="left:76%;top:70%" aria-label="Area 3: Gerbang Sekolah">
             <span class="adv-pin-icon">🏫</span>
-            <span>Gerbang Sekolah</span>
-            <span class="adv-pin-status" id="pinGateStatus">Perlu Dicek</span>
+            <span class="adv-pin-name">Gerbang</span>
+            <span class="adv-pin-status" id="pinGateStatus">⚠️ Karat!</span>
           </button>
 
           <!-- Interactive Magnifying Glass Zoom Popup -->
@@ -4520,16 +4577,19 @@
               Tindakan Penyelamatan 🛠️
             </button>
           </div>
+        </div>
 
-          <!-- Quick Navigation Pills -->
-          <div class="adv-tour-pills">
-            <button class="adv-tour-btn" id="tourGardenBtn">🌿 Menuju Taman</button>
-            <button class="adv-tour-btn" id="tourFieldBtn">⚽ Menuju Lapangan</button>
-            <button class="adv-tour-btn" id="tourGateBtn">🏫 Menuju Gerbang</button>
+        <!-- Clean Map Footer Bar (Organized Below Viewport: Zero Overlap) -->
+        <div class="adv-map-footer-bar">
+          <div class="adv-dest-nav">
+            <span class="adv-dest-label">🚀 Kunjungi Cepat:</span>
+            <div class="adv-dest-btns">
+              <button class="adv-tour-btn" id="tourGardenBtn">🌿 Taman</button>
+              <button class="adv-tour-btn" id="tourFieldBtn">⚽ Lapangan</button>
+              <button class="adv-tour-btn" id="tourGateBtn">🏫 Gerbang</button>
+            </div>
           </div>
-
-          <!-- Directional D-Pad Controls -->
-          <div class="adv-map-controls">
+          <div class="adv-map-controls" id="advDpadControls">
             <button class="adv-dpad-btn" id="dpadUp" aria-label="Atas">▲</button>
             <div class="adv-dpad-row">
               <button class="adv-dpad-btn" id="dpadLeft" aria-label="Kiri">◀</button>
@@ -6852,12 +6912,13 @@
 
         function updatePin(elId, stId, isDone) {
           var b = $('#' + elId), s = $('#' + stId);
+          if (!b || !s) return;
           if (isDone) {
             b.className = 'adv-pin-btn done';
-            s.textContent = '✓ Aman & Terlindungi';
+            s.textContent = '✓ Aman';
           } else {
             b.className = 'adv-pin-btn urgent';
-            s.textContent = '⚠️ Butuh Penyelamatan!';
+            s.textContent = '⚠️ Karat!';
           }
         }
         updatePin('pinGarden', 'pinGardenStatus', pr.garden);
